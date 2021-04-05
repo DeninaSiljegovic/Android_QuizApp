@@ -22,11 +22,11 @@
 
                 <TextView
                     android:id="@+id/textPredmet"
-                    android:layout_width="84dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="TextView"
-                    tools:layout_editor_absoluteX="45dp"
-                    tools:layout_editor_absoluteY="16dp" />
+                    tools:layout_editor_absoluteX="70dp"
+                    tools:layout_editor_absoluteY="30dp" />
 
                 <ImageView
                     android:id="@+id/statusImage"
@@ -48,18 +48,18 @@
 
                         <TextView
                             android:id="@+id/textKvizBr"
-                            android:layout_width="67dp"
-                            android:layout_height="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="TextView"
                             tools:layout_editor_absoluteX="57dp"
                             tools:layout_editor_absoluteY="16dp" />
 
                         <TextView
                             android:id="@+id/textDatum"
-                            android:layout_width="84dp"
-                            android:layout_height="21dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="48dp"
+                            tools:layout_editor_absoluteX="61dp"
                             tools:layout_editor_absoluteY="51dp" />
 
                         <TextView
@@ -72,10 +72,10 @@
 
                         <TextView
                             android:id="@+id/textBodovi"
-                            android:layout_width="39dp"
-                            android:layout_height="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="135dp"
+                            tools:layout_editor_absoluteX="115dp"
                             tools:layout_editor_absoluteY="92dp" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
