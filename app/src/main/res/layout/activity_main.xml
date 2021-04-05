@@ -15,6 +15,7 @@
         tools:layout_editor_absoluteY="57dp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaKvizova"
         android:layout_width="409dp"
         android:layout_height="601dp"
         tools:layout_editor_absoluteX="2dp"
