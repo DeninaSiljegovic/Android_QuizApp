@@ -6,41 +6,56 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:layout_width="199dp"
-        android:layout_height="202dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="3dp"
-        tools:layout_editor_absoluteY="2dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="208dp">
 
                 <TextView
                     android:id="@+id/textPredmet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
                     android:text="TextView"
-                    tools:layout_editor_absoluteX="70dp"
-                    tools:layout_editor_absoluteY="30dp" />
+                    app:layout_constraintBottom_toTopOf="@+id/cardView4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <ImageView
                     android:id="@+id/statusImage"
                     android:layout_width="30dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_launcher_foreground"
-                    tools:layout_editor_absoluteX="162dp"
-                    tools:layout_editor_absoluteY="5dp" />
+                    android:layout_marginStart="31dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/cardView4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textPredmet"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView4"
                     android:layout_width="181dp"
                     android:layout_height="123dp"
-                    tools:layout_editor_absoluteX="9dp"
-                    tools:layout_editor_absoluteY="63dp" >
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textPredmet">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -50,33 +65,51 @@
                             android:id="@+id/textKvizBr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="57dp"
-                            tools:layout_editor_absoluteY="16dp" />
+                            app:layout_constraintBottom_toTopOf="@+id/textDatum"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/textDatum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="60dp"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="61dp"
-                            tools:layout_editor_absoluteY="51dp" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.504"
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <TextView
                             android:id="@+id/textTrajanje"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="12dp"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="10dp"
-                            tools:layout_editor_absoluteY="92dp" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/textBodovi"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textDatum"
+                            app:layout_constraintVertical_bias="1.0" />
 
                         <TextView
                             android:id="@+id/textBodovi"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="29dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="12dp"
                             android:text="TextView"
-                            tools:layout_editor_absoluteX="115dp"
-                            tools:layout_editor_absoluteY="92dp" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textDatum"
+                            app:layout_constraintVertical_bias="0.0" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
