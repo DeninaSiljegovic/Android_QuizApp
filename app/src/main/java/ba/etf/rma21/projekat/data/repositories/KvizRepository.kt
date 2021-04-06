@@ -3,7 +3,8 @@ package ba.etf.rma21.projekat.data.repositories
 import ba.etf.rma21.projekat.data.models.Kviz
 
 class KvizRepository {
-
+//Every class can implement a companion object, which is an object that is common to all
+// instances of that class. It’d come to be similar to static fields in Java.
     companion object {
         // TODO: Implementirati
         init {
@@ -16,23 +17,19 @@ class KvizRepository {
         }
 
         fun getAll(): List<Kviz> {
-            // TODO: Implementirati
-            return emptyList()
+            return sviKvizovi()
         }
 
         fun getDone(): List<Kviz> {
-            // TODO: Implementirati
-            return emptyList()
+            return uradjeniKvizovi()
         }
 
         fun getFuture(): List<Kviz> {
-            // TODO: Implementirati
-            return emptyList()
+           return buduciKvizovi()
         }
 
         fun getNotTaken(): List<Kviz> {
-            // TODO: Implementirati
-            return emptyList()
+            return prosliNeuradjeniKvizovi()
         }
         // TODO: Implementirati i ostale potrebne metode
     }
