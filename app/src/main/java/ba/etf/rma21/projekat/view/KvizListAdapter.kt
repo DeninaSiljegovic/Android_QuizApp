@@ -79,6 +79,12 @@ class KvizListAdapter (
     }
 
 
+    fun updateKvizove(kvizovi: List<Kviz>){
+        this.kvizovi = kvizovi
+        notifyDataSetChanged()
+    }
+
+
     inner class KvizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textPredmet: TextView = itemView.findViewById(R.id.textPredmet)
         val textKvizBr: TextView = itemView.findViewById(R.id.textKvizBr)
@@ -87,6 +93,5 @@ class KvizListAdapter (
         val textTrajanje: TextView = itemView.findViewById(R.id.textTrajanje)
         val statusImage: ImageView = itemView.findViewById(R.id.statusImage)
     }
-
 
 }
