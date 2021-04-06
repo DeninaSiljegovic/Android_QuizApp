@@ -12,8 +12,7 @@ import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
 
 class KvizListAdapter (
-        private var kvizovi: List<Kviz>,
-        private val onItemClicked: (movie:Kviz) -> Unit
+        private var kvizovi: List<Kviz>
 ) : RecyclerView.Adapter<KvizListAdapter.KvizViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
@@ -28,8 +27,6 @@ class KvizListAdapter (
 
     override fun onBindViewHolder(holder: KvizViewHolder, position: Int) {
 
-        //checkiranje datuma da bi se odresio status i koji se prikazuje
-        val context: Context = holder.statusImage.getContext()
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
         if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().getTime())){
@@ -37,45 +34,34 @@ class KvizListAdapter (
             //1.1 - bodovi i datum rada su null == CRVENA
             if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumRada == null){
                 holder.textDatum.text = kvizovi[position].datumKraj.toString()
-                var id: Int = context.getResources()
-                        .getIdentifier("crvena", "drawable", context.getPackageName())
+                holder.statusImage.setImageResource(R.drawable.crvena)
             }
-
             //1.2 - imaju bodovi i datum rada == PLAVA
             else{
                 holder.textDatum.text = kvizovi[position].datumRada.toString()
-                var id: Int = context.getResources()
-                        .getIdentifier("plava", "drawable", context.getPackageName())
+                holder.statusImage.setImageResource(R.drawable.plava)
             }
-
         }
 
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
-
             //datum pocetka i datum kraja jos nisu dosli na red - TEK SE AKTIVIRA == ZUTA
             if(kvizovi[position].datumPocetka.after(GregorianCalendar.getInstance().getTime())) {
                 holder.textDatum.text = kvizovi[position].datumPocetka.toString()
-                var id: Int = context.getResources()
-                        .getIdentifier("zuta", "drawable", context.getPackageName())
+                holder.statusImage.setImageResource(R.drawable.zuta)
             }
-
             //last case - aktivan je al nije uradjen == ZELENA
             else{
                 holder.textDatum.text = kvizovi[position].datumKraj.toString()
-                var id: Int = context.getResources()
-                        .getIdentifier("zelena", "drawable", context.getPackageName())
+                holder.statusImage.setImageResource(R.drawable.zelena)
             }
         }
-
-
 
         holder.textPredmet.text = kvizovi[position].nazivPredmeta
         holder.textKvizBr.text = kvizovi[position].naziv
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min" //nesto wrong check it
         holder.textBodovi.text = kvizovi[position].osvojeniBodovi.toString()
 
-        holder.itemView.setOnClickListener{ onItemClicked(kvizovi[position]) }
     }
 
 

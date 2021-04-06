@@ -1,6 +1,7 @@
 package ba.etf.rma21.projekat
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayoutManager.HORIZONTAL,
                 false
         )
+        listaKvizovaAdapter = KvizListAdapter(listOf())
         listaKvizova.adapter = listaKvizovaAdapter
         listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
 
