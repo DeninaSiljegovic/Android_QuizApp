@@ -4,15 +4,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     android:padding="5dp"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="4dp"
 
-    >
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#C5F1EC">
 
         <TextView
             android:id="@+id/textPredmet"
@@ -62,14 +64,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="TextView"
-                    app:layout_constraintBottom_toTopOf="@+id/textTrajanje"
+                    app:layout_constraintBottom_toTopOf="@+id/textDatum"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/textTrajanje"
+                    android:id="@+id/textDatum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="40dp"
@@ -79,7 +81,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textTrajanje"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="45dp"
@@ -89,7 +91,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/textBodovi"
                     app:layout_constraintHorizontal_bias="0.304"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textTrajanje"
+                    app:layout_constraintTop_toBottomOf="@+id/textDatum"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
@@ -102,7 +104,7 @@
                     android:text="1.5"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textTrajanje"
+                    app:layout_constraintTop_toBottomOf="@+id/textDatum"
                     app:layout_constraintVertical_bias="1.0" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
