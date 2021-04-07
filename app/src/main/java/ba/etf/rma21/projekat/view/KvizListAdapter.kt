@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat.view
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,7 +73,7 @@ class KvizListAdapter (
     inner class KvizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textPredmet: TextView = itemView.findViewById(R.id.textPredmet)
         val textKvizBr: TextView = itemView.findViewById(R.id.textKvizBr)
-        val textDatum: TextView = itemView.findViewById(R.id.textDatum)
+        val textDatum: TextView = itemView.findViewById(R.id.textTrajanje)
         val textBodovi: TextView = itemView.findViewById(R.id.textBodovi)
         val textTrajanje: TextView = itemView.findViewById(R.id.textTrajanje)
         val statusImage: ImageView = itemView.findViewById(R.id.statusImage)

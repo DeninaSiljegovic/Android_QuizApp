@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.KvizListAdapter
@@ -26,9 +27,10 @@ class MainActivity : AppCompatActivity() {
         listaKvizova = findViewById(R.id.listaKvizova)
         //spinner may God help me to set up he he he
 
-        listaKvizova.layoutManager = LinearLayoutManager(
+        listaKvizova.layoutManager = GridLayoutManager(
                 this,
-                LinearLayoutManager.HORIZONTAL,
+                2,
+                GridLayoutManager.VERTICAL,
                 false
         )
         listaKvizovaAdapter = KvizListAdapter(listOf())
