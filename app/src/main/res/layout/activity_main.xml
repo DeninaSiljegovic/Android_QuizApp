@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D8BBE3"
+    android:background="#E6C5F3"
     tools:context=".MainActivity">
 
     <Spinner
@@ -12,6 +12,8 @@
         android:layout_width="243dp"
         android:layout_height="32dp"
         android:layout_marginTop="48dp"
+        android:background="#F4ECEC"
+        android:backgroundTint="#EBE7EF"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

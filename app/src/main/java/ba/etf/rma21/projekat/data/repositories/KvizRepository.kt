@@ -11,9 +11,9 @@ class KvizRepository {
             // TODO: Implementirati
         }
 
+
         fun getMyKvizes(): List<Kviz> {
-            // TODO: Implementirati
-            return emptyList()
+            return mojiKvizovi()
         }
 
         fun getAll(): List<Kviz> {
@@ -31,6 +31,7 @@ class KvizRepository {
         fun getNotTaken(): List<Kviz> {
             return prosliNeuradjeniKvizovi()
         }
-        // TODO: Implementirati i ostale potrebne metode
+
+
     }
 }
