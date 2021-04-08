@@ -8,9 +8,10 @@ class GrupaRepository {
             // TODO: Implementirati
         }
 
-        fun getGroupsByPredmet(nazivPredmeta: String): List<Grupa> {
-            // TODO: Implementirati
-            return emptyList()
+        fun getGroupsByPredmet(naziv: String): List<Grupa> {
+            var lista : List<Grupa> = dajGrupe()
+            lista.filter{ lista.any{it.nazivPredmeta == naziv}} //NOT SURE IF THIS WORKS
+            return lista
         }
     }
 }
