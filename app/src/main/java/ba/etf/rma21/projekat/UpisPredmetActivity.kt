@@ -20,7 +20,7 @@ class UpisPredmetActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_upis_predmeta)
+        setContentView(R.layout.activity_upis_predmet)
 
         odabirGodina = findViewById(R.id.odabirGodina)
         odabirPredmet = findViewById(R.id.odabirPredmet)
@@ -87,17 +87,5 @@ class UpisPredmetActivity : AppCompatActivity(){
 
             }
         }
-
-
-
-
-
-
-
-
     }
-
-
-
-
 }

@@ -1,5 +1,8 @@
 package ba.etf.rma21.projekat
 
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity(){
@@ -19,6 +23,9 @@ class MainActivity : AppCompatActivity(){
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizListViewModel()
+    private lateinit var upisDugme: FloatingActionButton
+    //private val br: BroadcastReceiver = ConnectivityBroadcastReceiver()
+    private val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +34,7 @@ class MainActivity : AppCompatActivity(){
 
         listaKvizova = findViewById(R.id.listaKvizova)
         filterKvizova = findViewById(R.id.filterKvizova)
+        upisDugme = findViewById(R.id.upisDugme)
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -71,7 +79,16 @@ class MainActivity : AppCompatActivity(){
             override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
         })
 
+
+        //intent
+        upisDugme.setOnClickListener{
+            val intent = Intent(this, UpisPredmetActivity::class.java)
+            startActivity(intent)
+        }
+
     }
+
+
 
 }
 
