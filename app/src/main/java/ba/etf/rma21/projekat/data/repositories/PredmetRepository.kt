@@ -14,8 +14,9 @@ class PredmetRepository {
 
         fun getPredmetiGodine(god: Int): List<Predmet>{
             var predmeti:  List<Predmet> = getAll()
-            predmeti = predmeti.filter{ predmeti.any{it.godina == god+1}}
-            return predmeti
+            //predmeti = predmeti.filter{ predmeti.any{it.godina == god+1}}
+            val vrati = predmeti.filter { it.godina == god + 1 }
+            return vrati
         }
 
     }

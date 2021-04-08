@@ -46,9 +46,9 @@ class UpisPredmetActivity : AppCompatActivity(){
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
                 var positonInt = Integer.valueOf(item_position)
-                val cat = getPredmetiGodine(positonInt).map { it.naziv }.stream().toArray()
+                val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().toArray()
 
-                val dataAdapter1 = ArrayAdapter(this@UpisPredmetActivity, android.R.layout.simple_spinner_item, cat)
+                val dataAdapter1 = ArrayAdapter(this@UpisPredmetActivity, android.R.layout.simple_spinner_item, predmeti)
                 dataAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 odabirPredmet.setAdapter(dataAdapter1)
             }
@@ -60,9 +60,9 @@ class UpisPredmetActivity : AppCompatActivity(){
         odabirPredmet.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
-                val cat = getGroupsByPredmet(item_position).map { it.naziv }.stream().toArray()
+                val grupe = getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().toArray()
 
-                val dataAdapter2 = ArrayAdapter(this@UpisPredmetActivity, android.R.layout.simple_spinner_item, cat)
+                val dataAdapter2 = ArrayAdapter(this@UpisPredmetActivity, android.R.layout.simple_spinner_item, grupe)
                 dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 odabirGrupa.setAdapter(dataAdapter2)
             }
