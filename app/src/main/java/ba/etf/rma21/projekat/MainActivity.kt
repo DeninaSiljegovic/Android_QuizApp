@@ -3,12 +3,17 @@ package ba.etf.rma21.projekat
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +50,34 @@ class MainActivity : AppCompatActivity(){
         categories.add("Prošli kvizovi")
 
         // Creating adapter for spinner
-        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        //val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        val dataAdapter:ArrayAdapter<String> = object: ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            categories
+        ){
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
+            ): View {
+                val view: TextView = super.getDropDownView(
+                    position,
+                    convertView,
+                    parent
+                ) as TextView
+                // set item text size
+                view.setTextSize(TypedValue.COMPLEX_UNIT_SP,15F)
+
+                // set selected item style
+                if (position == filterKvizova.selectedItemPosition){
+                    view.background = ColorDrawable(Color.parseColor("#E695B1"))
+                    view.setTextColor(Color.parseColor("#2E2D88"))
+                }
+                return view
+            }
+        }
+
 
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
