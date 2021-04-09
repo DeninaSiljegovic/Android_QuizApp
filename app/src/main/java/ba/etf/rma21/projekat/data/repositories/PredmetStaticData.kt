@@ -35,3 +35,9 @@ fun upisani(): List<Predmet> {
     )
 }
 
+fun getPredmetiGodine(god: Int): List<Predmet>{
+    var predmeti:  List<Predmet> = PredmetRepository.getAll()
+    val vrati = predmeti.filter { it.godina == god + 1 }
+    return vrati
+}
+
