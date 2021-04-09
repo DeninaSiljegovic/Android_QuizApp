@@ -1,11 +1,12 @@
 package ba.etf.rma21.projekat
 
-import android.content.BroadcastReceiver
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +30,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizListViewModel()
     private lateinit var upisDugme: FloatingActionButton
-    //private val br: BroadcastReceiver = ConnectivityBroadcastReceiver()
-    private val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+    //private val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,16 +111,28 @@ class MainActivity : AppCompatActivity(){
             override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
         })
 
-
-        //intent
         upisDugme.setOnClickListener{
-            val intent = Intent(this, UpisPredmetActivity::class.java)
-            startActivity(intent)
+            upisDugmeClicked(it)
         }
+    }//onCreate end
 
+     //"Go to Second Activity" button click
+    fun upisDugmeClicked(view: View?) {
+        val intent = Intent(this, UpisPredmetActivity::class.java)
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // check that it is the SecondActivity with an OK result
+            if (resultCode == RESULT_OK) {
+                Log.d("Deni", data?.getStringExtra("godina").toString())
+                Log.d("Deni", data?.getStringExtra("predmet").toString())
+                Log.d("Deni", data?.getStringExtra("grupa").toString())
+            }
     }
 
 
-
-}
+}//main activiry closed
 

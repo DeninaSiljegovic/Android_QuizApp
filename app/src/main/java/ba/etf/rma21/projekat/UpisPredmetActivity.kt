@@ -1,5 +1,7 @@
 package ba.etf.rma21.projekat
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import ba.etf.rma21.projekat.data.repositories.GrupaRepository.Companion.getGroupsByPredmet
 import ba.etf.rma21.projekat.data.repositories.PredmetRepository.Companion.getPredmetiGodine
 import java.util.stream.Collectors
-import java.util.stream.Stream
 
 
 class UpisPredmetActivity : AppCompatActivity(){
@@ -162,10 +163,20 @@ class UpisPredmetActivity : AppCompatActivity(){
 
 
         dodajPredmetDugme.setOnClickListener{
-            if(odabirGodina.selectedItem != null && odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null){
-                //DODATI PREDMET
-
-            }
+            dodajPredmetDugmeClicked(it)
         }
     }
+
+    fun dodajPredmetDugmeClicked(view: View?) {
+        if(odabirGodina.selectedItem != null && odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null){
+            val intent = Intent()
+            intent.putExtra("godina", odabirGodina.selectedItemPosition.toString())
+            intent.putExtra("predmet", odabirPredmet.selectedItem.toString())
+            intent.putExtra("grupa", odabirGrupa.selectedItem.toString())
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
+    }
+
+
 }
