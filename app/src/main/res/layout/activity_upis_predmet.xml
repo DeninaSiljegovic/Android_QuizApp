@@ -21,9 +21,10 @@
 
     <Spinner
         android:id="@+id/odabirPredmet"
-        android:layout_width="335dp"
+        android:layout_width="340dp"
         android:layout_height="46dp"
-        android:layout_marginTop="93dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginBottom="70dp"
         android:background="#E8DCE0"
         android:backgroundTint="#F8F3F5"
         app:layout_constraintBottom_toTopOf="@+id/odabirGrupa"
@@ -31,7 +32,7 @@
         app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/odabirGodina"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.658" />
 
     <Spinner
         android:id="@+id/odabirGrupa"
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:background="#351967"
-        android:text="OK"
+        android:text="Upiši me"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/odabirGrupa" />

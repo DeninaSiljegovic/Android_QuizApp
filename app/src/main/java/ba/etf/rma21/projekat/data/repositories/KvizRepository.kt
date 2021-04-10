@@ -11,7 +11,6 @@ class KvizRepository {
             // TODO: Implementirati
         }
 
-
         fun getMyKvizes(): List<Kviz> {
             return mojiKvizovi()
         }
