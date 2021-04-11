@@ -127,11 +127,10 @@ class MainActivity : AppCompatActivity(){
 
         // check that it is the SecondActivity with an OK result
             if (resultCode == RESULT_OK) {
-                Log.d("Deni", data?.getStringExtra("godina").toString())
-                Log.d("Deni", data?.getStringExtra("predmet").toString())
-                Log.d("Deni", data?.getStringExtra("grupa").toString())
                 kvizListViewModel.getMyKvizes(data?.getStringExtra("grupa").toString()) //RADI OK
-                predmetListViewModel.getUpisani(data?.getStringExtra("predmet").toString())
+                predmetListViewModel.upisi(data?.getStringExtra("predmet").toString(), data?.getStringExtra("godina").toString().toInt()+1)
+                listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+                filterKvizova.setSelection(0)
             }
     }
 

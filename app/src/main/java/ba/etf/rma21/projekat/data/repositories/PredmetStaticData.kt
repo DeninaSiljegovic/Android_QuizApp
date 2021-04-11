@@ -39,12 +39,6 @@ fun upisani(): List<Predmet> {
     return mojiPredmeti.toList()
 }
 
-fun upisani(p: String): List<Predmet> {
-    val tmp = upisani().filter { s -> s.naziv.equals(p) }
-    for(k : Predmet in tmp) mojiPredmeti.add(k)
-    return mojiPredmeti.toList()
-}
-
 fun predmetiGodine(god: Int): List<Predmet>{
     var predmeti:  List<Predmet> = PredmetRepository.getAll()
     val vrati = predmeti.filter { it.godina == god + 1 }

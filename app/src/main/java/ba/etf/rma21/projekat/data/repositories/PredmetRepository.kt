@@ -8,10 +8,6 @@ class PredmetRepository {
             return upisani()
         }
 
-        fun getUpisani(s: String=""): List<Predmet> {
-            return upisani(s)
-        }
-
         fun getAll(): List<Predmet> {
             return predmeti()
         }
