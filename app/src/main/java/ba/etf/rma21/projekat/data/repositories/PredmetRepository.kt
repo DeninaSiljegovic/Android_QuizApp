@@ -5,11 +5,15 @@ import ba.etf.rma21.projekat.data.models.Predmet
 class PredmetRepository {
     companion object {
         fun getUpisani(): List<Predmet> {
-            return upisani();
+            return upisani()
+        }
+
+        fun getUpisani(s: String=""): List<Predmet> {
+            return upisani(s)
         }
 
         fun getAll(): List<Predmet> {
-            return predmeti();
+            return predmeti()
         }
 
         fun getPredmetiGodine(god: Int): List<Predmet> {

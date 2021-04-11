@@ -88,14 +88,11 @@ fun neuradjeniKvizovi(): List<Kviz>{
 
 //KORISNIKOVI KVIZOVI
 fun sviMojiKvizovi(): List<Kviz>{
-    return mojiKvizovi
+    return mojiKvizovi.toList()
 }
 
-fun sviMojiKvizovi(g: String=""): List<Kviz>{
-    if(g.equals("")) return mojiKvizovi
+fun sviMojiKvizovi(g: String): List<Kviz>{
     val tmp = sviKvizovi().filter { k -> k.nazivGrupe.equals(g) }
-//    var upisani_predmeti = upisani()
-//    var vrati = upisani_predmeti.flatMap { api -> svi.filter { api.naziv == it.nazivPredmeta }}
     for(k : Kviz in tmp) mojiKvizovi.add(k)
     return mojiKvizovi
 }

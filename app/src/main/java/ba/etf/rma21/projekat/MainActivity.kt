@@ -1,8 +1,7 @@
 package ba.etf.rma21.projekat
 
-import android.app.Activity
+
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(){
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizListViewModel()
+    private var predmetListViewModel = PredmetListViewModel()
     private lateinit var upisDugme: FloatingActionButton
 
 
@@ -129,6 +130,8 @@ class MainActivity : AppCompatActivity(){
                 Log.d("Deni", data?.getStringExtra("godina").toString())
                 Log.d("Deni", data?.getStringExtra("predmet").toString())
                 Log.d("Deni", data?.getStringExtra("grupa").toString())
+                kvizListViewModel.getMyKvizes(data?.getStringExtra("grupa").toString()) //RADI OK
+                predmetListViewModel.getUpisani(data?.getStringExtra("predmet").toString())
             }
     }
 

@@ -2,6 +2,7 @@ package ba.etf.rma21.projekat.viewmodel
 
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.repositories.PredmetRepository
+import ba.etf.rma21.projekat.data.repositories.upisani
 
 class PredmetListViewModel {
 
@@ -23,6 +24,10 @@ class PredmetListViewModel {
 
     fun getPredmetiNaKojeNijeUpisan(g: Int): List<Predmet> {
         return PredmetRepository.getPredmetiNaKojeNijeUpisan(g)
+    }
+
+    fun getUpisani(s: String=""): List<Predmet> {
+        return PredmetRepository.getUpisani(s)
     }
 
 

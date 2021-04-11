@@ -16,7 +16,7 @@ class KvizRepository {
         }
 
         fun getMyKvizes(g: String = ""): List<Kviz> {
-            return  sviMojiKvizovi(g)
+            return sviMojiKvizovi(g)
         }
 
         fun getAll(): List<Kviz> {
