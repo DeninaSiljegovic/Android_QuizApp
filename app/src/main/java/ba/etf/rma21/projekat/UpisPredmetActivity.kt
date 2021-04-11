@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.util.stream.Collectors
-import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
-import ba.etf.rma21.projekat.viewmodel.GrupaListViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 
 
 class UpisPredmetActivity : AppCompatActivity(){
@@ -21,8 +21,9 @@ class UpisPredmetActivity : AppCompatActivity(){
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var dodajPredmetDugme: Button
-    private var predmetListViewModel = PredmetListViewModel()
-    private var grupaListViewModel = GrupaListViewModel()
+    private var predmetListViewModel = PredmetViewModel()
+    private var grupaListViewModel = GrupaViewModel()
+    private var odabGod: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?){
@@ -33,6 +34,8 @@ class UpisPredmetActivity : AppCompatActivity(){
         odabirPredmet = findViewById(R.id.odabirPredmet)
         odabirGrupa = findViewById(R.id.odabirGrupa)
         dodajPredmetDugme = findViewById(R.id.dodajPredmetDugme)
+
+        odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -72,6 +75,7 @@ class UpisPredmetActivity : AppCompatActivity(){
 
         // attaching data adapter to spinner
         odabirGodina.setAdapter(dataAdapter)
+        odabirGodina.setSelection(odabGod)
 
         odabirGodina.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
@@ -177,6 +181,7 @@ class UpisPredmetActivity : AppCompatActivity(){
             intent.putExtra("godina", odabirGodina.selectedItemPosition.toString())
             intent.putExtra("predmet", odabirPredmet.selectedItem.toString())
             intent.putExtra("grupa", odabirGrupa.selectedItem.toString())
+            intent.putExtra("selectedYear", odabirGodina.selectedItemPosition.toString())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

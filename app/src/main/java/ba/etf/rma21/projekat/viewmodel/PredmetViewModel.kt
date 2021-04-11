@@ -5,7 +5,7 @@ import ba.etf.rma21.projekat.data.repositories.PredmetRepository
 import ba.etf.rma21.projekat.data.repositories.upisani
 import ba.etf.rma21.projekat.data.repositories.upisinaPredmet
 
-class PredmetListViewModel {
+class PredmetViewModel {
 
     fun getUpisani(): List<Predmet> {
         return PredmetRepository.getUpisani()

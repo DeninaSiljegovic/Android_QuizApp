@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.KvizListAdapter
-import ba.etf.rma21.projekat.viewmodel.KvizListViewModel
-import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import ba.etf.rma21.projekat.viewmodel.KvizViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -28,9 +27,10 @@ class MainActivity : AppCompatActivity(){
     private lateinit var listaKvizova: RecyclerView
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
-    private var kvizListViewModel = KvizListViewModel()
-    private var predmetListViewModel = PredmetListViewModel()
+    private var kvizListViewModel = KvizViewModel()
+    private var predmetListViewModel = PredmetViewModel()
     private lateinit var upisDugme: FloatingActionButton
+    private var odabranaGod : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(){
      //"Go to Second Activity" button click
     fun upisDugmeClicked(view: View?) {
         val intent = Intent(this, UpisPredmetActivity::class.java)
+         intent.putExtra("selectedYear", odabranaGod.toString())
         startActivityForResult(intent, 0)
     }
 
@@ -127,6 +128,7 @@ class MainActivity : AppCompatActivity(){
 
         // check that it is the SecondActivity with an OK result
             if (resultCode == RESULT_OK) {
+                odabranaGod = data?.getStringExtra("selectedYear").toString().toInt()
                 kvizListViewModel.getMyKvizes(data?.getStringExtra("grupa").toString()) //RADI OK
                 predmetListViewModel.upisi(data?.getStringExtra("predmet").toString(), data?.getStringExtra("godina").toString().toInt()+1)
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
