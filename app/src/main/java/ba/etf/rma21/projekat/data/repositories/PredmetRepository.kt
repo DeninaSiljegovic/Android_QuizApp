@@ -12,8 +12,16 @@ class PredmetRepository {
             return predmeti();
         }
 
-        fun getPredmetiGodine(god: Int): List<Predmet>{
-            return getPredmetiGodine(god)
+        fun getPredmetiGodine(god: Int): List<Predmet> {
+            return predmetiGodine(god)
+        }
+
+        fun getPredmetiNaKojeNijeUpisan(g: Int): List<Predmet> {
+            return predmetiNaKojeNijeUpisan(g)
+        }
+
+        fun upisiNaPredmet(p: String, g: Int){
+            upisinaPredmet(p, g)
         }
 
     }

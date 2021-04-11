@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(){
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizListViewModel()
     private lateinit var upisDugme: FloatingActionButton
-    //private val filter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,9 +102,9 @@ class MainActivity : AppCompatActivity(){
                 val positonInt = Integer.valueOf(item_position)
                 if(positonInt  == 0)  listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                 else if(positonInt == 1)  listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
-                else if(positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getDone())
-                else if(positonInt == 3) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getFuture())
-                else if(positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getNotTaken())
+                else if(positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyDone())
+                else if(positonInt == 3) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyFuture())
+                else if(positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyNotTaken())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }

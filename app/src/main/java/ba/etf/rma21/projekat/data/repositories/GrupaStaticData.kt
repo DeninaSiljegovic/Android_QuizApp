@@ -4,50 +4,50 @@ import ba.etf.rma21.projekat.data.models.Grupa
 
 fun dajGrupe(): List<Grupa>{
     return listOf(
-            Grupa("Sri12", "UUP"),
+            Grupa("UUP1-1", "UUP"),
 
-            Grupa("Uto13", "MLTI"),
+            Grupa("MLTI1-1", "MLTI"),
 
-            Grupa("Sri12", "IM2"),
-            Grupa("Sri14", "IM2"),
+            Grupa("IM21-1", "IM2"),
+            Grupa("IM21-2", "IM2"),
 
-            Grupa("Cet16", "VIS"),
+            Grupa("VIS1-1", "VIS"),
 
-            Grupa("Sri9", "OS"),
+            Grupa("OS1-1", "OS"),
 
-            Grupa("Uto11", "TP"),
-            Grupa("Pet13", "TP"),
+            Grupa("TP1-1", "TP"),
+            Grupa("TP1-2", "TP"),
 
-            Grupa("Uto12", "DM"),
-            Grupa("Pet9", "DM"),
+            Grupa("DM2-1", "DM"),
+            Grupa("DM2-2", "DM"),
 
-            Grupa("Cet12", "LD"),
-            Grupa("Cet14", "LD"),
-            Grupa("Cet16", "LD"),
+            Grupa("LD2-1", "LD"),
+            Grupa("LD2-2", "LD"),
+            Grupa("LD2-3", "LD"),
 
-            Grupa("Pon16", "RPR"),
-            Grupa("Cet16", "RPR"),
+            Grupa("RPR2-1", "RPR"),
+            Grupa("RPR2-2", "RPR"),
 
-            Grupa("Uto12", "OBP"),
+            Grupa("OBP2-1", "OBP"),
 
-            Grupa("Uto14", "AIFJ"),
-            Grupa("Pon16", "AIFJ"),
+            Grupa("AIFJ2-1", "AIFJ"),
+            Grupa("AIFJ2-2", "AIFJ"),
 
-            Grupa("Pon12", "RMA"),
-            Grupa("Pon14", "RMA"),
+            Grupa("RMA2-1", "RMA"),
+            Grupa("RMA2-2", "RMA"),
 
-            Grupa("Pon11", "OOAD"),
-            Grupa("Uto12", "OOAD"),
-            Grupa("Pet12", "OOAD"),
+            Grupa("OOAD2-1", "OOAD"),
+            Grupa("OOAD2-2", "OOAD"),
+            Grupa("OOAD2-3", "OOAD"),
 
-            Grupa("Sri18", "US"),
-            Grupa("Pet9", "US"),
+            Grupa("US3-1", "US"),
+            Grupa("US3-2", "US"),
 
-            Grupa("Cet9", "RA")
+            Grupa("RA3-1", "RA")
     )
 }
 
-fun getGroupsByPredmet(naz: String): List<Grupa> {
+fun groupsByPredmet(naz: String): List<Grupa> {
     var lista : List<Grupa> = dajGrupe()
     //lista.filter{ lista.any{it.nazivPredmeta == naziv}} //NOT SURE IF THIS WORKS
     val vrati = lista.filter { it.nazivPredmeta == naz }

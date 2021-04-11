@@ -17,4 +17,14 @@ class PredmetListViewModel {
         return PredmetRepository.getPredmetiGodine(god)
     }
 
+    fun upisiNaPredmet(p: String, g: Int){
+        PredmetRepository.upisiNaPredmet(p, g)
+    }
+
+    fun getPredmetiNaKojeNijeUpisan(g: Int): List<Predmet> {
+        return PredmetRepository.getPredmetiNaKojeNijeUpisan(g)
+    }
+
+
+
 }

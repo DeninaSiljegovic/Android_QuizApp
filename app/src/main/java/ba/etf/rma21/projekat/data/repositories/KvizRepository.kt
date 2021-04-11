@@ -11,8 +11,12 @@ class KvizRepository {
             // TODO: Implementirati
         }
 
-        fun getMyKvizes(): List<Kviz> {
-            return mojiKvizovi()
+        fun getMyKvizes(): List<Kviz>{
+            return sviMojiKvizovi()
+        }
+
+        fun getMyKvizes(g: String = ""): List<Kviz> {
+            return  sviMojiKvizovi(g)
         }
 
         fun getAll(): List<Kviz> {
@@ -20,7 +24,7 @@ class KvizRepository {
         }
 
         fun getDone(): List<Kviz> {
-            return uradjeniKvizovi()
+            return zavrseniKvizovi()
         }
 
         fun getFuture(): List<Kviz> {
@@ -28,9 +32,20 @@ class KvizRepository {
         }
 
         fun getNotTaken(): List<Kviz> {
-            return prosliNeuradjeniKvizovi()
+            return neuradjeniKvizovi()
         }
 
+        fun getMyDone(): List<Kviz> {
+            return mojiZavrseni()
+        }
+
+        fun getMyFuture(): List<Kviz> {
+            return mojiBuduci()
+        }
+
+        fun getMyNotTaken(): List<Kviz> {
+            return mojiNeuradjeni()
+        }
 
     }
 }

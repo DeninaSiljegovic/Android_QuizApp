@@ -1,6 +1,14 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Predmet
+import java.util.*
+
+var mojiPredmeti: MutableList<Predmet> = listOf(
+        Predmet("IM2", 1),
+        Predmet("TP", 1),
+        Predmet("MLTI", 1)
+).toMutableList()
 
 //lista svih predmeta
 fun predmeti(): List<Predmet> {
@@ -28,16 +36,25 @@ fun predmeti(): List<Predmet> {
 
 //lista predmeta na koje je korisnik upisan
 fun upisani(): List<Predmet> {
-    return listOf(
-        Predmet("IM2", 1),
-        Predmet("TP", 1),
-        Predmet("MLTI", 1)
-    )
+    return mojiPredmeti.toList()
 }
 
-fun getPredmetiGodine(god: Int): List<Predmet>{
+fun predmetiGodine(god: Int): List<Predmet>{
     var predmeti:  List<Predmet> = PredmetRepository.getAll()
     val vrati = predmeti.filter { it.godina == god + 1 }
     return vrati
 }
+
+fun predmetiNaKojeNijeUpisan(g: Int): List<Predmet>{
+    val svi = predmetiGodine(g)
+    var upisani_predmeti = upisani()
+    var vrati = upisani_predmeti.flatMap { p -> svi.filter { p.naziv != it.naziv }}
+    return vrati
+}
+
+
+fun upisinaPredmet(p: String, g: Int){
+    mojiPredmeti.add(Predmet(p,g))
+}
+
 

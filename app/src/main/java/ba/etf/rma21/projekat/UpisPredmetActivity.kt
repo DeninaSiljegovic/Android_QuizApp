@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import ba.etf.rma21.projekat.data.repositories.GrupaRepository.Companion.getGroupsByPredmet
-import ba.etf.rma21.projekat.data.repositories.PredmetRepository.Companion.getPredmetiGodine
 import java.util.stream.Collectors
+import ba.etf.rma21.projekat.viewmodel.PredmetListViewModel
+import ba.etf.rma21.projekat.viewmodel.GrupaListViewModel
 
 
 class UpisPredmetActivity : AppCompatActivity(){
@@ -21,6 +21,9 @@ class UpisPredmetActivity : AppCompatActivity(){
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var dodajPredmetDugme: Button
+    private var predmetListViewModel = PredmetListViewModel()
+    private var grupaListViewModel = GrupaListViewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -74,7 +77,8 @@ class UpisPredmetActivity : AppCompatActivity(){
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
                 var positonInt = Integer.valueOf(item_position)
-                val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
+                //val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
+                val predmeti = predmetListViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
 
                 //DA SE OZNACI KOJI SE ELEMENT BIRA
                 val dataAdapter1:ArrayAdapter<String> = object: ArrayAdapter<String>(
@@ -114,7 +118,7 @@ class UpisPredmetActivity : AppCompatActivity(){
         odabirPredmet.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
-                val grupe = getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(Collectors.toList())
+                val grupe = grupaListViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(Collectors.toList())
 
                 //DA SE OZNACI KOJI SE ELEMENT BIRA
                 val dataAdapter2:ArrayAdapter<String> = object: ArrayAdapter<String>(

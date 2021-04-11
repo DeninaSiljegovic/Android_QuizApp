@@ -55,6 +55,13 @@ class KvizListAdapter (
                 holder.statusImage.setImageResource(R.drawable.zuta)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
+             //KVIZ JE AKTIVAN I URADJEN == PLAVA
+            else if(kvizovi[position].osvojeniBodovi != null){
+                holder.textDatum.text = toSimpleString(kvizovi[position].datumRada)
+                holder.statusImage.setImageResource(R.drawable.plava)
+                holder.textBodovi.visibility = View.VISIBLE
+                holder.textBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+            }
             //last case - aktivan je al nije uradjen == ZELENA
             else{
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)

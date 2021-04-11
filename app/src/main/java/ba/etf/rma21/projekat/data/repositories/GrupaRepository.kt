@@ -9,7 +9,9 @@ class GrupaRepository {
         }
 
         fun getGroupsByPredmet(naz: String): List<Grupa> {
-            return getGroupsByPredmet(naz)
+            return groupsByPredmet(naz)
         }
+
+
     }
 }
