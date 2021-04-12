@@ -5,7 +5,6 @@ import org.junit.Test
 import org.junit.Assert.*
 import java.util.*
 
-//testirat klasu kojom dohvatam listu za filtriranje kvizova
 //moraju se run jedan po jedan
 class KvizViewModelTest {
     private var kvizViewModel = KvizViewModel()
