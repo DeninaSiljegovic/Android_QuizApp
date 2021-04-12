@@ -5,8 +5,8 @@ import ba.etf.rma21.projekat.data.repositories.*
 
 class KvizViewModel {
 
-    fun getMyKvizes(g:String): List<Kviz> {
-        return KvizRepository.getMyKvizes(g)
+    fun upisiKviz(g:String): List<Kviz> {
+        return KvizRepository.upisiKviz(g)
     }
 
     fun getMyKvizes(): List<Kviz> {

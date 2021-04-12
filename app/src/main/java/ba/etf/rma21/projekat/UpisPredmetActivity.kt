@@ -39,9 +39,11 @@ class UpisPredmetActivity : AppCompatActivity(){
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
-        categories.add("Prva godina")
-        categories.add("Druga godina")
-        categories.add("Treca godina")
+        categories.add("1")
+        categories.add("2")
+        categories.add("3")
+        categories.add("4")
+        categories.add("5")
 
         //DA SE OZNACI KOJI SE ELEMENT BIRA
         val dataAdapter:ArrayAdapter<String> = object: ArrayAdapter<String>(

@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(){
         // check that it is the SecondActivity with an OK result
             if (resultCode == RESULT_OK) {
                 odabranaGod = data?.getStringExtra("selectedYear").toString().toInt()
-                kvizListViewModel.getMyKvizes(data?.getStringExtra("grupa").toString()) //RADI OK
+                kvizListViewModel.upisiKviz(data?.getStringExtra("grupa").toString()) //RADI OK
                 predmetListViewModel.upisi(data?.getStringExtra("predmet").toString(), data?.getStringExtra("godina").toString().toInt()+1)
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                 filterKvizova.setSelection(0)
