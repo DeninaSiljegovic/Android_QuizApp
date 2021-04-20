@@ -13,17 +13,21 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma21.projekat.view.FragmentKvizovi
+import ba.etf.rma21.projekat.view.FragmentPredmeti
 import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity(){
-
+    private lateinit var bottomNavigation : BottomNavigationView
     private lateinit var listaKvizova: RecyclerView
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
@@ -33,6 +37,23 @@ class MainActivity : AppCompatActivity(){
     private var odabranaGod : Int = 0
 
 
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.kvizovi -> {
+                val kvizoviFragment = FragmentKvizovi.newInstance()
+                openFragment(kvizoviFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.predmeti -> {
+                val predmetiFragments = FragmentPredmeti.newInstance()
+                openFragment(predmetiFragments)
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,6 +61,14 @@ class MainActivity : AppCompatActivity(){
         listaKvizova = findViewById(R.id.listaKvizova)
         filterKvizova = findViewById(R.id.filterKvizova)
         upisDugme = findViewById(R.id.upisDugme)
+        bottomNavigation= findViewById(R.id.bottomNav)
+
+
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        //Defaultni fragment
+        bottomNavigation.selectedItemId= R.id.kvizovi
+        val kvizFragment = FragmentKvizovi.newInstance()
+        openFragment(kvizFragment)
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -134,6 +163,13 @@ class MainActivity : AppCompatActivity(){
                 listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                 filterKvizova.setSelection(0)
             }
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 
