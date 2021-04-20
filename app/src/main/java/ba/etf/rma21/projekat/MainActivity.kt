@@ -4,8 +4,6 @@ package ba.etf.rma21.projekat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPredmeti
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
@@ -122,18 +120,7 @@ class MainActivity : AppCompatActivity(){
 //            override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
 //        })
 
-//        upisDugme.setOnClickListener{
-//            upisDugmeClicked(it)
-//        }
     }//onCreate end
-
-
-//     //"Go to Second Activity" button click
-//    fun upisDugmeClicked(view: View?) {
-//        val intent = Intent(this, UpisPredmetActivity::class.java)
-//         intent.putExtra("selectedYear", odabranaGod.toString())
-//        startActivityForResult(intent, 0)
-//    }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
