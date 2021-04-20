@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 
@@ -74,9 +75,9 @@ class FragmentKvizovi : Fragment() {
         // attaching data adapter to spinner
         filterKvizova.setAdapter(dataAdapter);
 
-        //grid layout - da se prikazu fino kao mreza - linear je da idu ----
+        //grid layout - da se prikazu fino kao mreza
         listaKvizova.layoutManager = GridLayoutManager(
-                activity,
+                view.context,
                 2,
                 GridLayoutManager.VERTICAL,
                 false

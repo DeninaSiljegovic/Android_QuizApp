@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
@@ -25,7 +26,7 @@ class FragmentPredmeti : Fragment() {
     private var odabGod: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.predmeti_fragment, container, false)
+        val view = inflater.inflate(R.layout.predmeti_fragment, container, false)
 
         odabirGodina = view.findViewById(R.id.odabirGodina)
         odabirPredmet = view.findViewById(R.id.odabirPredmet)
@@ -33,6 +34,8 @@ class FragmentPredmeti : Fragment() {
         dodajPredmetDugme = view.findViewById(R.id.dodajPredmetDugme)
 
         //odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
+//        val lastSelectedYear = arguments?.getString("From Activity")
+//        if (lastSelectedYear != null) odabGod = lastSelectedYear.toInt()
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -169,6 +172,14 @@ class FragmentPredmeti : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
         }) //ODABIR GRUPE
 
+//        val bundle = Bundle()
+//        bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
+//        bundle.putString("predmet", odabirPredmet.selectedItem.toString())
+//        bundle.putString("grupa", odabirGrupa.selectedItem.toString())
+//        bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
+//
+//        val activity = activity as MainActivity
+//        activity.saveData(1, bundle)
 
         return view
     }
