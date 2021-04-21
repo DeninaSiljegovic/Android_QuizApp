@@ -35,10 +35,16 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 0){
-            supportFragmentManager.popBackStack(supportFragmentManager.getBackStackEntryAt(0).id, POP_BACK_STACK_INCLUSIVE)
+//        if(supportFragmentManager.backStackEntryCount > 0){
+//            supportFragmentManager.popBackStack(supportFragmentManager.getBackStackEntryAt(0).id, POP_BACK_STACK_INCLUSIVE)
+//        }
+//        else super.onBackPressed()
+        if(bottomNavigation.selectedItemId != R.id.kvizovi)
+            bottomNavigation.selectedItemId = R.id.kvizovi
+        else{
+            super.onBackPressed()
+            finishAffinity()
         }
-        else super.onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

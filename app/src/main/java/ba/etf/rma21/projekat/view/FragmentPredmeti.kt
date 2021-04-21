@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
+import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
 import java.util.stream.Collectors
@@ -24,6 +25,8 @@ class FragmentPredmeti : Fragment() {
     private lateinit var dodajPredmetDugme: Button
     private var predmetListViewModel = PredmetViewModel()
     private var grupaListViewModel = GrupaViewModel()
+    private lateinit var listaKvizovaAdapter: KvizListAdapter
+    private var kvizListViewModel = KvizViewModel()
     private val model: SharedViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -78,13 +81,14 @@ class FragmentPredmeti : Fragment() {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         // attaching data adapter to spinner
-        odabirGodina.setAdapter(dataAdapter)
-        if(lastSelectedYear != "") odabirGodina.setSelection(lastSelectedYear.toInt())
+        odabirGodina.adapter = dataAdapter
+        if(lastSelectedYear != "")  odabirGodina.setSelection(lastSelectedYear.toInt())
 
         odabirGodina.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
                 var positonInt = Integer.valueOf(item_position)
+                model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
                 //val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
                 val predmeti = predmetListViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { it.naziv }.stream().collect(
                     Collectors.toList())
@@ -117,8 +121,7 @@ class FragmentPredmeti : Fragment() {
                     }
                 }
 
-                odabirPredmet.setAdapter(dataAdapter1)
-
+                odabirPredmet.adapter = dataAdapter1
                 if(lastSelectedPredmet != "") odabirPredmet.setSelection(predmeti.indexOf(lastSelectedPredmet));
             }
 
@@ -129,6 +132,7 @@ class FragmentPredmeti : Fragment() {
         odabirPredmet.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
+                model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
                 val grupe = grupaListViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(
                     Collectors.toList())
 
@@ -162,7 +166,7 @@ class FragmentPredmeti : Fragment() {
 
                 dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 odabirGrupa.adapter = dataAdapter2
-                if(lastSelectedGrupa != "") odabirGrupa.setSelection(grupe.indexOf(lastSelectedGrupa ));
+                if(lastSelectedGrupa != "")  odabirGrupa.setSelection(grupe.indexOf(lastSelectedGrupa));
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
@@ -172,6 +176,7 @@ class FragmentPredmeti : Fragment() {
         odabirGrupa.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
+                model.setlastSelectedGrupa(odabirGrupa.selectedItem.toString())
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
@@ -190,11 +195,18 @@ class FragmentPredmeti : Fragment() {
             bundle.putString("predmet", odabirPredmet.selectedItem.toString())
             bundle.putString("grupa", odabirGrupa.selectedItem.toString())
 
-            model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
-            model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
-            model.setlastSelectedGrupa(odabirGrupa.selectedItem.toString())
+            kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
+
+//            model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
+//            model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
+//            model.setlastSelectedGrupa(odabirGrupa.selectedItem.toString())
+              model.setIzmjena(1)
 
             predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
+
+            model.setlastSelectedGodina("")
+            model.setlastSelectedPredmet("")
+            model.setlastSelectedGrupa("")
 
             val newFragment = FragmentPoruka.newInstance()
             newFragment.arguments = bundle

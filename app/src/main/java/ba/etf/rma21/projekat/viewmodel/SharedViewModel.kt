@@ -7,6 +7,7 @@ class SharedViewModel : ViewModel() {
     private var lastSelectedGodina: String = ""
     private var lastSelectedPredmet: String = ""
     private var lastSelectedGrupa: String = ""
+    private var izmjena = 0
 
     fun setlastSelectedGodina(msg: String?) {
         lastSelectedGodina = msg.toString()
@@ -30,6 +31,14 @@ class SharedViewModel : ViewModel() {
 
     fun getlastSelectedGrupaa(): String {
         return lastSelectedGrupa
+    }
+
+    fun setIzmjena(i: Int){
+        izmjena = i
+    }
+
+    fun getIzmjena(): Int {
+        return izmjena
     }
 }
 

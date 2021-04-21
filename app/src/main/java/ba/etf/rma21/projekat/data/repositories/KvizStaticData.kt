@@ -92,7 +92,7 @@ fun sviMojiKvizovi(): List<Kviz>{
 }
 
 fun upisiKvizz(g: String): List<Kviz>{
-    val tmp = sviKvizovi().filter { k -> k.nazivGrupe.equals(g) }
+    val tmp = sviKvizovi().filter { k -> k.nazivGrupe == g }
     for(k : Kviz in tmp) mojiKvizovi.add(k)
     return mojiKvizovi
 }
