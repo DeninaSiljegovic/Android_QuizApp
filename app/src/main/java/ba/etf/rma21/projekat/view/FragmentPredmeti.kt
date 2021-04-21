@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
@@ -182,13 +181,17 @@ class FragmentPredmeti : Fragment() {
     fun dodajPredmetDugmeClicked(view: View?) {
         if(odabirGodina.selectedItem != null && odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null){
             val bundle = Bundle()
-            bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
+            //bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
             bundle.putString("predmet", odabirPredmet.selectedItem.toString())
             bundle.putString("grupa", odabirGrupa.selectedItem.toString())
-            bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
+            //bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
 
-            val activity = activity as MainActivity
-            activity.saveData(1, bundle)
+            val newFragment = FragmentPoruka.newInstance()
+            newFragment.arguments = bundle
+
+            val transaction = activity?.supportFragmentManager?.beginTransaction()
+            transaction?.replace(R.id.container, newFragment)
+            transaction?.commit()
         }
     }
 

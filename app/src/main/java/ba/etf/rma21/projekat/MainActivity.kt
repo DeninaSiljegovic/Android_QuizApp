@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(){
     private var kvizListViewModel = KvizViewModel()
     private var predmetListViewModel = PredmetViewModel()
     private var odabranaGod : Int = 0
+    private var odabraniPred : Int = 0
+    private var odabranaGrupa : Int = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
