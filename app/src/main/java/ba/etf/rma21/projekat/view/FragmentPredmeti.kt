@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import ba.etf.rma21.projekat.viewmodel.SharedViewModel
 import java.util.stream.Collectors
 
 class FragmentPredmeti : Fragment() {
@@ -22,7 +24,7 @@ class FragmentPredmeti : Fragment() {
     private lateinit var dodajPredmetDugme: Button
     private var predmetListViewModel = PredmetViewModel()
     private var grupaListViewModel = GrupaViewModel()
-    private var odabGod: Int = 0
+    private val model: SharedViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.predmeti_fragment, container, false)
@@ -33,8 +35,9 @@ class FragmentPredmeti : Fragment() {
         dodajPredmetDugme = view.findViewById(R.id.dodajPredmetDugme)
 
         //odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
-        val lastSelectedYear = arguments?.getString("From Activity")
-        if (lastSelectedYear != null) odabGod = lastSelectedYear.toInt()
+        val lastSelectedYear = model.getlastSelectedGodina()
+        val lastSelectedPredmet = model.getlastSelectedPredmet()
+        val lastSelectedGrupa = model.getlastSelectedPredmet()
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -76,7 +79,7 @@ class FragmentPredmeti : Fragment() {
 
         // attaching data adapter to spinner
         odabirGodina.setAdapter(dataAdapter)
-        odabirGodina.setSelection(odabGod)
+        if(lastSelectedYear != "") odabirGodina.setSelection(lastSelectedYear.toInt())
 
         odabirGodina.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
@@ -115,6 +118,8 @@ class FragmentPredmeti : Fragment() {
                 }
 
                 odabirPredmet.setAdapter(dataAdapter1)
+
+                if(lastSelectedPredmet != "") odabirPredmet.setSelection(predmeti.indexOf(lastSelectedPredmet));
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
@@ -156,7 +161,8 @@ class FragmentPredmeti : Fragment() {
                 }
 
                 dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                odabirGrupa.setAdapter(dataAdapter2)
+                odabirGrupa.adapter = dataAdapter2
+                if(lastSelectedGrupa != "") odabirGrupa.setSelection(grupe.indexOf(lastSelectedGrupa ));
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
@@ -181,10 +187,14 @@ class FragmentPredmeti : Fragment() {
     fun dodajPredmetDugmeClicked(view: View?) {
         if(odabirGodina.selectedItem != null && odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null){
             val bundle = Bundle()
-            //bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
             bundle.putString("predmet", odabirPredmet.selectedItem.toString())
             bundle.putString("grupa", odabirGrupa.selectedItem.toString())
-            //bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
+
+            model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
+            model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
+            model.setlastSelectedGrupa(odabirGrupa.selectedItem.toString())
+
+            predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
 
             val newFragment = FragmentPoruka.newInstance()
             newFragment.arguments = bundle

@@ -17,12 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(){
     private lateinit var bottomNavigation : BottomNavigationView
-    private lateinit var listaKvizovaAdapter: KvizListAdapter
-    private var kvizListViewModel = KvizViewModel()
-    private var predmetListViewModel = PredmetViewModel()
-    private var odabranaGod : Int = 0
-    private var odabraniPred : Int = 0
-    private var odabranaGrupa : Int = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -32,10 +26,7 @@ class MainActivity : AppCompatActivity(){
                 return@OnNavigationItemSelectedListener true
             }
             R.id.predmeti -> {
-                val bundle = Bundle()
-                bundle.putString(odabranaGod.toString(), "From Activity")
                 val predmetiFragments = FragmentPredmeti.newInstance()
-                predmetiFragments.arguments = bundle
                 openFragment(predmetiFragments)
                 return@OnNavigationItemSelectedListener true
             }

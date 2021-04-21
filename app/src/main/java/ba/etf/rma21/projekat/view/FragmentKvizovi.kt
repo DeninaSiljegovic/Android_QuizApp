@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
+import ba.etf.rma21.projekat.viewmodel.SharedViewModel
 
 
 class FragmentKvizovi : Fragment() {
@@ -25,6 +27,7 @@ class FragmentKvizovi : Fragment() {
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()
+    private val model: SharedViewModel by activityViewModels()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -73,7 +76,7 @@ class FragmentKvizovi : Fragment() {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         // attaching data adapter to spinner
-        filterKvizova.setAdapter(dataAdapter);
+        filterKvizova.adapter = dataAdapter;
 
         //grid layout - da se prikazu fino kao mreza
         listaKvizova.layoutManager = GridLayoutManager(
@@ -98,9 +101,15 @@ class FragmentKvizovi : Fragment() {
                 else if(positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyNotTaken())
             }
 
+
             override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
         })
 
+        if(model.getlastSelectedGrupaa() != "") {
+            kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
+            listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+            filterKvizova.setSelection(0)
+        }
 
         return view
     }
