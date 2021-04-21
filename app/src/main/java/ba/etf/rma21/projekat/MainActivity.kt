@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPredmeti
 import ba.etf.rma21.projekat.view.KvizListAdapter
@@ -27,9 +28,7 @@ class MainActivity : AppCompatActivity(){
         when (item.itemId) {
             R.id.kvizovi -> {
                 val kvizoviFragment = FragmentKvizovi.newInstance()
-                val transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.container, kvizoviFragment)
-                transaction.commit()
+                openFragment(kvizoviFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.predmeti -> {
@@ -42,6 +41,13 @@ class MainActivity : AppCompatActivity(){
             }
         }
         false
+    }
+
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount > 0){
+            supportFragmentManager.popBackStack(supportFragmentManager.getBackStackEntryAt(0).id, POP_BACK_STACK_INCLUSIVE)
+        }
+        else super.onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +78,8 @@ class MainActivity : AppCompatActivity(){
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container, fragment)
-        transaction.addToBackStack(null)
+        if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0)
+            transaction.addToBackStack(null)
         transaction.commit()
     }
 
