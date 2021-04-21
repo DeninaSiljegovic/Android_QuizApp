@@ -34,8 +34,8 @@ class FragmentPredmeti : Fragment() {
         dodajPredmetDugme = view.findViewById(R.id.dodajPredmetDugme)
 
         //odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
-//        val lastSelectedYear = arguments?.getString("From Activity")
-//        if (lastSelectedYear != null) odabGod = lastSelectedYear.toInt()
+        val lastSelectedYear = arguments?.getString("From Activity")
+        if (lastSelectedYear != null) odabGod = lastSelectedYear.toInt()
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()
@@ -172,16 +172,24 @@ class FragmentPredmeti : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
         }) //ODABIR GRUPE
 
-//        val bundle = Bundle()
-//        bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
-//        bundle.putString("predmet", odabirPredmet.selectedItem.toString())
-//        bundle.putString("grupa", odabirGrupa.selectedItem.toString())
-//        bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
-//
-//        val activity = activity as MainActivity
-//        activity.saveData(1, bundle)
+        dodajPredmetDugme.setOnClickListener{
+            dodajPredmetDugmeClicked(it)
+        }
 
         return view
+    }
+
+    fun dodajPredmetDugmeClicked(view: View?) {
+        if(odabirGodina.selectedItem != null && odabirPredmet.selectedItem != null && odabirGrupa.selectedItem != null){
+            val bundle = Bundle()
+            bundle.putString("godina", odabirGodina.selectedItemPosition.toString())
+            bundle.putString("predmet", odabirPredmet.selectedItem.toString())
+            bundle.putString("grupa", odabirGrupa.selectedItem.toString())
+            bundle.putString("selectedYear", odabirGodina.selectedItemPosition.toString())
+
+            val activity = activity as MainActivity
+            activity.saveData(1, bundle)
+        }
     }
 
     companion object {
