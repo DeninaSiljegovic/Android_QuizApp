@@ -64,6 +64,10 @@ class MainActivity : AppCompatActivity(){
         openFragment(kvizFragment)
     }//onCreate end
 
+    fun getBottomNavigation(): BottomNavigationView{
+        return bottomNavigation
+    }
+
 
     fun saveData(id: Int, data: Bundle?) {
 //        // based on the id you'll know which fragment is trying to save data(see below)
