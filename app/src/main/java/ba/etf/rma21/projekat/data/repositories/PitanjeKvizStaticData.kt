@@ -5,17 +5,17 @@ import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.models.PitanjeKviz
 import ba.etf.rma21.projekat.data.repositories.PitanjeRepository.Companion.dajPitanjeSaSifrom
 
-fun dajPitanjeKvizoviVezu(): List<PitanjeKviz>{
+fun dajPitanjeKvizoviVezu(): MutableList<PitanjeKviz>{
     return listOf(
-            PitanjeKviz("pit1", "Kviz 3", "IM2", 2F),
-            PitanjeKviz("pit2", "Kviz 3", "IM2", 2F),
-            PitanjeKviz("pit3", "Kviz 3", "IM2", 2F),
+            PitanjeKviz("pit1", "Kviz 3", "IM2", 2F, -1),
+            PitanjeKviz("pit2", "Kviz 3", "IM2", 2F, -1),
+            PitanjeKviz("pit3", "Kviz 3", "IM2", 2F, -1),
 
-            PitanjeKviz("pit4", "Kviz 3", "OOAD", 2F),
-            PitanjeKviz("pit5", "Kviz 3", "OOAD", 2F),
-            PitanjeKviz("pit6", "Kviz 3", "OOAD", 2F),
-            PitanjeKviz("pit7", "Kviz 3", "OOAD", 2F)
-    )
+            PitanjeKviz("pit4", "Kviz 3", "OOAD", 2F, -1),
+            PitanjeKviz("pit5", "Kviz 3", "OOAD", 2F, -1),
+            PitanjeKviz("pit6", "Kviz 3", "OOAD", 2F, -1),
+            PitanjeKviz("pit7", "Kviz 3", "OOAD", 2F, -1)
+    ).toMutableList()
 }
 
 fun dajPitanja(navizKviza: String, nazivPredmeta: String): List<Pitanje> {
@@ -25,4 +25,16 @@ fun dajPitanja(navizKviza: String, nazivPredmeta: String): List<Pitanje> {
         vrati.add(dajPitanjeSaSifrom(k.naziv))
     }
     return vrati
+}
+
+fun dajOdabraniOdg(n: String): Int{
+    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == n}[0]
+    return trazeni.selectedOdgovor
+}
+
+fun setOdabraniOdg(s: String, vr: Int){
+    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == s}[0]
+    trazeni.selectedOdgovor = vr
+    dajPitanjeKvizoviVezu().removeIf { it.naziv == s }
+    dajPitanjeKvizoviVezu().add(trazeni)
 }

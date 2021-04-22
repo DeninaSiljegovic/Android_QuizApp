@@ -196,11 +196,7 @@ class FragmentPredmeti : Fragment() {
             bundle.putString("grupa", odabirGrupa.selectedItem.toString())
 
             kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
-
-//            model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
-//            model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
-//            model.setlastSelectedGrupa(odabirGrupa.selectedItem.toString())
-              model.setIzmjena(1)
+            model.setIzmjena(1)
 
             predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
 
