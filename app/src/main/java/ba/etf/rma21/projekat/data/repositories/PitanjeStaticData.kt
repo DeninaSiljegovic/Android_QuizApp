@@ -11,7 +11,8 @@ fun svaPitanja(): List<Pitanje> {
 
             Pitanje("pit4", "UML je ", listOf("programski jezik", "graficki jezik", "jezik za dfeiniciju standardnih procesa"), 1),
             Pitanje("pit5", "Koji diagram prikazuju interakcije između objekata u odnosu na njihov redoslijed izvršavanja?", listOf("Dijagram aktivnosti", "Dijagram klase", "Dijagram sekvenci"), 2),
-            Pitanje("pit6", "Kojem pogledu na sistem pripada dijagram aktivnosti?", listOf("Logicki pogled", "Implementacioni pogled", "Procesni pogled", "Razvojni pogled"), 2)
+            Pitanje("pit6", "Kojem pogledu na sistem pripada dijagram aktivnosti?", listOf("Logicki pogled", "Implementacioni pogled", "Procesni pogled", "Razvojni pogled"), 2),
+            Pitanje("pit7", "Diagram klasa se fokusira na to kako sistem radi?", listOf("Tacno", "Netacno"), 1)
     )
 }
 

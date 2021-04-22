@@ -34,6 +34,16 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             meni.add(0, i - 1, i - 1, temp)
         }
 
+        val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
+            val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
+            val transaction = activity.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.framePitanje, newFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+            return@OnNavigationItemSelectedListener true
+        }
+        navigationPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
 
         return view
     }

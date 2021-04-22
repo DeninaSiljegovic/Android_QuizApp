@@ -13,7 +13,8 @@ fun dajPitanjeKvizoviVezu(): List<PitanjeKviz>{
 
             PitanjeKviz("pit4", "Kviz 3", "OOAD", 2F),
             PitanjeKviz("pit5", "Kviz 3", "OOAD", 2F),
-            PitanjeKviz("pit6", "Kviz 3", "OOAD", 2F)
+            PitanjeKviz("pit6", "Kviz 3", "OOAD", 2F),
+            PitanjeKviz("pit7", "Kviz 3", "OOAD", 2F)
     )
 }
 
