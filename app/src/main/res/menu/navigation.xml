@@ -8,4 +8,12 @@
         android:id="@+id/predmeti"
         android:icon="@android:drawable/ic_popup_reminder"
         android:title="Predmeti" />
+    <item
+        android:id="@+id/predajKviz"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Predaj kviz" />
+    <item
+        android:id="@+id/zaustaviKviz"
+        android:icon="@android:drawable/presence_offline"
+        android:title="Zaustavi kviz" />
 </menu>

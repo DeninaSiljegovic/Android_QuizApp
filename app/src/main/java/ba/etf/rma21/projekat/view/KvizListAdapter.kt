@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
@@ -13,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class KvizListAdapter (
-        private var kvizovi: List<Kviz>
+        private var kvizovi: List<Kviz>,
+        private var mSupportFragment: FragmentManager?
 ) : RecyclerView.Adapter<KvizListAdapter.KvizViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
@@ -73,6 +75,14 @@ class KvizListAdapter (
         holder.textPredmet.text = kvizovi[position].nazivPredmeta
         holder.textKvizBr.text = kvizovi[position].naziv
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
+
+        holder.itemView.setOnClickListener {
+            val pokusajFragment = FragmentPokusaj.newInstance()
+            val transaction = mSupportFragment?.beginTransaction()
+            transaction?.add(R.id.container, pokusajFragment)
+            transaction?.addToBackStack(null)
+            transaction?.commit()
+        }
     }
 
     fun updateKvizove(kvizovi: List<Kviz>){

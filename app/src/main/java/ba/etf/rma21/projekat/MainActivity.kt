@@ -2,6 +2,7 @@ package ba.etf.rma21.projekat
 
 
 import android.os.Bundle
+import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -50,7 +51,10 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottomNavigation= findViewById(R.id.bottomNav)
+        bottomNavigation = findViewById(R.id.bottomNav)
+
+        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
 
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 

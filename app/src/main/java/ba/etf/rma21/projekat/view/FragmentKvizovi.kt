@@ -85,10 +85,10 @@ class FragmentKvizovi : Fragment() {
                 GridLayoutManager.VERTICAL,
                 false
         )
-        listaKvizovaAdapter = KvizListAdapter(listOf())
+        listaKvizovaAdapter = KvizListAdapter(listOf(), activity?.supportFragmentManager)
         listaKvizova.adapter = listaKvizovaAdapter
 
-        filterKvizova.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        filterKvizova.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 //first,  we have to retrieve the item position as a string
                 // then, we can change string value into integer
@@ -103,7 +103,7 @@ class FragmentKvizovi : Fragment() {
 
 
             override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
-        })
+        }
 
         if(model.getIzmjena() == 1) {
 //            kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
