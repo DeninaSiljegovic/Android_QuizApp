@@ -109,7 +109,6 @@ class FragmentKvizovi : Fragment() {
 //            kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
             listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
             filterKvizova.setSelection(0)
-
             //da bi se restartovali spinneri na pocetni izgled - inace se prebaci na iduci neupisani predmet/godinu
 //            model.setlastSelectedGodina("")
 //            model.setlastSelectedPredmet("")

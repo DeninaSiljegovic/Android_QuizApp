@@ -4,11 +4,12 @@ import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
 
 var mojiKvizovi: MutableList<Kviz> = listOf(
-        Kviz("Kviz 1", "MLTI", GregorianCalendar(2021, 2, 1).getTime(), GregorianCalendar(2021, 2, 3).getTime(), GregorianCalendar(2021, 2, 1).getTime(), 5, "MLTI1-1", 2.5F),
+        //Kviz("Kviz 1", "MLTI", GregorianCalendar(2021, 2, 1).getTime(), GregorianCalendar(2021, 2, 3).getTime(), GregorianCalendar(2021, 2, 1).getTime(), 5, "MLTI1-1", 2.5F),
         Kviz("Kviz 3", "IM2", GregorianCalendar(2021, 4, 10).getTime(), GregorianCalendar(2021, 4, 11).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 5, "IM21-1", null),
-        Kviz("Kviz 1", "IM2", GregorianCalendar(2021, 3, 2).getTime(), GregorianCalendar(2021, 3, 3).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 10, "IM21-1", null),
-        Kviz("Kviz 2", "TP", GregorianCalendar(2021, 2, 12).getTime(), GregorianCalendar(2021, 2, 13).getTime(), GregorianCalendar(2021, 1, 12).getTime(), 3, "TP1-2", 1F),
-        Kviz("Kviz 4", "TP", GregorianCalendar(2021, 3, 8).getTime(), GregorianCalendar(2021, 3, 20).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 3, "TP1-2", null)
+        Kviz("Kviz 3", "OOAD", GregorianCalendar(2021, 5, 2).getTime(), GregorianCalendar(2021, 5, 5).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 10, "OOAD2-3", null)
+        //Kviz("Kviz 1", "IM2", GregorianCalendar(2021, 3, 2).getTime(), GregorianCalendar(2021, 3, 3).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 10, "IM21-1", null),
+        //Kviz("Kviz 2", "TP", GregorianCalendar(2021, 2, 12).getTime(), GregorianCalendar(2021, 2, 13).getTime(), GregorianCalendar(2021, 1, 12).getTime(), 3, "TP1-2", 1F),
+        //Kviz("Kviz 4", "TP", GregorianCalendar(2021, 3, 8).getTime(), GregorianCalendar(2021, 3, 20).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 3, "TP1-2", null)
     ).toMutableList()
 
 //MJESEC IDE OD 0 OVDJE

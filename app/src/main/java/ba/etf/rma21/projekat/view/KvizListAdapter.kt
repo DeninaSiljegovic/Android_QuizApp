@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat.view
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,6 +17,8 @@ class KvizListAdapter (
         private var kvizovi: List<Kviz>,
         private var mSupportFragment: FragmentManager?
 ) : RecyclerView.Adapter<KvizListAdapter.KvizViewHolder>() {
+
+    private var pitanjeKvizViewModel = PitanjeKvizViewModel()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
@@ -26,7 +28,6 @@ class KvizListAdapter (
     }
 
     override fun getItemCount(): Int = kvizovi.size
-
 
     override fun onBindViewHolder(holder: KvizViewHolder, position: Int) {
 
@@ -77,7 +78,7 @@ class KvizListAdapter (
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
 
         holder.itemView.setOnClickListener {
-            val pokusajFragment = FragmentPokusaj.newInstance()
+            val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
             val transaction = mSupportFragment?.beginTransaction()
             transaction?.add(R.id.container, pokusajFragment)
             transaction?.addToBackStack(null)
@@ -107,3 +108,4 @@ class KvizListAdapter (
     }
 
 }
+
