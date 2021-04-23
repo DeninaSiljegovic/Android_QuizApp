@@ -20,9 +20,12 @@ class FragmentPoruka : Fragment() {
         val grupa = arguments?.getString("grupa")
         val predmet = arguments?.getString("predmet")
 
+        val kviz = arguments?.getString("imekviza")
+
         poruka = view.findViewById(R.id.tvPoruka)
 
-        poruka.text = "Uspješno ste upisani u grupu $grupa predmeta $predmet!"
+        if(!kviz.isNullOrEmpty()) poruka.text = "Zavrsili ste kviz $kviz"
+        else poruka.text = "Uspješno ste upisani u grupu $grupa predmeta $predmet!"
 
         return view
     }

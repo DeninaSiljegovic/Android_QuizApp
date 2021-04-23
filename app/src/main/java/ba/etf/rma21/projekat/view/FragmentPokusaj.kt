@@ -24,12 +24,11 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     private lateinit var bottomNavigation : BottomNavigationView
     private lateinit var navigationPitanja : NavigationView
     private var bojeNav = IntArray(pitanja.size){0}
-    private var pom = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pokusaj_fragment, container, false)
 
-        val imeKviza = arguments?.getString("imeKviza")
+        var imeKviza = arguments?.getString("imeKviza").toString()
 
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
@@ -47,6 +46,9 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             meni.add(0, i - 1, i - 1, temp)
         }
 
+        var pom = 0
+
+        //otvaranje odg kviza klikom na navigation sa strane
         val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
             val tag: String = pitanja[item.order].naziv + imeKviza
             pom = item.order + 1
@@ -59,31 +61,13 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
                 transaction.replace(R.id.framePitanje, newFragment, tag)
                 transaction.addToBackStack(null)
-
-//                activity.supportFragmentManager.setFragmentResultListener(
-//                        "rezultat",
-//                        this,
-//                        FragmentResultListener { requestKey: String, result: Bundle ->
-//                            val rez = arguments?.getString("rezultatB")?.toInt()
-//
-//                            if(rez != null) {
-//                                var temp = SpannableString(item.order.toString())
-//
-//                                if (rez!! >= 0 && rez == pitanja[item.order].tacan) {
-//                                    temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, item.order.toString().length, 0)
-//                                } else  temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, item.order.toString().length, 0)
-//                                meni.add(0, item.order - 1, item.order - 1, temp)
-//                            }
-//
-//                        })
-
                 transaction.commit()
             }
 
             else{
                 val transaction = activity.supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.framePitanje, provjeraFragment, tag)
-                transaction.addToBackStack(null)
+                //transaction.addToBackStack(null)
                 transaction.commit()
             }
 
@@ -91,8 +75,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         }
         navigationPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+        //promjena boje brojeva u nav view sa strane
         setFragmentResultListener("rezultat") { requestKey, bundle ->
-
             val rez = bundle.getInt("rezultatB")
             //Log.d("REZ je ", rez.toString())
             var temp = SpannableString(pom.toString())

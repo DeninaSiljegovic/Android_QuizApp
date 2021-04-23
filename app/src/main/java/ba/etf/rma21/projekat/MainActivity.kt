@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import ba.etf.rma21.projekat.view.FragmentKvizovi
+import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
 import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
@@ -29,6 +30,29 @@ class MainActivity : AppCompatActivity(){
             R.id.predmeti -> {
                 val predmetiFragments = FragmentPredmeti.newInstance()
                 openFragment(predmetiFragments)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.predajKviz -> {
+                //napravit funkciju koja predaje kviz
+                val bundle = Bundle()
+                bundle.putString("imekviza", "KSK") //OVO NAPRAVI
+                val newFragment = FragmentPoruka.newInstance()
+                newFragment.arguments = bundle
+                openFragment(newFragment)
+                bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+                bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.zaustaviKviz -> {
+                val kvizoviFragment = FragmentKvizovi.newInstance()
+                openFragment(kvizoviFragment)
+                bottomNavigation.selectedItemId = R.id.kvizovi
+                bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+                bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -69,22 +93,13 @@ class MainActivity : AppCompatActivity(){
     }
 
 
-    fun saveData(id: Int, data: Bundle?) {
-//        // based on the id you'll know which fragment is trying to save data(see below)
-//        // the Bundle will hold the data
-//        if(id == 1){
-//            odabranaGod = data?.getString("selectedYear").toString().toInt()
-//            kvizListViewModel.upisiKviz(data?.getString("grupa").toString()) //RADI OK
-//            predmetListViewModel.upisi(data?.getString("predmet").toString(), data?.getString("godina").toString().toInt()+1)
-//            listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
-//        }
-    }
-
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.container, fragment)
-        if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0)
+        if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0) {
+            transaction.add(R.id.container, fragment)
             transaction.addToBackStack(null)
+        }
+        else transaction.add(R.id.container, fragment, "pocetniKvizovi")
         transaction.commit()
     }
 
