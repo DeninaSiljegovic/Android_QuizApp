@@ -9,13 +9,13 @@ class PitanjeKvizViewModel {
         return PitanjeKvizRepository.getPitanja(naziv, nazivPredmeta)
     }
 
-
-    fun setSelectedAnswer(s: String, poz: Int){
-        PitanjeKvizRepository.setSelectedAnswer(s, poz)
-    }
-
-    fun getSelectedAnswer(s: String): Int{
-        return PitanjeKvizRepository.getSelectedAnswer(s)
-    }
+//
+//    fun setSelectedAnswer(s: String, poz: Int){
+//        PitanjeKvizRepository.setSelectedAnswer(s, poz)
+//    }
+//
+//    fun getSelectedAnswer(s: String): Int{
+//        return PitanjeKvizRepository.getSelectedAnswer(s)
+//    }
 
 }

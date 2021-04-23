@@ -27,14 +27,14 @@ fun dajPitanja(navizKviza: String, nazivPredmeta: String): List<Pitanje> {
     return vrati
 }
 
-fun dajOdabraniOdg(n: String): Int{
-    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == n}[0]
-    return trazeni.selectedOdgovor
-}
-
-fun setOdabraniOdg(s: String, vr: Int){
-    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == s}[0]
-    trazeni.selectedOdgovor = vr
-    dajPitanjeKvizoviVezu().removeIf { it.naziv == s }
-    dajPitanjeKvizoviVezu().add(trazeni)
-}
+//fun dajOdabraniOdg(n: String): Int{
+//    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == n}[0]
+//    return trazeni.selectedOdgovor
+//}
+//
+//fun setOdabraniOdg(s: String,kaviz: String, vr: Int){
+//    val trazeni = dajPitanjeKvizoviVezu().filter{ it.naziv == s && it.kviz == kaviz}[0]
+//    trazeni.selectedOdgovor = vr
+//    dajPitanjeKvizoviVezu().removeIf { it.naziv == s && it.kviz == kaviz}
+//    dajPitanjeKvizoviVezu().add(trazeni)
+//}

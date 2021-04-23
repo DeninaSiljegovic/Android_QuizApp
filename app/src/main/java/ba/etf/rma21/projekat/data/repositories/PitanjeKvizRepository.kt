@@ -9,13 +9,13 @@ class PitanjeKvizRepository {
             return dajPitanja(navizKviza, nazivPredmeta).toList()
         }
 
-        fun setSelectedAnswer(s: String, poz: Int){
-            setOdabraniOdg(s, poz)
-        }
-
-        fun getSelectedAnswer(s: String): Int{
-            return dajOdabraniOdg(s)
-        }
+//        fun setSelectedAnswer(s: String, poz: Int){
+//            setOdabraniOdg(s, poz)
+//        }
+//
+//        fun getSelectedAnswer(s: String): Int{
+//            return dajOdabraniOdg(s)
+//        }
     }
 
 }
