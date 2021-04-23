@@ -20,6 +20,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pokusaj_fragment, container, false)
 
+        val imeKviza = arguments?.getString("imeKviza")
+
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
@@ -29,17 +31,32 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
         navigationPitanja = view.findViewById(R.id.navigacijaPitanja)
         val meni = navigationPitanja.menu
+
         for(i in 1..pitanja.size){
             var temp = SpannableString(i.toString())
             meni.add(0, i - 1, i - 1, temp)
         }
 
         val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
-            val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
-            val transaction = activity.supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.framePitanje, newFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            val tag: String = pitanja[item.order].naziv + imeKviza
+
+            val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
+
+            if(provjeraFragment == null) {
+                val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
+                val transaction = activity.supportFragmentManager.beginTransaction()
+
+                transaction.replace(R.id.framePitanje, newFragment, tag)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+            else{
+                val transaction = activity.supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.framePitanje, provjeraFragment, tag)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+
             return@OnNavigationItemSelectedListener true
         }
         navigationPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)

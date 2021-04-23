@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +79,12 @@ class KvizListAdapter (
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
 
         holder.itemView.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("imeKviza", kvizovi[position].naziv)
+
             val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
+            pokusajFragment.arguments = bundle
+
             val transaction = mSupportFragment?.beginTransaction()
             transaction?.add(R.id.container, pokusajFragment)
             transaction?.addToBackStack(null)
