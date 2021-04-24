@@ -20,7 +20,7 @@ class KvizRepository {
         }
 
         fun getAll(): List<Kviz> {
-            return sviKvizovi()
+            return sviKvizovi().toList()
         }
 
         fun getDone(): List<Kviz> {
@@ -45,6 +45,10 @@ class KvizRepository {
 
         fun getMyNotTaken(): List<Kviz> {
             return mojiNeuradjeni()
+        }
+
+        fun dodajUradjenKviz(k: String, p: String){
+            dodajUradjen(k, p)
         }
 
     }

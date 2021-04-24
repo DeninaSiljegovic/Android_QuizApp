@@ -31,6 +31,7 @@ class KvizListAdapter (
     override fun getItemCount(): Int = kvizovi.size
 
     override fun onBindViewHolder(holder: KvizViewHolder, position: Int) {
+        var uradjen: Int = 0
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
         if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().getTime())){
@@ -48,6 +49,7 @@ class KvizListAdapter (
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
                 holder.textBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+                uradjen = 1
             }
         }
 
@@ -65,6 +67,7 @@ class KvizListAdapter (
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
                 holder.textBodovi.text = kvizovi[position].osvojeniBodovi.toString()
+                uradjen = 1
             }
             //last case - aktivan je al nije uradjen == ZELENA
             else{
@@ -81,12 +84,14 @@ class KvizListAdapter (
         holder.itemView.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("imeKviza", kvizovi[position].naziv)
+            bundle.putString("imePredmeta", kvizovi[position].nazivPredmeta)
+            bundle.putString("uradjen", uradjen.toString())
 
             val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
             pokusajFragment.arguments = bundle
 
             val transaction = mSupportFragment?.beginTransaction()
-            transaction?.add(R.id.container, pokusajFragment)
+            transaction?.replace(R.id.container, pokusajFragment)
             transaction?.addToBackStack(null)
             transaction?.commit()
         }

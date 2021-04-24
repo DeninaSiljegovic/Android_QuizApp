@@ -2,23 +2,20 @@ package ba.etf.rma21.projekat
 
 
 import android.os.Bundle
-import android.view.View
-
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
-import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
-import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import ba.etf.rma21.projekat.viewmodel.Shared1ViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity(){
     private lateinit var bottomNavigation : BottomNavigationView
+    private var shared1ViewModel = Shared1ViewModel()
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -34,10 +31,8 @@ class MainActivity : AppCompatActivity(){
             }
             R.id.predajKviz -> {
                 //napravit funkciju koja predaje kviz
-                val bundle = Bundle()
-                bundle.putString("imekviza", "KSK") //OVO NAPRAVI
+                zabiljeziZavrsen()
                 val newFragment = FragmentPoruka.newInstance()
-                newFragment.arguments = bundle
                 openFragment(newFragment)
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
                 bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
@@ -92,7 +87,6 @@ class MainActivity : AppCompatActivity(){
         return bottomNavigation
     }
 
-
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0) {
@@ -102,6 +96,23 @@ class MainActivity : AppCompatActivity(){
         else transaction.add(R.id.container, fragment, "pocetniKvizovi")
         transaction.commit()
     }
+
+    companion object {
+        private var imeKviza: String = ""
+        private var imePredmeta: String = ""
+        private var kvizViewModel = KvizViewModel()
+
+        fun primiPodatke(bundle: Bundle) {
+            imeKviza = bundle.getString("imeKviza")!!
+            imePredmeta = bundle.getString("imePredmeta")!!
+        }
+
+        fun zabiljeziZavrsen(){
+            kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
+        }
+    }
+
+
 
 
 }//main activiry closed

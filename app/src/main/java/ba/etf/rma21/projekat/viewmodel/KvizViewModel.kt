@@ -41,6 +41,9 @@ class KvizViewModel {
         return KvizRepository.getMyNotTaken()
     }
 
+    fun dodajUradjenKviz(k: String, p: String){
+        KvizRepository.dodajUradjenKviz(k, p)
+    }
 
 
 }

@@ -30,6 +30,7 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
 
         pitanjeText = view.findViewById(R.id.tekstPitanja)
         listaOdgovora = view.findViewById(R.id.odgovoriLista)
+        val uradjenKviz = arguments?.getString("uradjen").toString()
 
         pitanjeText.text = pitanje.tekst
         listaOdgovora.adapter = ArrayAdapter<String>(
@@ -38,6 +39,7 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
                 pitanje.opcije
         )
 
+        if(uradjenKviz == "1")  listaOdgovora.isEnabled = false
 
         if(odg >= 0) {
             listaOdgovora.post {
