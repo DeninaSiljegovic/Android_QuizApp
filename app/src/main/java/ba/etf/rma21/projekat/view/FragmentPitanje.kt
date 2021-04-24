@@ -22,7 +22,6 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
 
     private lateinit var pitanjeText: TextView
     private lateinit var listaOdgovora: ListView
-    private var selectedPosition: PitanjeKvizViewModel = PitanjeKvizViewModel()
     private var odg = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

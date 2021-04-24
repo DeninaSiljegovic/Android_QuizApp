@@ -2,15 +2,12 @@ package ba.etf.rma21.projekat
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
-import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
-import ba.etf.rma21.projekat.viewmodel.Shared1ViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -95,10 +92,10 @@ class MainActivity : AppCompatActivity(){
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0) {
-            transaction.add(R.id.container, fragment)
+            transaction.replace(R.id.container, fragment)
             transaction.addToBackStack(null)
         }
-        else transaction.add(R.id.container, fragment, "pocetniKvizovi")
+        else transaction.replace(R.id.container, fragment, "pocetniKvizovi")
         transaction.commit()
     }
 
@@ -117,6 +114,7 @@ class MainActivity : AppCompatActivity(){
 //            Log.d("MainIspis", imePredmeta)
             kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
         }
+
     }
 
 

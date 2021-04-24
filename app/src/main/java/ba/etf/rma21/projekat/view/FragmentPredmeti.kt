@@ -208,7 +208,7 @@ class FragmentPredmeti : Fragment() {
             newFragment.arguments = bundle
 
             val transaction = activity?.supportFragmentManager?.beginTransaction()
-            transaction?.add(R.id.container, newFragment)
+            transaction?.replace(R.id.container, newFragment)
             transaction?.addToBackStack(null)
             transaction?.commit()
         }

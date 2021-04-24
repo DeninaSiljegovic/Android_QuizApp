@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,6 +29,7 @@ class KvizListAdapter (
                 .from(parent.context)
                 .inflate(R.layout.item_kviz, parent, false)
         return KvizViewHolder(view)
+
     }
 
     override fun getItemCount(): Int = kvizovi.size
@@ -82,18 +86,29 @@ class KvizListAdapter (
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
 
         holder.itemView.setOnClickListener {
+            val tag: String = "pokusaj" +  kvizovi[position].nazivPredmeta + kvizovi[position].naziv
             val bundle = Bundle()
             bundle.putString("imeKviza", kvizovi[position].naziv)
             bundle.putString("imePredmeta", kvizovi[position].nazivPredmeta)
             bundle.putString("uradjen", uradjen.toString()) //odredjuje se na osnovu boje loptice kviza
 
-            val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
-            pokusajFragment.arguments = bundle
+            val provjeraFragment = mSupportFragment?.findFragmentByTag(tag)
 
-            val transaction = mSupportFragment?.beginTransaction()
-            transaction?.replace(R.id.container, pokusajFragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
+            if(provjeraFragment == null) {
+                val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
+                pokusajFragment.arguments = bundle
+                val transaction = mSupportFragment?.beginTransaction()
+                transaction?.replace(R.id.container, pokusajFragment, tag)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
+            }
+            else{
+                val transaction = mSupportFragment?.beginTransaction()
+                transaction?.replace(R.id.container,provjeraFragment, tag)
+                transaction?.commit()
+            }
+
+
         }
     }
 

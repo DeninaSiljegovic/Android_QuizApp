@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import ba.etf.rma21.projekat.R
 
@@ -31,11 +33,12 @@ class FragmentPoruka : Fragment() {
             //udje u else - radi ok
             setFragmentResultListener("zavrseno") { requestKey, bundle ->
                 kviz = bundle.getString("kvizIme")!!
-
                 //Log.d("FragmenPorukaPrimljeno", kviz)
 
                 poruka.text = "Zavrsili ste kviz $kviz"
             }
+
+            setFragmentResult("OZNACIuradjen", bundleOf(Pair("OZNACIuradjenKviz", "1")))
         }
 
         return view
