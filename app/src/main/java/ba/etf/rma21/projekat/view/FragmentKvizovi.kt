@@ -3,6 +3,7 @@ package ba.etf.rma21.projekat.view
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -110,6 +111,14 @@ class FragmentKvizovi : Fragment() {
             filterKvizova.setSelection(0)
             //da bi se restartovali spinneri na pocetni izgled - inace se prebaci na iduci neupisani predmet/godinu
             model.setIzmjena(0)
+        }
+
+        val uradjen = arguments?.getString("uradjen")
+
+        if(uradjen.toString() == "1"){
+            Log.d("Uradjen kviz", uradjen.toString())
+            listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+            filterKvizova.setSelection(0)
         }
 
         return view

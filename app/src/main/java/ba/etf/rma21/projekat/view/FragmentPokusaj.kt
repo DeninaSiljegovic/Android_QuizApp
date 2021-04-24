@@ -36,8 +36,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         imePredmeta = arguments?.getString("imePredmeta").toString()
         kvizUradjen = arguments?.getString("uradjen").toString()
 
-        val uradjenKviz = shared1ViewModel.daLiJeUradjen(imeKviza, imePredmeta).toString()
-
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
@@ -63,7 +61,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             pom = item.order + 1 //treba za promjenu boje brojeva sa strane
 
             val bundle = Bundle()
-            bundle.putString("uradjen", uradjenKviz)
+            bundle.putString("uradjen", kvizUradjen) //KAD PRIMI PITANJE FRAGMENT DA ZNA DA NE MOZE BITI CLICKABLE ODGOVORI VISE
 
             val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
 
@@ -115,6 +113,18 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             meni[pom-1].title = temp
         }
 
+        setFragmentResult("zavrseno", bundleOf(Pair("kvizIme", imeKviza)))
+
+
+        if(kvizUradjen == "0"){
+            Log.d("PokusajFragment", imeKviza)
+            MainActivity.primiPodatke(bundleOf(
+                    Pair("imeKviza", imeKviza),
+                    Pair("imePredmeta", imePredmeta)
+            ))
+        }
+
+
         return view
     }
 
@@ -122,21 +132,21 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         fun newInstance(pit: List<Pitanje>): FragmentPokusaj = FragmentPokusaj(pit)
     }
 
-    override fun onStop() {
-        setFragmentResult("zavrseno", bundleOf(Pair("kvizIme", imeKviza)))
-        super.onStop()
-    }
-
-    override fun onPause() {
-        if(kvizUradjen == "0"){
-            MainActivity.primiPodatke(bundleOf(
-                    Pair("imeKviza", imeKviza),
-                    Pair("imePredmeta", imePredmeta)
-            ))
-        }
-
-        super.onPause()
-    }
-
+//    override fun onStop() {
+//        Log.d("PokusajFragmentStop", imeKviza)
+////        setFragmentResult("zavrseno", bundleOf(Pair("kvizIme", imeKviza)))
+//        super.onStop()
+//    }
+//
+//    override fun onPause() {
+//        if(kvizUradjen == "0"){
+//            Log.d("PokusajFragment", imeKviza)
+//            MainActivity.primiPodatke(bundleOf(
+//                    Pair("imeKviza", imeKviza),
+//                    Pair("imePredmeta", imePredmeta)
+//            ))
+//        }
+//        super.onPause()
+//    }
 
 }

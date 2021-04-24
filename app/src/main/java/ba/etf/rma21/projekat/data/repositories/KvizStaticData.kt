@@ -1,11 +1,12 @@
 package ba.etf.rma21.projekat.data.repositories
 
+import android.util.Log
 import ba.etf.rma21.projekat.data.models.Kviz
 import java.util.*
 
 var mojiKvizovi: MutableList<Kviz> = listOf(
         //Kviz("Kviz 1", "MLTI", GregorianCalendar(2021, 2, 1).getTime(), GregorianCalendar(2021, 2, 3).getTime(), GregorianCalendar(2021, 2, 1).getTime(), 5, "MLTI1-1", 2.5F),
-        Kviz("Kviz 3", "IM2", GregorianCalendar(2021, 4, 10).getTime(), GregorianCalendar(2021, 4, 11).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 5, "IM21-1", null),
+        Kviz("Kviz 3", "IM2", GregorianCalendar(2021, 2, 10).getTime(), GregorianCalendar(2021, 4, 11).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 5, "IM21-1", null),
         Kviz("Kviz 3", "OOAD", GregorianCalendar(2021, 5, 2).getTime(), GregorianCalendar(2021, 5, 5).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 10, "OOAD2-3", null)
         //Kviz("Kviz 1", "IM2", GregorianCalendar(2021, 3, 2).getTime(), GregorianCalendar(2021, 3, 3).getTime(), GregorianCalendar(1970, 0, 1).getTime(), 10, "IM21-1", null),
         //Kviz("Kviz 2", "TP", GregorianCalendar(2021, 2, 12).getTime(), GregorianCalendar(2021, 2, 13).getTime(), GregorianCalendar(2021, 1, 12).getTime(), 3, "TP1-2", 1F),
@@ -117,13 +118,22 @@ fun mojiNeuradjeni(): List<Kviz>{
 }
 
 fun dodajUradjen(k: String, p: String){
-    var kviz = sviKvizovi.find { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p }
+    val kviz = sviKvizovi.find { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p }
     kviz?.datumRada = Date()
     kviz?.osvojeniBodovi = 1F
+    sviKvizovi.removeIf { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p  }
+    sviKvizovi.add(kviz!!)
 
-    var kviz1 = mojiKvizovi.find { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p }
+
+    Log.d("Prije izmjene",  sviKvizovi.find { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p }?.datumRada.toString())
+
+    val kviz1 = mojiKvizovi.find { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p }
     kviz1?.datumRada = Date()
     kviz1?.osvojeniBodovi = 1F
+    mojiKvizovi.removeIf { kviz -> kviz.naziv == k && kviz.nazivPredmeta == p  }
+    mojiKvizovi.add(kviz)
+
+    Log.d("Nakon izmjene", mojiKvizovi.size.toString())
 }
 
 

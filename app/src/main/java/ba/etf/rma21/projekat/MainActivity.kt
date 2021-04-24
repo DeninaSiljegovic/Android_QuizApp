@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
+import ba.etf.rma21.projekat.view.KvizListAdapter
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.Shared1ViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -15,12 +16,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity(){
     private lateinit var bottomNavigation : BottomNavigationView
-    private var shared1ViewModel = Shared1ViewModel()
+    private var uradjen = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.kvizovi -> {
+                val bundle = Bundle()
+                bundle.putString("uradjen", uradjen.toString())
                 val kvizoviFragment = FragmentKvizovi.newInstance()
+                kvizoviFragment.arguments = bundle
                 openFragment(kvizoviFragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -32,6 +36,7 @@ class MainActivity : AppCompatActivity(){
             R.id.predajKviz -> {
                 //napravit funkciju koja predaje kviz
                 zabiljeziZavrsen()
+                uradjen = 1
                 val newFragment = FragmentPoruka.newInstance()
                 openFragment(newFragment)
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
@@ -108,6 +113,8 @@ class MainActivity : AppCompatActivity(){
         }
 
         fun zabiljeziZavrsen(){
+//            Log.d("MainIspis", imeKviza)
+//            Log.d("MainIspis", imePredmeta)
             kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
         }
     }

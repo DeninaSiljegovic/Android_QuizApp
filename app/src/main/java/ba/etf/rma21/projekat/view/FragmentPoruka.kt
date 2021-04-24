@@ -24,12 +24,16 @@ class FragmentPoruka : Fragment() {
         poruka = view.findViewById(R.id.tvPoruka)
         var kviz = ""
 
-        if(grupa?.length ?: -1  > 0 ){
+        if(grupa.toString() != "null" && predmet.toString() != "null"){ //ovaj uslov sigurno ok - provjereno
             poruka.text = "Uspješno ste upisani u grupu $grupa predmeta $predmet!"
         }
         else {
+            //udje u else - radi ok
             setFragmentResultListener("zavrseno") { requestKey, bundle ->
                 kviz = bundle.getString("kvizIme")!!
+
+                //Log.d("FragmenPorukaPrimljeno", kviz)
+
                 poruka.text = "Zavrsili ste kviz $kviz"
             }
         }

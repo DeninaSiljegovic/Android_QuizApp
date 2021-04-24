@@ -31,7 +31,7 @@ class KvizListAdapter (
     override fun getItemCount(): Int = kvizovi.size
 
     override fun onBindViewHolder(holder: KvizViewHolder, position: Int) {
-        var uradjen: Int = 0
+        var uradjen = 0
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
         if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().getTime())){
@@ -55,24 +55,24 @@ class KvizListAdapter (
 
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
-            //datum pocetka i datum kraja jos nisu dosli na red - TEK SE AKTIVIRA == ZUTA
-            if(kvizovi[position].datumPocetka.after(GregorianCalendar.getInstance().getTime())) {
-                holder.textDatum.text = toSimpleString(kvizovi[position].datumPocetka)
-                holder.statusImage.setImageResource(R.drawable.zuta)
-                holder.textBodovi.visibility = View.INVISIBLE
-            }
-             //KVIZ JE AKTIVAN I URADJEN == PLAVA
-            else if(kvizovi[position].osvojeniBodovi != null){
+            //KVIZ JE AKTIVAN I URADJEN == PLAVA
+            if(kvizovi[position].osvojeniBodovi != null && kvizovi[position].datumRada != GregorianCalendar(1970, 0, 1).getTime()){
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumRada)
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
                 holder.textBodovi.text = kvizovi[position].osvojeniBodovi.toString()
                 uradjen = 1
             }
-            //last case - aktivan je al nije uradjen == ZELENA
-            else{
+            //aktivan je al nije uradjen == ZELENA
+            else if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().getTime())){
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
                 holder.statusImage.setImageResource(R.drawable.zelena)
+                holder.textBodovi.visibility = View.INVISIBLE
+            }
+            //datum pocetka i datum kraja jos nisu dosli na red - TEK SE AKTIVIRA == ZUTA
+            else if(kvizovi[position].datumPocetka.after(GregorianCalendar.getInstance().getTime())) {
+                holder.textDatum.text = toSimpleString(kvizovi[position].datumPocetka)
+                holder.statusImage.setImageResource(R.drawable.zuta)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
         }
@@ -85,7 +85,7 @@ class KvizListAdapter (
             val bundle = Bundle()
             bundle.putString("imeKviza", kvizovi[position].naziv)
             bundle.putString("imePredmeta", kvizovi[position].nazivPredmeta)
-            bundle.putString("uradjen", uradjen.toString())
+            bundle.putString("uradjen", uradjen.toString()) //odredjuje se na osnovu boje loptice kviza
 
             val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
             pokusajFragment.arguments = bundle
