@@ -37,17 +37,17 @@ class MainActivity : AppCompatActivity(){
                 val newFragment = FragmentPoruka.newInstance()
                 openFragment(newFragment)
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-                bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
                 bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
                 bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.rezultat -> {
+            R.id.zaustaviKviz -> {
                 val kvizoviFragment = FragmentKvizovi.newInstance()
                 openFragment(kvizoviFragment)
                 bottomNavigation.selectedItemId = R.id.kvizovi
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-                bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
                 bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
                 bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
                 return@OnNavigationItemSelectedListener true
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(){
         bottomNavigation = findViewById(R.id.bottomNav)
 
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
 
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(){
         fun primiPodatke(bundle: Bundle) {
             imeKviza = bundle.getString("imeKviza")!!
             imePredmeta = bundle.getString("imePredmeta")!!
-        }
+             }
 
         fun zabiljeziZavrsen(){
 //            Log.d("MainIspis", imeKviza)

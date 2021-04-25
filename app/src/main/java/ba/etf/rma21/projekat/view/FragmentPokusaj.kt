@@ -37,7 +37,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
 
@@ -169,13 +169,13 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     override fun onResume() {
         if(kvizUradjen == "0") {
             bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-            bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
+            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
             bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
             bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
         }
         else{
             bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-            bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+            bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
             bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
             bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         }
@@ -185,7 +185,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     override fun onPause() {
         setFragmentResult("zavrseno", bundleOf(Pair("poruka", "Zavrsili ste kviz $imeKviza")))
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         super.onPause()
