@@ -55,22 +55,15 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             i_1 = i
         }
 
-        if(kvizUradjen == "1") meni.add(0, i_1 - 1, i_1 - 1, "Rezultat")
+        if(kvizUradjen == "1") meni.add(0, 250, i_1 - 1, "Rezultat")
 
         var pom = 0
 
         //otvaranje odg kviza klikom na navigation sa strane
         val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
 
-            if(item.order+1 == pitanja.size){
-//                Log.d("zavrsen", "USLO")
-//                val tag = "rezultat$imeKviza$imePredmeta"
-//                val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
-//                if(provjeraFragment != null) {
-//                    val transaction = activity.supportFragmentManager.beginTransaction()
-//                    transaction.replace(R.id.framePitanje, provjeraFragment!!, tag)
-//                    transaction.commit()
-//                }
+            if(item.itemId == 250){
+                Log.d("Rezz", "USLO")
                 setFragmentResult("ponovniPrikaz", bundleOf(Pair("kvizIme", imeKviza)))
                 val newFragment = FragmentPoruka.newInstance()
                 val transaction = activity.supportFragmentManager.beginTransaction()
@@ -156,10 +149,18 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
 
     override fun onResume() {
-        bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
-        bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
-        bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
+        if(kvizUradjen == "0") {
+            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
+            bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
+            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
+            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
+        }
+        else{
+            bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
+            bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
+            bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
+            bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
+        }
         super.onResume()
     }
 
