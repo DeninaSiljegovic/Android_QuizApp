@@ -85,31 +85,31 @@ class KvizListAdapter (
         holder.textKvizBr.text = kvizovi[position].naziv
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
 
-        holder.itemView.setOnClickListener {
-            val tag: String = "pokusaj" +  kvizovi[position].nazivPredmeta + kvizovi[position].naziv
-            val bundle = Bundle()
-            bundle.putString("imeKviza", kvizovi[position].naziv)
-            bundle.putString("imePredmeta", kvizovi[position].nazivPredmeta)
-            bundle.putString("uradjen", uradjen.toString()) //odredjuje se na osnovu boje loptice kviza
+        if(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta).isNotEmpty()) {
 
-            val provjeraFragment = mSupportFragment?.findFragmentByTag(tag)
+            holder.itemView.setOnClickListener {
+                val tag: String = "pokusaj" + kvizovi[position].nazivPredmeta + kvizovi[position].naziv
+                val bundle = Bundle()
+                bundle.putString("imeKviza", kvizovi[position].naziv)
+                bundle.putString("imePredmeta", kvizovi[position].nazivPredmeta)
+                bundle.putString("uradjen", uradjen.toString()) //odredjuje se na osnovu boje loptice kviza
 
-            if(provjeraFragment == null) {
-                val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
-                pokusajFragment.arguments = bundle
-                val transaction = mSupportFragment?.beginTransaction()
-                transaction?.replace(R.id.container, pokusajFragment, tag)
-                transaction?.addToBackStack(null)
-                transaction?.commit()
+                val provjeraFragment = mSupportFragment?.findFragmentByTag(tag)
+
+                if (provjeraFragment == null) {
+                    val pokusajFragment = FragmentPokusaj.newInstance(pitanjeKvizViewModel.getPitanja(kvizovi[position].naziv, kvizovi[position].nazivPredmeta))
+                    pokusajFragment.arguments = bundle
+                    val transaction = mSupportFragment?.beginTransaction()
+                    transaction?.replace(R.id.container, pokusajFragment, tag)
+                    transaction?.addToBackStack(null)
+                    transaction?.commit()
+                } else {
+                    provjeraFragment.arguments = bundle
+                    val transaction = mSupportFragment?.beginTransaction()
+                    transaction?.replace(R.id.container, provjeraFragment, tag)
+                    transaction?.commit()
+                }
             }
-            else{
-                provjeraFragment.arguments = bundle
-                val transaction = mSupportFragment?.beginTransaction()
-                transaction?.replace(R.id.container,provjeraFragment, tag)
-                transaction?.commit()
-            }
-
-
         }
     }
 
