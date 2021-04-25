@@ -183,7 +183,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     }
 
     override fun onPause() {
-        setFragmentResult("zavrseno", bundleOf(Pair("poruka", "Zavrsili ste kviz $imeKviza")))
+        setFragmentResult("zavrseno", bundleOf(Pair("poruka", "Završili ste kviz")))
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
