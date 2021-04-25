@@ -64,8 +64,7 @@ class MainActivity : AppCompatActivity(){
         if(bottomNavigation.selectedItemId != R.id.kvizovi)
             bottomNavigation.selectedItemId = R.id.kvizovi
         else{
-            super.onBackPressed()
-            finishAffinity()
+            bottomNavigation.selectedItemId = R.id.kvizovi
         }
     }
 
