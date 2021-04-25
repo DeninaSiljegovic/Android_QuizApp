@@ -23,26 +23,28 @@ class FragmentPoruka : Fragment() {
 
         val grupa = arguments?.getString("grupa")
         val predmet = arguments?.getString("predmet")
+        val print = arguments?.getString("poruka")
         poruka = view.findViewById(R.id.tvPoruka)
         var kviz = ""
 
         if(grupa.toString() != "null" && predmet.toString() != "null"){ //ovaj uslov sigurno ok - provjereno
             poruka.text = "Uspješno ste upisani u grupu $grupa predmeta $predmet!"
         }
-        else {
-            //udje u else - radi ok
+        else if(print.toString() != "null"){
+
+            poruka.text = print
+//            //udje u else - radi ok
+//            setFragmentResultListener("zavrseno") { requestKey, bundle ->
+//                kviz = bundle.getString("poruka")!!
+//                //Log.d("FragmenPorukaPrimljeno", kviz)
+//
+//                poruka.text = kviz
+//            }
+        }
+        else{
             setFragmentResultListener("zavrseno") { requestKey, bundle ->
-                kviz = bundle.getString("kvizIme")!!
-                //Log.d("FragmenPorukaPrimljeno", kviz)
-
-                poruka.text = "Zavrsili ste kviz $kviz"
-            }
-
-            setFragmentResultListener("ponovniPrikaz"){ requestKey, bundle ->
-                kviz = bundle.getString("kvizIme")!!
-                //Log.d("FragmenPorukaPrimljeno", kviz)
-
-                poruka.text = "Zavrsili ste kviz $kviz"
+                kviz = bundle.getString("poruka")!!
+                poruka.text = kviz
             }
         }
 

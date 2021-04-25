@@ -54,7 +54,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             meni.add(0, i - 1, i - 1, temp)
             i_1 = i
         }
-
         if(kvizUradjen == "1") meni.add(0, 250, i_1 - 1, "Rezultat")
 
         var pom = 0
@@ -63,12 +62,33 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
 
             if(item.itemId == 250){
-                Log.d("Rezz", "USLO")
-                setFragmentResult("ponovniPrikaz", bundleOf(Pair("kvizIme", imeKviza)))
-                val newFragment = FragmentPoruka.newInstance()
-                val transaction = activity.supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.framePitanje, newFragment, tag)
-                transaction.commit()
+                val tag = "ZAVRSEN"+imeKviza+imePredmeta
+
+                val tacnost = (nizOdg.count { it == 1 }.toFloat() / pitanja.size.toFloat()) * 100
+                val send = "Zavrsili ste kviz $imeKviza \n sa tacnoscu $tacnost"
+                val bundle = Bundle()
+                bundle.putString("poruka", send)
+
+                val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
+
+                if(provjeraFragment == null) {
+                    Log.d("PRVI PUT", "ok")
+
+                    val newFragment = FragmentPoruka.newInstance()
+                    newFragment.arguments = bundle
+                    val transaction = activity.supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.framePitanje, newFragment, tag)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+                else{
+                    Log.d("PONOVO OTVARA", "ok")
+                    provjeraFragment.arguments = bundle
+                    val transaction = activity.supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.framePitanje, provjeraFragment, tag)
+                    transaction.commit()
+                }
+
             }
 
             else {
@@ -130,8 +150,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
             meni[pom-1].title = temp
         }
 
-        setFragmentResult("zavrseno", bundleOf(Pair("kvizIme", imeKviza)))
-
         if(kvizUradjen == "0"){
             Log.d("PokusajFragment", imeKviza)
             MainActivity.primiPodatke(bundleOf(
@@ -165,6 +183,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
     }
 
     override fun onPause() {
+        setFragmentResult("zavrseno", bundleOf(Pair("poruka", "Zavrsili ste kviz $imeKviza")))
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
