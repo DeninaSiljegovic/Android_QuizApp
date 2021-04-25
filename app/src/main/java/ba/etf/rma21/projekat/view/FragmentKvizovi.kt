@@ -66,7 +66,7 @@ class FragmentKvizovi : Fragment() {
 
                 // set selected item style
                 if (position == filterKvizova.selectedItemPosition){
-                    view.background = ColorDrawable(Color.parseColor("#E695B1"))
+                    view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
                     view.setTextColor(Color.parseColor("#2E2D88"))
                 }
                 return view

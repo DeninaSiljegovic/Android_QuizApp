@@ -37,6 +37,7 @@ class FragmentPredmeti : Fragment() {
         odabirGrupa = view.findViewById(R.id.odabirGrupa)
         dodajPredmetDugme = view.findViewById(R.id.dodajPredmetDugme)
 
+
         //odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
         val lastSelectedYear = model.getlastSelectedGodina()
         val lastSelectedPredmet = model.getlastSelectedPredmet()
@@ -71,7 +72,7 @@ class FragmentPredmeti : Fragment() {
 
                 // set selected item style
                 if (position == odabirGodina.selectedItemPosition){
-                    view.background = ColorDrawable(Color.parseColor("#E695B1"))
+                    view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
                     view.setTextColor(Color.parseColor("#2E2D88"))
                 }
                 return view
@@ -114,7 +115,7 @@ class FragmentPredmeti : Fragment() {
 
                         // set selected item style
                         if (position == odabirGodina.selectedItemPosition){
-                            view.background = ColorDrawable(Color.parseColor("#E695B1"))
+                            view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
                             view.setTextColor(Color.parseColor("#2E2D88"))
                         }
                         return view
@@ -157,7 +158,7 @@ class FragmentPredmeti : Fragment() {
 
                         // set selected item style
                         if (position == odabirGodina.selectedItemPosition){
-                            view.background = ColorDrawable(Color.parseColor("#E695B1"))
+                            view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
                             view.setTextColor(Color.parseColor("#2E2D88"))
                         }
                         return view
