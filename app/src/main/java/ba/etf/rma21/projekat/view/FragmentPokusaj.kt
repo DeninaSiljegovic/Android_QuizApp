@@ -34,54 +34,73 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
         imePredmeta = arguments?.getString("imePredmeta").toString()
         kvizUradjen = arguments?.getString("uradjen").toString()
 
-//        Log.d("TEST123", arguments?.getString("test").toString())
-
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
 
         navigationPitanja = view.findViewById(R.id.navigacijaPitanja)
         val meni = navigationPitanja.menu
 
-        //navigation mei sa strane postavka brojeva
+        var i_1: Int = 0
+        //navigation meni sa strane postavka brojeva
         for(i in 1..pitanja.size){
             var temp = SpannableString(i.toString())
             if(nizOdg[i-1] == 0) temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, i.toString().length, 0)
             else if(nizOdg[i-1] == 1) temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, i.toString().length, 0)
             else  temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, i.toString().length, 0)
             meni.add(0, i - 1, i - 1, temp)
+            i_1 = i
         }
+
+        if(kvizUradjen == "1") meni.add(0, i_1 - 1, i_1 - 1, "Rezultat")
 
         var pom = 0
 
         //otvaranje odg kviza klikom na navigation sa strane
         val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
-            val tag: String = pitanja[item.order].naziv + imeKviza
-            pom = item.order + 1 //treba za promjenu boje brojeva sa strane
 
-            val bundle = Bundle()
-            bundle.putString("uradjen", kvizUradjen) //KAD PRIMI PITANJE FRAGMENT DA ZNA DA NE MOZE BITI CLICKABLE ODGOVORI VISE
-
-            val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
-
-            if(provjeraFragment == null) {
-                val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
-                newFragment.arguments = bundle
+            if(item.order+1 == pitanja.size){
+//                Log.d("zavrsen", "USLO")
+//                val tag = "rezultat$imeKviza$imePredmeta"
+//                val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
+//                if(provjeraFragment != null) {
+//                    val transaction = activity.supportFragmentManager.beginTransaction()
+//                    transaction.replace(R.id.framePitanje, provjeraFragment!!, tag)
+//                    transaction.commit()
+//                }
+                setFragmentResult("ponovniPrikaz", bundleOf(Pair("kvizIme", imeKviza)))
+                val newFragment = FragmentPoruka.newInstance()
                 val transaction = activity.supportFragmentManager.beginTransaction()
-
                 transaction.replace(R.id.framePitanje, newFragment, tag)
-                transaction.addToBackStack(null)
                 transaction.commit()
             }
 
-            else{
-                provjeraFragment.arguments = bundle
-                val transaction = activity.supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.framePitanje, provjeraFragment, tag)
-                transaction.commit()
+            else {
+                val tag: String = pitanja[item.order].naziv + imeKviza
+                pom = item.order + 1 //treba za promjenu boje brojeva sa strane
+
+                val bundle = Bundle()
+                bundle.putString("uradjen", kvizUradjen) //KAD PRIMI PITANJE FRAGMENT DA ZNA DA NE MOZE BITI CLICKABLE ODGOVORI VISE
+
+                val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
+
+                if (provjeraFragment == null) {
+                    val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
+                    newFragment.arguments = bundle
+                    val transaction = activity.supportFragmentManager.beginTransaction()
+
+                    transaction.replace(R.id.framePitanje, newFragment, tag)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                } else {
+                    provjeraFragment.arguments = bundle
+                    val transaction = activity.supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.framePitanje, provjeraFragment, tag)
+                    transaction.commit()
+                }
             }
 
             return@OnNavigationItemSelectedListener true
@@ -120,10 +139,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
         setFragmentResult("zavrseno", bundleOf(Pair("kvizIme", imeKviza)))
 
-        setFragmentResultListener("OZNACIuradjen") { requestKey, bundle ->
-            kvizUradjen = bundle.getString("OZNACIuradjenKviz")!!
-        }
-
         if(kvizUradjen == "0"){
             Log.d("PokusajFragment", imeKviza)
             MainActivity.primiPodatke(bundleOf(
@@ -142,7 +157,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
     override fun onResume() {
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = true
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = true
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = true
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = false
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = false
         super.onResume()
@@ -150,7 +165,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje> ) : Fragment()  {
 
     override fun onPause() {
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
         bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
         bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
         super.onPause()

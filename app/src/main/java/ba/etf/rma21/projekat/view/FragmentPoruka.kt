@@ -38,7 +38,12 @@ class FragmentPoruka : Fragment() {
                 poruka.text = "Zavrsili ste kviz $kviz"
             }
 
-            setFragmentResult("OZNACIuradjen", bundleOf(Pair("OZNACIuradjenKviz", "1")))
+            setFragmentResultListener("ponovniPrikaz"){ requestKey, bundle ->
+                kviz = bundle.getString("kvizIme")!!
+                //Log.d("FragmenPorukaPrimljeno", kviz)
+
+                poruka.text = "Zavrsili ste kviz $kviz"
+            }
         }
 
         return view

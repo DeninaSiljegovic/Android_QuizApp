@@ -103,6 +103,7 @@ class KvizListAdapter (
                 transaction?.commit()
             }
             else{
+                provjeraFragment.arguments = bundle
                 val transaction = mSupportFragment?.beginTransaction()
                 transaction?.replace(R.id.container,provjeraFragment, tag)
                 transaction?.commit()

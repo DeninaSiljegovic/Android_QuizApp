@@ -37,17 +37,17 @@ class MainActivity : AppCompatActivity(){
                 val newFragment = FragmentPoruka.newInstance()
                 openFragment(newFragment)
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
                 bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
                 bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.zaustaviKviz -> {
+            R.id.rezultat -> {
                 val kvizoviFragment = FragmentKvizovi.newInstance()
                 openFragment(kvizoviFragment)
                 bottomNavigation.selectedItemId = R.id.kvizovi
                 bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-                bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+                bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
                 bottomNavigation.menu.findItem(R.id.kvizovi).isVisible = true
                 bottomNavigation.menu.findItem(R.id.predmeti).isVisible = true
                 return@OnNavigationItemSelectedListener true
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(){
         bottomNavigation = findViewById(R.id.bottomNav)
 
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
-        bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false
+        bottomNavigation.menu.findItem(R.id.rezultat).isVisible = false
 
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -89,13 +89,13 @@ class MainActivity : AppCompatActivity(){
         return bottomNavigation
     }
 
-    private fun openFragment(fragment: Fragment) {
+    private fun openFragment(fragment: Fragment, tag: String = "") {
         val transaction = supportFragmentManager.beginTransaction()
         if(fragment !is FragmentKvizovi || supportFragmentManager.backStackEntryCount > 0) {
-            transaction.replace(R.id.container, fragment)
+            transaction.replace(R.id.container, fragment, tag)
             transaction.addToBackStack(null)
         }
-        else transaction.replace(R.id.container, fragment, "pocetniKvizovi")
+        else transaction.replace(R.id.container, fragment, tag)
         transaction.commit()
     }
 
