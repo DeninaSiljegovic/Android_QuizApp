@@ -109,8 +109,6 @@ class MainActivity : AppCompatActivity(){
              }
 
         fun zabiljeziZavrsen(){
-//            Log.d("MainIspis", imeKviza)
-//            Log.d("MainIspis", imePredmeta)
             kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
         }
 
