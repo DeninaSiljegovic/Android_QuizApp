@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.view
+ package ba.etf.rma21.projekat.view
 
 import android.content.Context
 import android.os.Bundle

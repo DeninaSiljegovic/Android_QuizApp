@@ -111,10 +111,7 @@ class MainActivity : AppCompatActivity(){
         fun zabiljeziZavrsen(){
             kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
         }
-
     }
-
-
 
 
 }//main activiry closed
