@@ -41,7 +41,7 @@ class FragmentPredmeti : Fragment() {
         //odabGod = intent.getStringExtra("selectedYear")?.toInt() ?: 0
         val lastSelectedYear = model.getlastSelectedGodina()
         val lastSelectedPredmet = model.getlastSelectedPredmet()
-        val lastSelectedGrupa = model.getlastSelectedPredmet()
+        val lastSelectedGrupa = model.getlastSelectedGrupaa()
 
         // Spinner Drop down elements
         val categories: MutableList<String> = ArrayList()

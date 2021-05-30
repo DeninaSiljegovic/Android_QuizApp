@@ -1,7 +1,9 @@
 package ba.etf.rma21.projekat.data.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Grupa(
-    val id: Int,
-    val naziv: String
+    @SerializedName("id") val id: Int,
+    @SerializedName("naziv") val naziv: String
 ) {
 }
