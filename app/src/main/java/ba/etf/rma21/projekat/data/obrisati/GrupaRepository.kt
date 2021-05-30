@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data.repositories
+package ba.etf.rma21.projekat.data.obrisati
 
 import ba.etf.rma21.projekat.data.models.Grupa
 

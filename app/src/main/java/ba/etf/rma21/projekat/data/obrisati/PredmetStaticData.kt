@@ -1,8 +1,6 @@
-package ba.etf.rma21.projekat.data.repositories
+package ba.etf.rma21.projekat.data.obrisati
 
-import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Predmet
-import java.util.*
 
 var mojiPredmeti: MutableList<Predmet> = listOf(
         Predmet("IM2", 1),

@@ -1,6 +1,7 @@
-package ba.etf.rma21.projekat.data.repositories
+package ba.etf.rma21.projekat.data.obrisati
 
 import ba.etf.rma21.projekat.data.models.Predmet
+import ba.etf.rma21.projekat.data.obrisati.*
 
 class PredmetRepository {
     companion object {

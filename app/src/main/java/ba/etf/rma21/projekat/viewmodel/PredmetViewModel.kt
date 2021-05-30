@@ -1,9 +1,7 @@
 package ba.etf.rma21.projekat.viewmodel
 
 import ba.etf.rma21.projekat.data.models.Predmet
-import ba.etf.rma21.projekat.data.repositories.PredmetRepository
-import ba.etf.rma21.projekat.data.repositories.upisani
-import ba.etf.rma21.projekat.data.repositories.upisinaPredmet
+import ba.etf.rma21.projekat.data.obrisati.PredmetRepository
 
 class PredmetViewModel {
 

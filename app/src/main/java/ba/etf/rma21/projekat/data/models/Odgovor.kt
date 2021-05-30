@@ -1,7 +1,6 @@
 package ba.etf.rma21.projekat.data.models
 
-data class Grupa(
+class Odgovor (
     val id: Int,
-    val naziv: String
-) {
-}
+    val odgovoreno: Int
+){}

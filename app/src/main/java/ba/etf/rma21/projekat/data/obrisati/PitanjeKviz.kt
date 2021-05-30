@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data.models
+package ba.etf.rma21.projekat.data.obrisati
 
 data class PitanjeKviz(
         var naziv: String,

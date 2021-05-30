@@ -1,9 +1,7 @@
-package ba.etf.rma21.projekat.data.repositories
+package ba.etf.rma21.projekat.data.obrisati
 
-import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Pitanje
-import ba.etf.rma21.projekat.data.models.PitanjeKviz
-import ba.etf.rma21.projekat.data.repositories.PitanjeRepository.Companion.dajPitanjeSaSifrom
+import ba.etf.rma21.projekat.data.obrisati.PitanjeRepository.Companion.dajPitanjeSaSifrom
 
 fun dajPitanjeKvizoviVezu(): MutableList<PitanjeKviz>{
     return listOf(

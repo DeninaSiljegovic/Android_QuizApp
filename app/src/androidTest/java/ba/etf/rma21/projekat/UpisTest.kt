@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma21.projekat.UtilTestClass.Companion.hasItemCount
 import ba.etf.rma21.projekat.UtilTestClass.Companion.itemTest
 import ba.etf.rma21.projekat.data.repositories.KvizRepository
-import ba.etf.rma21.projekat.data.repositories.PredmetRepository
+import ba.etf.rma21.projekat.data.obrisati.PredmetRepository
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers
 import org.junit.Rule
