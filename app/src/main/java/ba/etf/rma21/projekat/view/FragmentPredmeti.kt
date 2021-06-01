@@ -11,9 +11,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ba.etf.rma21.projekat.R
-import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
-import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
 import java.util.stream.Collectors
 
@@ -23,7 +22,7 @@ class FragmentPredmeti : Fragment() {
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var dodajPredmetDugme: Button
-    private var predmetListViewModel = PredmetViewModel()
+    private var predmetListViewModel = PredmetIGrupaViewModel()
     private var grupaListViewModel = GrupaViewModel()
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()

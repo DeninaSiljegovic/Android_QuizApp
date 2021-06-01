@@ -1,6 +1,7 @@
 package ba.etf.rma21.projekat.data.models
 
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -11,13 +12,12 @@ interface Api {
     @GET("/kviz/{id}/pitanja")
     suspend fun getPitanja (@Path("id")idKviza : Int) : Response<List<Pitanje>>
 
-
     //TakeKvizRepo tj KvizTaken
     @GET ("/student/{id}/kviztaken")
-    suspend fun getPocetniKvizovi (@Path("id")idKviza : Int) : Response<List<KvizTaken>>
+    suspend fun getPocetniKvizovi (@Path("id") hashStudenta: String) : Response<List<KvizTaken>>
 
     @POST("/student/{id}/kviz/{kid}")
-    suspend fun zapocniKviz(@Path("id") hashStudenta : String, @Path("kid") kvizId : Int) //ne znam
+    suspend fun zapocniKviz(@Path("id") hashStudenta : String, @Path("kid") kvizId : Int) : Response<KvizTaken>
 
 
     //OdgovorRepo tj Odgovor
@@ -25,7 +25,7 @@ interface Api {
     suspend fun getOdgovoriKviz(@Path("id") hashStudenta : String, @Path("ktid") idKviza : Int) : Response<List<Odgovor>>
 
     @POST ("/student/{id}/kviztaken/{ktid}/odgovor")
-    suspend fun postaviOdgovorKviz(@Path("id") hashStudenta : String, @Path("ktid") idPokusajaKviza : Int) //ne znam
+    suspend fun postaviOdgovorKviz(@Path("id") hashStudenta : String, @Path("ktid") idPokusajaKviza : Int, @Body odgovorBody: OdgovorBody): Response<Odgovor> //ne znam
 
 
     //KvizRepo tj Kviz
@@ -50,7 +50,7 @@ interface Api {
     suspend fun getGrupeZaPredmet(@Path("id") idPredmet : Int) : Response<List<Grupa>>
 
     @POST("/grupa/{gid}/student/{id}")
-    suspend fun upisiUGrupu(@Path("gid") idGrupa : Int, @Path("id") hashStudenta: String) : Response<String>
+    suspend fun upisiUGrupu(@Path("gid") idGrupa : Int, @Path("id") hashStudenta: String) : Response<Poruka>
 
     @GET("/student/{id}/grupa")
     suspend fun getUpisaneGrupe(@Path("id") hashStudenta : String) : Response<List<Grupa>>

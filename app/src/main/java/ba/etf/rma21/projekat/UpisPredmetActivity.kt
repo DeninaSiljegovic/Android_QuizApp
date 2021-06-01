@@ -11,8 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.util.stream.Collectors
-import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
-import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 
 
 class UpisPredmetActivity : AppCompatActivity(){
@@ -21,7 +20,7 @@ class UpisPredmetActivity : AppCompatActivity(){
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var dodajPredmetDugme: Button
-    private var predmetListViewModel = PredmetViewModel()
+    private var predmetListViewModel = PredmetIGrupaViewModel()
     private var grupaListViewModel = GrupaViewModel()
     private var odabGod: Int = 0
 

@@ -7,18 +7,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
 
     companion object{
-        var base_URL: String = "https://rma21-etf.herokuapp.com" //default url
+        var baseURL: String = "https://rma21-etf.herokuapp.com" //default url
 
         var retrofit: Api =  Retrofit.Builder()
-            .baseUrl(base_URL)
+            .baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(Api::class.java)
 
          fun postaviBaseURL(baseUrl:String):Unit{
-             base_URL = baseUrl
+             baseURL = baseUrl
              retrofit =  Retrofit.Builder()
-                .baseUrl(base_URL)
+                .baseUrl(baseURL)
                      .addConverterFactory(GsonConverterFactory.create())
                      .build()
                      .create(Api::class.java)

@@ -1,67 +1,89 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import ba.etf.rma21.projekat.data.models.Kviz
-import ba.etf.rma21.projekat.data.obrisati.*
-import java.util.*
+import ba.etf.rma21.projekat.data.models.KvizTaken
+import ba.etf.rma21.projekat.data.repositories.PredmetIGrupaRepository.Companion.getUpisaneGrupe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class KvizRepository {
 //Every class can implement a companion object, which is an object that is common to all
 // instances of that class. It’d come to be similar to static fields in Java.
     companion object {
 
-        fun getAll():List<Kviz>{
-            return emptyList<Kviz>()
+        suspend fun getAll():List<Kviz>{
+            return withContext(Dispatchers.IO){
+                val response = ApiConfig.retrofit.getAll()
+
+                return@withContext response.body()
+            }!!
         }
 
-        fun getById(id:Int):Kviz{
-            return Kviz(1, "pokusaj", GregorianCalendar(2021, 2, 10).getTime(), GregorianCalendar(2021, 2, 10).getTime(), 2 )
+        suspend fun getById(id:Int):Kviz{
+            return withContext(Dispatchers.IO){
+                val response = ApiConfig.retrofit.getById(id)
+
+                when(val responseBody = response.body()){
+                    is Kviz -> return@withContext responseBody
+                    else -> return@withContext null
+                }
+
+            }!!
         }
 
 
-        fun getUpisani():List<Kviz>{
-            return emptyList()
+        suspend fun getUpisani():List<Kviz>{
+            return withContext(Dispatchers.IO){
+
+                val listaGrupa = getUpisaneGrupe()
+                val vratiKvizove: MutableList<Kviz> = mutableListOf()
+
+                for(g in listaGrupa){
+                    val response = ApiConfig.retrofit.getUpisani(g.id)
+                    vratiKvizove.addAll(response.body()!!)
+                }
+
+                return@withContext vratiKvizove
+            }
         }
-
-
-
 
 
         //ovo sve ispod obrisat later
-        fun getMyKvizes(): List<Kviz>{
-            return sviMojiKvizovi()
-        }
-
-        fun upisiKviz(g: String = ""): List<Kviz> {
-            return upisiKvizz(g)
-        }
-
-        fun getDone(): List<Kviz> {
-            return zavrseniKvizovi()
-        }
-
-        fun getFuture(): List<Kviz> {
-           return buduciKvizovi()
-        }
-
-        fun getNotTaken(): List<Kviz> {
-            return neuradjeniKvizovi()
-        }
-
-        fun getMyDone(): List<Kviz> {
-            return mojiZavrseni()
-        }
-
-        fun getMyFuture(): List<Kviz> {
-            return mojiBuduci()
-        }
-
-        fun getMyNotTaken(): List<Kviz> {
-            return mojiNeuradjeni()
-        }
-
-        fun dodajUradjenKviz(k: String, p: String){
-            dodajUradjen(k, p)
-        }
+//        fun getMyKvizes(): List<Kviz>{
+//            return sviMojiKvizovi()
+//        }
+//
+//        fun upisiKviz(g: String = ""): List<Kviz> {
+//            return upisiKvizz(g)
+//        }
+//
+//        fun getDone(): List<Kviz> {
+//            return zavrseniKvizovi()
+//        }
+//
+//        fun getFuture(): List<Kviz> {
+//           return buduciKvizovi()
+//        }
+//
+//        fun getNotTaken(): List<Kviz> {
+//            return neuradjeniKvizovi()
+//        }
+//
+//        fun getMyDone(): List<Kviz> {
+//            return mojiZavrseni()
+//        }
+//
+//        fun getMyFuture(): List<Kviz> {
+//            return mojiBuduci()
+//        }
+//
+//        fun getMyNotTaken(): List<Kviz> {
+//            return mojiNeuradjeni()
+//        }
+//
+//        fun dodajUradjenKviz(k: String, p: String){
+//            dodajUradjen(k, p)
+//        }
 
     }
 }

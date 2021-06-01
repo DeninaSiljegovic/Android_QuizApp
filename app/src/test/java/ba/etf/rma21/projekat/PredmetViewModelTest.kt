@@ -1,13 +1,13 @@
 package ba.etf.rma21.projekat
 
-import ba.etf.rma21.projekat.viewmodel.PredmetViewModel
+import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import org.junit.Test
 
 import org.junit.Assert.*
 
 //test filtriranja predmeta po godinama
 class PredmetViewModelTest {
-    private var predmetViewModel = PredmetViewModel()
+    private var predmetViewModel = PredmetIGrupaViewModel()
 
     @Test
     fun godinaPrvaTest(){

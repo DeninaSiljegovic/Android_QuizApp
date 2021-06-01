@@ -1,6 +1,5 @@
 package ba.etf.rma21.projekat
 
-import ba.etf.rma21.projekat.viewmodel.GrupaViewModel
 import org.junit.Test
 
 import org.junit.Assert.*
