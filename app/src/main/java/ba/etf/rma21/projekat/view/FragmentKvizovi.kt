@@ -20,6 +20,10 @@ import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class FragmentKvizovi : Fragment() {
@@ -28,6 +32,7 @@ class FragmentKvizovi : Fragment() {
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()
+    val scope = CoroutineScope(Job() + Dispatchers.Main)
     private val model: SharedViewModel by activityViewModels()
 
 
@@ -95,19 +100,21 @@ class FragmentKvizovi : Fragment() {
                 // then, we can change string value into integer
                 val item_position = position.toString()
                 val positonInt = Integer.valueOf(item_position)
-                if(positonInt  == 0)  listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
-                else if(positonInt == 1)  listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
-                else if(positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyDone())
-                else if(positonInt == 3) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyFuture())
-                else if(positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyNotTaken())
+                scope.launch {
+                    if (positonInt == 0) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+                    else if (positonInt == 1) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
+                    else if (positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyDone())
+                    else if (positonInt == 3) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyFuture())
+                    else if (positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyNotTaken())
+                }
             }
 
 
-            override fun onNothingSelected(parent: AdapterView<*>?) { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll()) }
+            override fun onNothingSelected(parent: AdapterView<*>?) { scope.launch { listaKvizovaAdapter.updateKvizove( kvizListViewModel.getAll())} }
         }
 
         if(model.getIzmjena() == 1) {
-            listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+            scope.launch { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes()) }
             filterKvizova.setSelection(0)
             //da bi se restartovali spinneri na pocetni izgled - inace se prebaci na iduci neupisani predmet/godinu
             model.setIzmjena(0)
@@ -117,7 +124,7 @@ class FragmentKvizovi : Fragment() {
 
         if(uradjen.toString() == "1"){
             Log.d("Uradjen kviz", uradjen.toString())
-            listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
+            scope.launch { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes()) }
             filterKvizova.setSelection(0)
         }
 

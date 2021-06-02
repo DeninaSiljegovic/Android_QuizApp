@@ -14,6 +14,9 @@ import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +26,7 @@ class KvizListAdapter (
 ) : RecyclerView.Adapter<KvizListAdapter.KvizViewHolder>() {
 
     private var pitanjeKvizViewModel = PitanjeKvizViewModel()
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
@@ -38,10 +42,10 @@ class KvizListAdapter (
         var uradjen = 0
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
-        if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().getTime())){
+        if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().time)){
 
             //1.1 - bodovi i datum rada su null == CRVENA
-            if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumRada.equals(GregorianCalendar(1970, 0, 1).getTime())){
+            if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumRada.equals(GregorianCalendar(1970, 0, 1).time)){
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
                 holder.statusImage.setImageResource(R.drawable.crvena)
                 holder.textBodovi.visibility = View.INVISIBLE
@@ -60,7 +64,7 @@ class KvizListAdapter (
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
             //KVIZ JE AKTIVAN I URADJEN == PLAVA
-            if(kvizovi[position].osvojeniBodovi != null && kvizovi[position].datumRada != GregorianCalendar(1970, 0, 1).getTime()){
+            if(kvizovi[position].osvojeniBodovi != null && kvizovi[position].datumRada != GregorianCalendar(1970, 0, 1).time){
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumRada)
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
@@ -68,13 +72,13 @@ class KvizListAdapter (
                 uradjen = 1
             }
             //aktivan je al nije uradjen == ZELENA
-            else if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().getTime())){
+            else if(kvizovi[position].osvojeniBodovi == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
                 holder.statusImage.setImageResource(R.drawable.zelena)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
             //datum pocetka i datum kraja jos nisu dosli na red - TEK SE AKTIVIRA == ZUTA
-            else if(kvizovi[position].datumPocetka.after(GregorianCalendar.getInstance().getTime())) {
+            else if(kvizovi[position].datumPocetka.after(GregorianCalendar.getInstance().time)) {
                 holder.textDatum.text = toSimpleString(kvizovi[position].datumPocetka)
                 holder.statusImage.setImageResource(R.drawable.zuta)
                 holder.textBodovi.visibility = View.INVISIBLE
