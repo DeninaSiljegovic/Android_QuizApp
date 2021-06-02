@@ -32,7 +32,6 @@ class PredmetIGrupaViewModel {
     }
 
 
-
     suspend fun getAllPredmeti(): List<Predmet> {
         return PredmetIGrupaRepository.getPredmeti()
     }

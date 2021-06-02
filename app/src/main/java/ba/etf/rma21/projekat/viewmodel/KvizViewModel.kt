@@ -2,48 +2,69 @@ package ba.etf.rma21.projekat.viewmodel
 
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.repositories.*
+import java.util.*
 
 class KvizViewModel {
 
-    fun upisiKviz(g:String): List<Kviz> {
-        return KvizRepository.upisiKviz(g)
-    }
-
-    fun getMyKvizes(): List<Kviz> {
-        return KvizRepository.getMyKvizes()
-    }
-
-    fun getAll(): List<Kviz>{
+    suspend fun getAll(): List<Kviz>{
         return KvizRepository.getAll()
     }
 
-    fun getDone(): List<Kviz> {
-        return KvizRepository.getDone()
+    suspend fun getByIdKviz(id: Int): Kviz {
+        return KvizRepository.getById(id)
     }
 
-    fun getFuture(): List<Kviz> {
-        return KvizRepository.getFuture()
+    suspend fun getMyKvizes(): List<Kviz>{
+        return KvizRepository.getUpisani()
     }
 
-    fun getNotTaken(): List<Kviz> {
-        return KvizRepository.getNotTaken()
+    suspend fun getMyFuture(): List<Kviz> {
+        val sviKvizovi: List<Kviz> =  KvizRepository.getUpisani()
+        return sviKvizovi.filter { it.datumPocetka > GregorianCalendar.getInstance().time }
     }
 
-    fun getMyDone(): List<Kviz> {
-        return KvizRepository.getMyDone()
+    /* iz liste svih korisnikovih kvizova izbaciti one koji su zapoceti
+     + filtrirati tako da je kviz vec prosao = dakle ne moze ga ni pokusati uraditi */
+    suspend fun getMyNotTaken(): List<Kviz> {
+        val zapocetiKvizovi = TakeKvizRepository.getPocetiKvizovi()
+        val myKvizovi = getMyKvizes().toMutableList()
+
+        for(z in zapocetiKvizovi){
+            for(m in myKvizovi){
+                if(z.KvizId == m.id) myKvizovi.remove(m)
+            }
+        }
+
+        myKvizovi.filter { it.datumKraj < GregorianCalendar.getInstance().time }
+        return myKvizovi
     }
 
-    fun getMyFuture(): List<Kviz> {
-        return KvizRepository.getMyFuture()
+    /*kvizovi koje je korisnik uradio*/
+    suspend fun getMyDone(): List<Kviz> {
+        val zapocetiKvizovi = TakeKvizRepository.getPocetiKvizovi()
+        val myKvizovi = getMyKvizes()
+        val vrati: MutableList<Kviz> = mutableListOf()
+
+        //dobijem sve kvizove koji su uradjeni prije danas ili danas
+        zapocetiKvizovi.filter { it.datumRada <= GregorianCalendar.getInstance().time }
+
+        for(z in zapocetiKvizovi){
+            for(m in myKvizovi){
+                if(z.KvizId == m.id) vrati.add(m)
+            }
+        }
+
+        return vrati
     }
 
-    fun getMyNotTaken(): List<Kviz> {
-        return KvizRepository.getMyNotTaken()
-    }
 
-    fun dodajUradjenKviz(k: String, p: String){
-        KvizRepository.dodajUradjenKviz(k, p)
-    }
-
+//    fun upisiKviz(g:String): List<Kviz> {
+//        return KvizRepository.upisiKviz(g)
+//    }
+//
+//
+//    fun dodajUradjenKviz(k: String, p: String){
+//        KvizRepository.dodajUradjenKviz(k, p)
+//    }
 
 }

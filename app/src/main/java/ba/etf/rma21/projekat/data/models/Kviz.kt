@@ -6,7 +6,7 @@ import java.util.*
 data class Kviz(
     @SerializedName("id") val id: Int,
     @SerializedName("naziv") val naziv: String,
-    @SerializedName("datumPocetka") val datumPocetka: Date,
+    @SerializedName("datumPocetak") val datumPocetka: Date,
     @SerializedName("datumKraj") val datumKraj: Date,
     @SerializedName("trajanje") val trajanje: Int
 ) {
