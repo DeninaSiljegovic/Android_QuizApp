@@ -7,6 +7,7 @@ import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.repositories.AccountRepository.Companion.getHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.http.Path
 
 class PredmetIGrupaRepository {
 
@@ -15,6 +16,14 @@ class PredmetIGrupaRepository {
         suspend fun getPredmeti(): List<Predmet> {
             return withContext(Dispatchers.IO){
                 val response = ApiConfig.retrofit.getPredmeti()
+
+                return@withContext response.body()
+            }!!
+        }
+
+        suspend fun getPredmetSaId(predmetId : Int): Predmet{
+            return withContext(Dispatchers.IO){
+                val response = ApiConfig.retrofit.getPredmetSaId(predmetId)
 
                 return@withContext response.body()
             }!!
@@ -31,6 +40,14 @@ class PredmetIGrupaRepository {
         suspend fun getGrupeZaPredmet(idPredmeta: Int): List<Grupa> {
             return withContext(Dispatchers.IO){
                 val response = ApiConfig.retrofit.getGrupeZaPredmet(idPredmeta)
+
+                return@withContext response.body()
+            }!!
+        }
+
+        suspend fun getGrupeZaKviz(idKviza: Int): List<Grupa> {
+            return withContext(Dispatchers.IO){
+                val response = ApiConfig.retrofit. getGrupeZaKviz(idKviza)
 
                 return@withContext response.body()
             }!!

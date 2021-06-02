@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(){
             }
             R.id.predajKviz -> {
                 //napravit funkciju koja predaje kviz
-                zabiljeziZavrsen()
+                //zabiljeziZavrsen()
                 uradjen = 1
                 val newFragment = FragmentPoruka.newInstance()
                 openFragment(newFragment)
@@ -108,9 +108,9 @@ class MainActivity : AppCompatActivity(){
             imePredmeta = bundle.getString("imePredmeta")!!
              }
 
-        fun zabiljeziZavrsen(){
-            kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
-        }
+//        fun zabiljeziZavrsen(){
+//            kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
+//        }
     }
 
 

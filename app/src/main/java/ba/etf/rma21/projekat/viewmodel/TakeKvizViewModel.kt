@@ -15,6 +15,12 @@ class TakeKvizViewModel {
         return TakeKvizRepository.getPocetiKvizovi()
     }
 
+    //lista ce sadrzati uvijek 1 element jer ce samo jedan KvizTaken imati KvizId koji se poklapa sa id Kviza koji smo send
+    suspend fun getPokusajKviza(id: Int): List<KvizTaken> {
+        val sviPokrenuti = getPocetiKvizovi()
+        return sviPokrenuti.filter { it.KvizId == id }
+    }
+
 
 
 }

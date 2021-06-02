@@ -43,11 +43,17 @@ interface Api {
     @GET("/predmet")
     suspend fun getPredmeti() : Response<List<Predmet>>
 
+    @GET("/predmet/{id}")
+    suspend fun getPredmetSaId(@Path("id") predmetId : Int) : Response<Predmet>
+
     @GET("/grupa")
     suspend fun getGrupe() : Response<List<Grupa>>
 
     @GET("/predmet/{id}/grupa")
     suspend fun getGrupeZaPredmet(@Path("id") idPredmet : Int) : Response<List<Grupa>>
+
+    @GET("/kviz/{id}/grupa")
+    suspend fun getGrupeZaKviz(@Path("id") idKviza: Int) : Response<List<Grupa>>
 
     @POST("/grupa/{gid}/student/{id}")
     suspend fun upisiUGrupu(@Path("gid") idGrupa : Int, @Path("id") hashStudenta: String) : Response<Poruka>

@@ -19,6 +19,10 @@ class PredmetIGrupaViewModel {
         return emptyList()
     }
 
+    suspend fun getGroupsZaKviz(idKviza: Int): List<Grupa> {
+        return PredmetIGrupaRepository.getGrupeZaKviz(idKviza)
+    }
+
     suspend fun getAllGrupe(): List<Grupa>{
         return getGrupe()
     }
@@ -34,6 +38,10 @@ class PredmetIGrupaViewModel {
 
     suspend fun getAllPredmeti(): List<Predmet> {
         return PredmetIGrupaRepository.getPredmeti()
+    }
+
+    suspend fun getPredmetSaId(predmetId : Int): Predmet {
+        return PredmetIGrupaRepository.getPredmetSaId(predmetId)
     }
 
     /* sve predmete uzet pa filtrirati na osnovu godine*/

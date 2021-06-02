@@ -25,7 +25,7 @@ class OdgovorRepository {
         //?? KAKO OVO
         suspend fun postaviOdgovorKviz(idKvizTaken:Int,idPitanje:Int,odgovor:Int):Int{
             return withContext(Dispatchers.IO){
-                val response = ApiConfig.retrofit.postaviOdgovorKviz(AccountRepository.getHash(), idKvizTaken, OdgovorBody(odgovor, idPitanje, 5))
+                val response = ApiConfig.retrofit.postaviOdgovorKviz(AccountRepository.getHash(), idKvizTaken, OdgovorBody(odgovor, idPitanje, 1))
 
                 when(response.body()){
                     is Odgovor -> return@withContext 5 //todo OVO VRACA UKUPNE BODOVE NA KVIZU

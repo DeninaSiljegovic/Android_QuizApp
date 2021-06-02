@@ -45,6 +45,9 @@ class FragmentPoruka : Fragment() {
             setFragmentResultListener("zavrseno") { requestKey, bundle ->
                 kviz = bundle.getString("poruka")!!
                 poruka.text = kviz
+
+                //oznaciti da je kviz zavrsen
+
             }
         }
 

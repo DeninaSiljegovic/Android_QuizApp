@@ -18,11 +18,12 @@ import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 
 
-class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
+class FragmentPitanje ( private var pitanje: Pitanje,
+                        private var odg: Int = -1
+): Fragment()  {
 
     private lateinit var pitanjeText: TextView
     private lateinit var listaOdgovora: ListView
-    private var odg = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pitanje_fragment, container, false)
@@ -31,7 +32,7 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
         listaOdgovora = view.findViewById(R.id.odgovoriLista)
         val uradjenKviz = arguments?.getString("uradjen").toString()
 
-        pitanjeText.text = pitanje.tekst
+        pitanjeText.text = pitanje.tekstPitanja
         listaOdgovora.adapter = ArrayAdapter<String>(
                 view.context,
                 android.R.layout.simple_list_item_1,
@@ -64,8 +65,8 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
             setFragmentResult(
                 "rezultat", // Same request key FragmentA used to register its listener
                 if(odg == pitanje.tacan)
-                    bundleOf("rezultatB" to 1) // The data to be passed to FragmentA
-                else bundleOf("rezultatB" to -1)
+                    bundleOf("rezultatB" to 1, "choosenAnswer" to odg) // The data to be passed to FragmentA
+                else bundleOf("rezultatB" to -1, "choosenAnswer" to odg)
             )
 
             //obojiti odgovarajuce odgovore
@@ -83,7 +84,7 @@ class FragmentPitanje ( private var pitanje: Pitanje): Fragment()  {
     }
 
     companion object {
-        fun newInstance(p: Pitanje): FragmentPitanje = FragmentPitanje(p)
+        fun newInstance(p: Pitanje, o: Int): FragmentPitanje = FragmentPitanje(p, o)
     }
 
     override fun onDestroyView() {

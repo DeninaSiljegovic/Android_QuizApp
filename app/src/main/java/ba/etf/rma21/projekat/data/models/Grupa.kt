@@ -6,5 +6,6 @@ data class Grupa(
     @SerializedName("id") val id: Int,
     @SerializedName("naziv") val naziv: String,
     @SerializedName("PredmetId") val PredmetId: Int
+
 ) {
 }
