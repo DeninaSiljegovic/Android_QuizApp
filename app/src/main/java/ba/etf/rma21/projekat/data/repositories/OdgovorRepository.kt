@@ -12,8 +12,6 @@ class OdgovorRepository {
 
         suspend fun getOdgovoriKviz(idKviza:Int):List<Odgovor>{
             return withContext(Dispatchers.IO){
-
-
                 val pokusaj = TakeKvizRepository.getPocetiKvizovi().find{it.KvizId == idKviza}
                 val response = ApiConfig.retrofit.getOdgovoriKviz(getHash(), pokusaj!!.id)
 

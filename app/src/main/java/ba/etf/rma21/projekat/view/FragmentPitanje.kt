@@ -48,6 +48,7 @@ class FragmentPitanje ( private var pitanje: Pitanje,
                 //obojiti odgovarajuce odgovore
                 if (odg == pitanje.tacan)
                     textView.setTextColor(ContextCompat.getColor(view.context, R.color.tacno))
+                else if(odg == 1000) textView.setTextColor(ContextCompat.getColor(view.context,  R.color.white)) //AKO NIJE ODGOVORENO NA PITANJE A KVIZ JE DONE
                 else {
                     textView.setTextColor(ContextCompat.getColor(view.context, R.color.pogresno))
                     val textView1 = listaOdgovora.getChildAt(pitanje.tacan) as TextView

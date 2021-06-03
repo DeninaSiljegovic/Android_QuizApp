@@ -94,11 +94,9 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                             if(pitanje.tacan == odgovor.odgovoreno){ //ako je odgovor tacan
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, indeks.toString().length, 0)
                             }
-
-//                            else if(odgovor.odgovoreno > pitanje.opcije.size){ //kad nije odgovoreno pitanje
-//                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
-//                            }
-
+                            else if(odgovor.odgovoreno== 1000){ //kad nije odgovoreno pitanje a predano - odg.odgovoreno == 10000
+                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
+                            }
                             else if(pitanje.tacan != odgovor.odgovoreno){
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, indeks.toString().length, 0)
                             }
@@ -212,6 +210,14 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
             }
             meni[pom-1].title = temp
+        }
+
+        //ako je uradjen ili ne dobija se preko bundle iz kvizListAdapter
+        if(kvizUradjen == "0"){
+            Log.d("PokusajFragment", imeKviza)
+            MainActivity.primiPodatke(bundleOf(
+                    Pair("idKviza", idKviz)
+            ))
         }
 
         return view

@@ -8,12 +8,21 @@ import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
+import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
+import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
+import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity(){
     private lateinit var bottomNavigation : BottomNavigationView
     private var uradjen = 0
+    private var odgovorViewModel = OdgovorViewModel()
+    private var pitanjeKvizViewModel = PitanjeKvizViewModel()
+    private var kvizViewModel = KvizViewModel()
+    private var takeKvizViewModel = TakeKvizViewModel()
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -31,8 +40,29 @@ class MainActivity : AppCompatActivity(){
                 return@OnNavigationItemSelectedListener true
             }
             R.id.predajKviz -> {
-                //napravit funkciju koja predaje kviz
-                //zabiljeziZavrsen()
+                val idKviza = vratiIdKviza()
+                var result: Deferred<Unit>
+
+                scope.launch{
+                    result = async {
+                        val odgovori = odgovorViewModel.getOdgovoriKviz(idKviza)
+                        val pitanja = pitanjeKvizViewModel.getPitanja(idKviza)
+
+                        val pokusajKviza = takeKvizViewModel.getPocetiKvizovi().find { it.KvizId == idKviza }
+
+                        if (odgovori.size != pitanja.size) {
+                            for (p in pitanja) {
+                                val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
+
+                                if (odg == null) {
+                                    println("postavljamo fejk odgovor za pitanj " + p.tekstPitanja)
+                                    odgovorViewModel.postaviOdgovorKviz(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
+                                }
+                            }
+                        }
+                    }
+                    result.await()
+                }//scope zatvoren
                 uradjen = 1
                 val newFragment = FragmentPoruka.newInstance()
                 openFragment(newFragment)
@@ -99,18 +129,12 @@ class MainActivity : AppCompatActivity(){
     }
 
     companion object {
-        private var imeKviza: String = ""
-        private var imePredmeta: String = ""
-        private var kvizViewModel = KvizViewModel()
-
+        private var idKviza: Int = 0
         fun primiPodatke(bundle: Bundle) {
-            imeKviza = bundle.getString("imeKviza")!!
-            imePredmeta = bundle.getString("imePredmeta")!!
-             }
+            idKviza = bundle.getInt("idKviza")
+        }
 
-//        fun zabiljeziZavrsen(){
-//            kvizViewModel.dodajUradjenKviz(imeKviza, imePredmeta)
-//        }
+        fun vratiIdKviza(): Int { return idKviza }
     }
 
 

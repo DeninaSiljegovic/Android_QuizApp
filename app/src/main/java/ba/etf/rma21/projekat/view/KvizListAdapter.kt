@@ -12,9 +12,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
-import ba.etf.rma21.projekat.data.models.Grupa
-import ba.etf.rma21.projekat.data.models.Kviz
-import ba.etf.rma21.projekat.data.models.KvizTaken
+import ba.etf.rma21.projekat.data.models.*
+import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
@@ -31,6 +30,7 @@ class KvizListAdapter (
     private var pitanjeKvizViewModel = PitanjeKvizViewModel()
     private var takeKvizViewModel = TakeKvizViewModel()
     private var predmetIGrupaViewModel = PredmetIGrupaViewModel()
+    private var odgovorViewModel = OdgovorViewModel()
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -70,10 +70,38 @@ class KvizListAdapter (
                 vrati2 =  takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
             }
             result.await()
-            if (vrati2.size > 0) bodoviKviz = vrati2[0].osvojeniBodovi
+            if (vrati2.size > 0) bodoviKviz = vrati2  [0].osvojeniBodovi
             else bodoviKviz = null
         }
 
+        var odgovori: List<Odgovor> = listOf()
+        var pitanja: List<Pitanje> = listOf()
+        scope.launch {
+            result = async {
+                val pokusajKviza = takeKvizViewModel.getPocetiKvizovi().find { it.KvizId == kvizovi[position].id }
+
+                if (pokusajKviza != null) {
+                    println("Ima pokusaj kviza")
+                    odgovori = odgovorViewModel.getOdgovoriKviz(kvizovi[position].id)
+                    pitanja = pitanjeKvizViewModel.getPitanja(kvizovi[position].id)
+                    println("PUUJ " + "odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
+                }
+            }
+            result.await()
+
+
+            println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
+
+            if (odgovori.isNotEmpty() && pitanja.isNotEmpty() && odgovori.size == pitanja.size) {
+                println("ZAVRSEN KVIZ")
+                println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
+                holder.textDatum.text = toSimpleString(datumRada)
+                holder.statusImage.setImageResource(R.drawable.plava)
+                holder.textBodovi.visibility = View.VISIBLE
+                holder.textBodovi.text = bodoviKviz.toString()
+                uradjen = 1
+            }
+        }
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
         if(kvizovi[position].datumKraj != null && kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().time)){
@@ -87,28 +115,28 @@ class KvizListAdapter (
             }
 
             //1.2 - imaju bodovi i datum rada == PLAVA
-            else{
-                holder.textDatum.text = toSimpleString(datumRada)
-                holder.statusImage.setImageResource(R.drawable.plava)
-                holder.textBodovi.visibility = View.VISIBLE
-                holder.textBodovi.text = bodoviKviz.toString()
-                uradjen = 1
-            }
+//            else{
+//                holder.textDatum.text = toSimpleString(datumRada)
+//                holder.statusImage.setImageResource(R.drawable.plava)
+//                holder.textBodovi.visibility = View.VISIBLE
+//                holder.textBodovi.text = bodoviKviz.toString()
+//                uradjen = 1
+//            }
         }
 
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
             //2.1 KVIZ JE AKTIVAN I URADJEN == PLAVA
-            if(bodoviKviz != null &&  datumRada != null){
-                holder.textDatum.text = toSimpleString( datumRada )
-                holder.statusImage.setImageResource(R.drawable.plava)
-                holder.textBodovi.visibility = View.VISIBLE
-                holder.textBodovi.text = bodoviKviz.toString()
-                uradjen = 1
-            }
+//            if(bodoviKviz != null &&  datumRada != null){
+//                holder.textDatum.text = toSimpleString( datumRada )
+//                holder.statusImage.setImageResource(R.drawable.plava)
+//                holder.textBodovi.visibility = View.VISIBLE
+//                holder.textBodovi.text = bodoviKviz.toString()
+//                uradjen = 1
+//            }
 
             //2.2 aktivan je al nije uradjen == ZELENA
-            else if(bodoviKviz == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
+            if(bodoviKviz == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
                 if(kvizovi[position].datumKraj != null) holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
                 else holder.textDatum.text = "inf"
                 holder.statusImage.setImageResource(R.drawable.zelena)
@@ -137,9 +165,9 @@ class KvizListAdapter (
 
                 for (d in distinct) {
                     vrati += d
+                    if(distinct.size > 1 && d != distinct[distinct.size -1]) vrati += ","
                 }
             }
-
             result.await()
             imePredmeta = vrati
             holder.textPredmet.text = vrati
