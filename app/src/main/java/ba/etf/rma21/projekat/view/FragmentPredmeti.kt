@@ -209,6 +209,12 @@ class FragmentPredmeti : Fragment() {
             //kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
             model.setIzmjena(1)
 
+            scope.launch {
+                val grupe = predmetIGrupaViewModel.getAllGrupe()
+                val pronadjenaGrupa = grupe.find{grupa1->grupa1.naziv == odabirGrupa.selectedItem.toString()}
+                predmetIGrupaViewModel.upisiUGrupu(pronadjenaGrupa!!.id)
+            }
+
             //predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
 
             model.setlastSelectedGodina("")
