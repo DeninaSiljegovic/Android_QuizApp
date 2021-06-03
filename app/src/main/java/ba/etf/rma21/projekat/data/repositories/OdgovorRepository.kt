@@ -12,7 +12,10 @@ class OdgovorRepository {
 
         suspend fun getOdgovoriKviz(idKviza:Int):List<Odgovor>{
             return withContext(Dispatchers.IO){
-                val response = ApiConfig.retrofit.getOdgovoriKviz(getHash(), idKviza)
+
+
+                val pokusaj = TakeKvizRepository.getPocetiKvizovi().find{it.KvizId == idKviza}
+                val response = ApiConfig.retrofit.getOdgovoriKviz(getHash(), pokusaj!!.id)
 
                 when(val responseBody = response.body()){
                     is List<Odgovor> -> return@withContext responseBody
@@ -30,8 +33,9 @@ class OdgovorRepository {
                 if(bod == null) bod = 0F
 
                 //pr da li je tacno odgovoreno pa dodati bodove
-                val pit = PitanjeKvizRepository.getPitanja(idKvizTaken).find{ it.id == idPitanje}
+                val pit = PitanjeKvizRepository.getPitanja(pokusaj!!.KvizId).find{ it.id == idPitanje}
                 if(pit?.tacan == odgovor) bod += 1
+
 
                 val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), pokusaj!!.id, OdgovorBody(odgovor, idPitanje, bod))
 

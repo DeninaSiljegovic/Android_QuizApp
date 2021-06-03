@@ -70,7 +70,7 @@ class KvizListAdapter (
                 vrati2 =  takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
             }
             result.await()
-            if (vrati2.size > 0) bodoviKviz = vrati1[0].osvojeniBodovi
+            if (vrati2.size > 0) bodoviKviz = vrati2[0].osvojeniBodovi
             else bodoviKviz = null
         }
 

@@ -25,7 +25,7 @@ interface Api {
     suspend fun getOdgovoriKviz(@Path("id") hashStudenta : String, @Path("ktid") idKviza : Int) : Response<List<Odgovor>>
 
     @POST ("/student/{id}/kviztaken/{ktid}/odgovor")
-    suspend fun postaviOdgovorKviz(@Path("id") hashStudenta : String, @Path("ktid") idPokusajaKviza : Int, @Body odgovorBody: OdgovorBody): Response<Odgovor> //ne znam
+    suspend fun postaviOdgovorKviz(@Path("id") hashStudenta : String, @Path("ktid") idPokusajaKviza : Int, @Body odgovorBody: OdgovorBody): Response<Odgovor>
 
 
     //KvizRepo tj Kviz

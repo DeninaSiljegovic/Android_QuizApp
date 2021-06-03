@@ -70,8 +70,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
         for(i in 1..pitanja.size){
             var temp = SpannableString(i.toString())
             temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, i.toString().length, 0)
-            //else if(nizOdg[i-1] == 1) temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, i.toString().length, 0)
-            //else  temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, i.toString().length, 0)
             meni.add(0, i - 1, i - 1, temp)
             i1 = i
         }
@@ -83,6 +81,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             if(kvizVecOtvoren != null){
                 tekZapocet = false
                 listaOdgovoraKorisnika = odgovorViewModel.getOdgovoriKviz(idKviz)
+                println("Listadddddd " + listaOdgovoraKorisnika.size)
 
                 if(!listaOdgovoraKorisnika.isEmpty()){
 
@@ -96,22 +95,22 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, indeks.toString().length, 0)
                             }
 
-                            else if(odgovor.odgovoreno > pitanje.opcije.size){ //kad nije odgovoreno pitanje
-                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
-                            }
+//                            else if(odgovor.odgovoreno > pitanje.opcije.size){ //kad nije odgovoreno pitanje
+//                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
+//                            }
 
                             else if(pitanje.tacan != odgovor.odgovoreno){
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, indeks.toString().length, 0)
                             }
 
-                            meni.getItem(indeks).title = temp
+                            meni.getItem(indeks-1).title = temp
 
                         }
                     }
                 }
             }
             else{
-                takeKvizViewModel.zapocniKviz(idKviz)
+                kvizVecOtvoren = takeKvizViewModel.zapocniKviz(idKviz)
                 tekZapocet = true
             }
         }
@@ -223,9 +222,11 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
     }
 
     private fun odgovorZaPitanje(pitanje: Pitanje): Int{
-        val odg = listaOdgovoraKorisnika.find { odgovor -> odgovor.PitanjeId == pitanje.id }
-        if(odg != null) return odg.odgovoreno
-        else return -1
+       if(!tekZapocet) {
+           val odg = listaOdgovoraKorisnika.find { odgovor -> odgovor.PitanjeId == pitanje.id }
+           if (odg != null) return odg.odgovoreno
+       }
+        return -1
     }
 
 
