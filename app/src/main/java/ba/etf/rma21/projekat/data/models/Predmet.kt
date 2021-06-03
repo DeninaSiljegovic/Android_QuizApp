@@ -7,4 +7,8 @@ data class Predmet(
     @SerializedName("naziv") val naziv: String,
     @SerializedName("godina") val godina: Int
 ) {
+
+    override fun toString(): String {
+        return naziv
+    }
 }

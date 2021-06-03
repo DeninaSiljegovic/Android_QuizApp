@@ -96,39 +96,41 @@ class FragmentPredmeti : Fragment() {
                 model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
                 //val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
                 var predmeti: List<String> = listOf()
-                scope.launch{ predmeti = predmetIGrupaViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { it.naziv }.stream().collect(
-                    Collectors.toList()) }
+                scope.launch {
+                    predmeti = predmetIGrupaViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { predmet -> predmet.toString()  }.toMutableList()
 
-                //DA SE OZNACI KOJI SE ELEMENT BIRA
-                val dataAdapter1: ArrayAdapter<String> = object: ArrayAdapter<String>(
-                    view.context,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    predmeti
-                ){
-                    override fun getDropDownView(
-                        position: Int,
-                        convertView: View?,
-                        parent: ViewGroup
-                    ): View {
-                        val view: TextView = super.getDropDownView(
-                            position,
-                            convertView,
-                            parent
-                        ) as TextView
-                        // set item text size
-                        view.setTextSize(TypedValue.COMPLEX_UNIT_SP,15F)
+                    //DA SE OZNACI KOJI SE ELEMENT BIRA
+                    val dataAdapter1: ArrayAdapter<String> = object : ArrayAdapter<String>(
+                            view.context,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            predmeti
+                    ) {
+                        override fun getDropDownView(
+                                position: Int,
+                                convertView: View?,
+                                parent: ViewGroup
+                        ): View {
+                            val view: TextView = super.getDropDownView(
+                                    position,
+                                    convertView,
+                                    parent
+                            ) as TextView
+                            // set item text size
+                            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
 
-                        // set selected item style
-                        if (position == odabirGodina.selectedItemPosition){
-                            view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
-                            view.setTextColor(Color.parseColor("#2E2D88"))
+                            // set selected item style
+                            if (position == odabirGodina.selectedItemPosition) {
+                                view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
+                                view.setTextColor(Color.parseColor("#2E2D88"))
+                            }
+                            return view
                         }
-                        return view
                     }
+
+                    odabirPredmet.adapter = dataAdapter1
+                    if (lastSelectedPredmet != "") odabirPredmet.setSelection(predmeti.indexOf(lastSelectedPredmet));
                 }
 
-                odabirPredmet.adapter = dataAdapter1
-                if(lastSelectedPredmet != "") odabirPredmet.setSelection(predmeti.indexOf(lastSelectedPredmet));
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }
@@ -140,40 +142,42 @@ class FragmentPredmeti : Fragment() {
                 val item_position = position.toString()
                 model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
                 var grupe: List<String> = listOf()
-                scope.launch { grupe = predmetIGrupaViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(
-                    Collectors.toList()) }
+                scope.launch {
+                    grupe = predmetIGrupaViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(
+                            Collectors.toList())
 
-                //DA SE OZNACI KOJI SE ELEMENT BIRA
-                val dataAdapter2: ArrayAdapter<String> = object: ArrayAdapter<String>(
-                    view.context,
-                    android.R.layout.simple_spinner_dropdown_item,
-                    grupe
-                ){
-                    override fun getDropDownView(
-                        position: Int,
-                        convertView: View?,
-                        parent: ViewGroup
-                    ): View {
-                        val view: TextView = super.getDropDownView(
-                            position,
-                            convertView,
-                            parent
-                        ) as TextView
-                        // set item text size
-                        view.setTextSize(TypedValue.COMPLEX_UNIT_SP,15F)
+                    //DA SE OZNACI KOJI SE ELEMENT BIRA
+                    val dataAdapter2: ArrayAdapter<String> = object : ArrayAdapter<String>(
+                            view.context,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            grupe
+                    ) {
+                        override fun getDropDownView(
+                                position: Int,
+                                convertView: View?,
+                                parent: ViewGroup
+                        ): View {
+                            val view: TextView = super.getDropDownView(
+                                    position,
+                                    convertView,
+                                    parent
+                            ) as TextView
+                            // set item text size
+                            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15F)
 
-                        // set selected item style
-                        if (position == odabirGodina.selectedItemPosition){
-                            view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
-                            view.setTextColor(Color.parseColor("#2E2D88"))
+                            // set selected item style
+                            if (position == odabirGodina.selectedItemPosition) {
+                                view.background = ColorDrawable(Color.parseColor("#F1E9EC"))
+                                view.setTextColor(Color.parseColor("#2E2D88"))
+                            }
+                            return view
                         }
-                        return view
                     }
-                }
 
-                dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                odabirGrupa.adapter = dataAdapter2
-                if(lastSelectedGrupa != "")  odabirGrupa.setSelection(grupe.indexOf(lastSelectedGrupa));
+                    dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    odabirGrupa.adapter = dataAdapter2
+                    if (lastSelectedGrupa != "") odabirGrupa.setSelection(grupe.indexOf(lastSelectedGrupa));
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {  }

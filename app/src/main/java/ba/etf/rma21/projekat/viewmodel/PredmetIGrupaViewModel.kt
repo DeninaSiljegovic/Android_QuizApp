@@ -46,11 +46,14 @@ class PredmetIGrupaViewModel {
 
     /* sve predmete uzet pa filtrirati na osnovu godine*/
     suspend fun getPredmetiGodine(god: Int): List<Predmet>{
+
+        println("Odabrana godina " + god)
+
         val predmeti = PredmetIGrupaRepository.getPredmeti()
         val vratiPredmete: MutableList<Predmet> = mutableListOf()
 
         for(p in predmeti){
-            if(p.godina == god) vratiPredmete.add(p)
+            if(p.godina == god + 1) vratiPredmete.add(p)
         }
 
         return vratiPredmete
@@ -70,6 +73,7 @@ class PredmetIGrupaViewModel {
                 if(u.PredmetId == p.id) predmeti.remove(p)
             }
         }
+
         return predmeti
     }
 
