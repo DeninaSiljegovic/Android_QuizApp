@@ -14,6 +14,10 @@ import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.stream.Collectors
 
 class FragmentPredmeti : Fragment() {
@@ -22,11 +26,12 @@ class FragmentPredmeti : Fragment() {
     private lateinit var odabirPredmet: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var dodajPredmetDugme: Button
-    private var predmetListViewModel = PredmetIGrupaViewModel()
-    private var grupaListViewModel = GrupaViewModel()
+    private var predmetIGrupaViewModel = PredmetIGrupaViewModel()
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()
     private val model: SharedViewModel by activityViewModels()
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.predmeti_fragment, container, false)
@@ -90,8 +95,9 @@ class FragmentPredmeti : Fragment() {
                 var positonInt = Integer.valueOf(item_position)
                 model.setlastSelectedGodina(odabirGodina.selectedItemPosition.toString())
                 //val predmeti = getPredmetiGodine(positonInt).map { it.naziv }.stream().collect(Collectors.toList())
-                val predmeti = predmetListViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { it.naziv }.stream().collect(
-                    Collectors.toList())
+                var predmeti: List<String> = listOf()
+                scope.launch{ predmeti = predmetIGrupaViewModel.getPredmetiNaKojeNijeUpisan(positonInt).map { it.naziv }.stream().collect(
+                    Collectors.toList()) }
 
                 //DA SE OZNACI KOJI SE ELEMENT BIRA
                 val dataAdapter1: ArrayAdapter<String> = object: ArrayAdapter<String>(
@@ -133,8 +139,9 @@ class FragmentPredmeti : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 val item_position = position.toString()
                 model.setlastSelectedPredmet(odabirPredmet.selectedItem.toString())
-                val grupe = grupaListViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(
-                    Collectors.toList())
+                var grupe: List<String> = listOf()
+                scope.launch { grupe = predmetIGrupaViewModel.getGroupsByPredmet(odabirPredmet.selectedItem.toString()).map { it.naziv }.stream().collect(
+                    Collectors.toList()) }
 
                 //DA SE OZNACI KOJI SE ELEMENT BIRA
                 val dataAdapter2: ArrayAdapter<String> = object: ArrayAdapter<String>(
@@ -195,10 +202,10 @@ class FragmentPredmeti : Fragment() {
             bundle.putString("predmet", odabirPredmet.selectedItem.toString())
             bundle.putString("grupa", odabirGrupa.selectedItem.toString())
 
-            kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
+            //kvizListViewModel.upisiKviz(model.getlastSelectedGrupaa())
             model.setIzmjena(1)
 
-            predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
+            //predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
 
             model.setlastSelectedGodina("")
             model.setlastSelectedPredmet("")

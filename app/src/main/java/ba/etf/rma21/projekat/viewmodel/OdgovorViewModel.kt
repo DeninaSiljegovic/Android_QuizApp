@@ -10,7 +10,7 @@ class OdgovorViewModel {
         return OdgovorRepository.getOdgovoriKviz(idKviza)
     }
 
-    suspend fun postaviOdgovrKviz(idKvizTaken:Int,idPitanje:Int,odgovor:Int):Int{
+    suspend fun postaviOdgovorKviz(idKvizTaken:Int, idPitanje:Int, odgovor:Int):Int{
         return OdgovorRepository.postaviOdgovorKviz(idKvizTaken, idPitanje, odgovor)
     }
 

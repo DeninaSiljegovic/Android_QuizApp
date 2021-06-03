@@ -16,7 +16,9 @@ import androidx.fragment.app.setFragmentResultListener
 import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.KvizTaken
+import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -26,30 +28,26 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class FragmentPokusaj ( private var pitanja: List<Pitanje>,
-                        private var id_kviz: Int
+                        private var idKviz: Int
 ) : Fragment()  {
     private lateinit var bottomNavigation : BottomNavigationView
     private lateinit var navigationPitanja : NavigationView
+
     private var takeKvizViewModel = TakeKvizViewModel()
+    private var odgovorViewModel = OdgovorViewModel()
+
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
     private  var  imeKviza: String = ""
     private  var  imePredmeta: String = ""
     private var kvizUradjen: String = ""
     private var tekZapocet: Boolean = false
-    //private var nizOdg = IntArray(pitanja.size){0}
+    private var listaOdgovoraKorisnika: List<Odgovor> = listOf()
+    private var kvizVecOtvoren: KvizTaken? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.pokusaj_fragment, container, false)
-
-        //provjeriti da li je kviz vec poceo se radit prije
-
-        scope.launch {
-            val kvizVecOtvoren = takeKvizViewModel.getPocetiKvizovi().find{ it.KvizId == id_kviz }
-            if(kvizVecOtvoren == null){
-                takeKvizViewModel.zapocniKviz(id_kviz)
-                tekZapocet = true
-            }
-        }
 
         imeKviza = arguments?.getString("imeKviza").toString()
         imePredmeta = arguments?.getString("imePredmeta").toString()
@@ -65,7 +63,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
         navigationPitanja = view.findViewById(R.id.navigacijaPitanja)
         val meni = navigationPitanja.menu
 
-        var i_1: Int = 0
+        var i1: Int = 0
+        var pom = 0
 
         //navigation meni sa strane postavka brojeva
         for(i in 1..pitanja.size){
@@ -74,78 +73,48 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             //else if(nizOdg[i-1] == 1) temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, i.toString().length, 0)
             //else  temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, i.toString().length, 0)
             meni.add(0, i - 1, i - 1, temp)
-            i_1 = i
+            i1 = i
         }
-        if(kvizUradjen == "1") meni.add(0, 250, i_1 - 1, "Rezultat")
+        if(kvizUradjen == "1") meni.add(0, 250, i1 - 1, "Rezultat")
 
+        //provjeriti da li je kviz vec poceo se radit prije
+        scope.launch {
+            kvizVecOtvoren = takeKvizViewModel.getPocetiKvizovi().find{ it.KvizId == idKviz }
+            if(kvizVecOtvoren != null){
+                tekZapocet = false
+                listaOdgovoraKorisnika = odgovorViewModel.getOdgovoriKviz(idKviz)
 
-        if(tekZapocet){
-            var pom = 0
+                if(!listaOdgovoraKorisnika.isEmpty()){
 
-            //otvaranje fragmenta pitanje
-            val onNavigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener {item ->
-                    val tag: String = pitanja[item.order].naziv + imeKviza
-                    pom = item.order + 1 //treba za promjenu boje brojeva sa strane
+                    for(odgovor in listaOdgovoraKorisnika){
+                        val pitanje = pitanja.find{pitanje -> pitanje.id == odgovor.PitanjeId }
+                        if(pitanje != null){
+                            val indeks = pitanja.indexOf(pitanje) + 1
+                            val temp = SpannableString(indeks.toString())
 
-                    val bundle = Bundle()
-                    bundle.putString("uradjen", "0") //KAD PRIMI PITANJE FRAGMENT DA ZNA DA NE MOZE BITI CLICKABLE ODGOVORI VISE
+                            if(pitanje.tacan == odgovor.odgovoreno){ //ako je odgovor tacan
+                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, indeks.toString().length, 0)
+                            }
 
-                    val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
+                            else if(odgovor.odgovoreno > pitanje.opcije.size){ //kad nije odgovoreno pitanje
+                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
+                            }
 
-                    if (provjeraFragment == null) {
-                        val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
-                        newFragment.arguments = bundle
-                        val transaction = activity.supportFragmentManager.beginTransaction()
+                            else if(pitanje.tacan != odgovor.odgovoreno){
+                                temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.pogresno)), 0, indeks.toString().length, 0)
+                            }
 
-                        transaction.replace(R.id.framePitanje, newFragment, tag)
-                        transaction.addToBackStack(null)
-                        transaction.commit()
-                    } else {
-                        provjeraFragment.arguments = bundle
-                        val transaction = activity.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.framePitanje, provjeraFragment, tag)
-                        transaction.commit()
+                            meni.getItem(indeks).title = temp
+
+                        }
                     }
-                return@OnNavigationItemSelectedListener true
-            }
-
-            navigationPitanja.setNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-            //promjena boje brojeva u nav view sa strane - dok se radi
-            setFragmentResultListener("rezultat") { requestKey, bundle ->
-                val rez = bundle.getInt("rezultatB")
-                //Log.d("REZ je ", rez.toString())
-                var temp = SpannableString(pom.toString())
-
-                if (rez == 1) {
-                    temp.setSpan(
-                            ForegroundColorSpan(
-                                    ContextCompat.getColor(
-                                            view.context,
-                                            R.color.tacno
-                                    )
-                            ), 0, pom.toString().length, 0
-                    )
-
-                } else {
-                    temp.setSpan(
-                            ForegroundColorSpan(
-                                    ContextCompat.getColor(
-                                            view.context,
-                                            R.color.pogresno
-                                    )
-                            ), 0, pom.toString().length, 0
-                    )
-
                 }
-                meni[pom-1].title = temp
             }
-
-
-        }//if zapocet prvi put
-
-
-
+            else{
+                takeKvizViewModel.zapocniKviz(idKviz)
+                tekZapocet = true
+            }
+        }
 
 
         //otvaranje odg kviza klikom na navigation sa strane
@@ -155,7 +124,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             if(item.itemId == 250){
                 val tag = "ZAVRSEN"+imeKviza+imePredmeta
 
-                val tacnost = (nizOdg.count { it == 1 }.toFloat() / pitanja.size.toFloat()) * 100
+                val tacnost = (4.toFloat() / pitanja.size.toFloat()) * 100
                 val send = "Zavrsili ste kviz $imeKviza \n sa tacnoscu $tacnost"
                 val bundle = Bundle()
                 bundle.putString("poruka", send)
@@ -192,7 +161,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                 val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
 
                 if (provjeraFragment == null) {
-                    val newFragment = FragmentPitanje.newInstance(pitanja[item.order])
+                    val newFragment = FragmentPitanje.newInstance(pitanja[item.order], odgovorZaPitanje(pitanja[item.order])) //nes mijenjat
                     newFragment.arguments = bundle
                     val transaction = activity.supportFragmentManager.beginTransaction()
 
@@ -214,8 +183,13 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
         //promjena boje brojeva u nav view sa strane
         setFragmentResultListener("rezultat") { requestKey, bundle ->
             val rez = bundle.getInt("rezultatB")
+            val odg = bundle.getInt("choosenAnswer")
             //Log.d("REZ je ", rez.toString())
             var temp = SpannableString(pom.toString())
+
+            scope.launch{
+                odgovorViewModel.postaviOdgovorKviz(kvizVecOtvoren!!.id, pitanja[pom-1].id, odg)
+            }
 
             if (rez == 1) {
                 temp.setSpan(
@@ -241,19 +215,17 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             meni[pom-1].title = temp
         }
 
-//        if(kvizUradjen == "0"){
-//            Log.d("PokusajFragment", imeKviza)
-//            MainActivity.primiPodatke(bundleOf(
-//                    Pair("imeKviza", imeKviza),
-//                    Pair("imePredmeta", imePredmeta)
-//            ))
-//        }
-
         return view
     }
 
     companion object {
         fun newInstance(pit: List<Pitanje>, id: Int): FragmentPokusaj = FragmentPokusaj(pit, id)
+    }
+
+    private fun odgovorZaPitanje(pitanje: Pitanje): Int{
+        val odg = listaOdgovoraKorisnika.find { odgovor -> odgovor.PitanjeId == pitanje.id }
+        if(odg != null) return odg.odgovoreno
+        else return -1
     }
 
 

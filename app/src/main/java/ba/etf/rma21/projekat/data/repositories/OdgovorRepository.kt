@@ -22,10 +22,18 @@ class OdgovorRepository {
             }!!
         }
 
-        //?? KAKO OVO
+        //u funkciju se salje kviz_id iz fragmenta pokusaj - da bi nasli odgovarajuci KvizTaken mora KvizId == poslanom id Kviz-a
         suspend fun postaviOdgovorKviz(idKvizTaken:Int,idPitanje:Int,odgovor:Int):Int{
             return withContext(Dispatchers.IO){
-                val response = ApiConfig.retrofit.postaviOdgovorKviz(AccountRepository.getHash(), idKvizTaken, OdgovorBody(odgovor, idPitanje, 1))
+                val pokusaj = TakeKvizRepository.getPocetiKvizovi().find{it.id == idKvizTaken}
+                var bod = pokusaj?.osvojeniBodovi
+                if(bod == null) bod = 0F
+
+                //pr da li je tacno odgovoreno pa dodati bodove
+                val pit = PitanjeKvizRepository.getPitanja(idKvizTaken).find{ it.id == idPitanje}
+                if(pit?.tacan == odgovor) bod += 1
+
+                val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), pokusaj!!.id, OdgovorBody(odgovor, idPitanje, bod))
 
                 when(response.body()){
                     is Odgovor -> return@withContext 5 //todo OVO VRACA UKUPNE BODOVE NA KVIZU

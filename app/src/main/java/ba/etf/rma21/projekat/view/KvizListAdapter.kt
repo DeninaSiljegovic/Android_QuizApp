@@ -14,14 +14,12 @@ import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Kviz
+import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +31,12 @@ class KvizListAdapter (
     private var pitanjeKvizViewModel = PitanjeKvizViewModel()
     private var takeKvizViewModel = TakeKvizViewModel()
     private var predmetIGrupaViewModel = PredmetIGrupaViewModel()
+
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
+    private var imePredmeta: String =""
+    private var datumRada: Date? = null
+    private var bodoviKviz: Float? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KvizViewHolder {
         val view = LayoutInflater
@@ -48,23 +51,47 @@ class KvizListAdapter (
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: KvizViewHolder, position: Int) {
         var uradjen = 0
+        var result: Deferred<Unit>
+
+        var vrati1: List<KvizTaken> = listOf()
+        scope.launch {
+            result = async {
+                vrati1 = takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
+            }
+            result.await()
+            if (vrati1.size > 0) datumRada = vrati1[0].datumRada
+            else datumRada = null
+        }
+
+
+        var vrati2: List<KvizTaken> = listOf()
+        scope.launch {
+            result = async {
+                vrati2 =  takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
+            }
+            result.await()
+            if (vrati2.size > 0) bodoviKviz = vrati1[0].osvojeniBodovi
+            else bodoviKviz = null
+        }
+
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
-        if(kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().time)){
+        if(kvizovi[position].datumKraj != null && kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().time)){
 
             //1.1 - bodovi i datum rada su null == CRVENA
-            if(getBodovi(kvizovi[position]) == null  && getDatumRada(kvizovi[position])!! == GregorianCalendar(1970, 0, 1).time){
-                holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
+            if(bodoviKviz == null  && datumRada == null){
+                if(kvizovi[position].datumKraj != null) holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
+                else holder.textDatum.text = "inf"
                 holder.statusImage.setImageResource(R.drawable.crvena)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
 
             //1.2 - imaju bodovi i datum rada == PLAVA
             else{
-                holder.textDatum.text = toSimpleString(getDatumRada(kvizovi[position]))
+                holder.textDatum.text = toSimpleString(datumRada)
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
-                holder.textBodovi.text = getBodovi(kvizovi[position]).toString()
+                holder.textBodovi.text = bodoviKviz.toString()
                 uradjen = 1
             }
         }
@@ -72,17 +99,18 @@ class KvizListAdapter (
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
             //2.1 KVIZ JE AKTIVAN I URADJEN == PLAVA
-            if(getBodovi(kvizovi[position]) != null &&  getDatumRada(kvizovi[position])!! != GregorianCalendar(1970, 0, 1).time){
-                holder.textDatum.text = toSimpleString( getDatumRada(kvizovi[position])!! )
+            if(bodoviKviz != null &&  datumRada != null){
+                holder.textDatum.text = toSimpleString( datumRada )
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
-                holder.textBodovi.text = getBodovi(kvizovi[position]).toString()
+                holder.textBodovi.text = bodoviKviz.toString()
                 uradjen = 1
             }
 
             //2.2 aktivan je al nije uradjen == ZELENA
-            else if(getBodovi(kvizovi[position]) == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
-                holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
+            else if(bodoviKviz == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
+                if(kvizovi[position].datumKraj != null) holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
+                else holder.textDatum.text = "inf"
                 holder.statusImage.setImageResource(R.drawable.zelena)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
@@ -95,7 +123,27 @@ class KvizListAdapter (
             }
         }
 
-        holder.textPredmet.text = imenaPredmeta(kvizovi[position])
+        var grupe : List<Grupa> = listOf()
+        var vrati: String = ""
+        scope.launch {
+            result = async {
+                grupe = predmetIGrupaViewModel.getGroupsZaKviz(kvizovi[position].id)
+                var sviPredmeti: MutableList<String> = mutableListOf()
+
+                for (g in grupe) {
+                    sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaId(g.PredmetId).naziv)
+                }
+                val distinct = sviPredmeti.toSet().toList()
+
+                for (d in distinct) {
+                    vrati += d
+                }
+            }
+
+            result.await()
+            imePredmeta = vrati
+            holder.textPredmet.text = vrati
+        }
         holder.textKvizBr.text = kvizovi[position].naziv
         holder.textTrajanje.text = kvizovi[position].trajanje.toString() + " min"
 
@@ -104,10 +152,10 @@ class KvizListAdapter (
             if (pitanjeKvizViewModel.getPitanja(kvizovi[position].id).isNotEmpty()) {
 
                 holder.itemView.setOnClickListener {
-                    val tag: String = "pokusaj" + imenaPredmeta(kvizovi[position]) + kvizovi[position].naziv
+                    val tag: String = "pokusaj" + imePredmeta + kvizovi[position].naziv
                     val bundle = Bundle()
                     bundle.putString("imeKviza", kvizovi[position].naziv)
-                    bundle.putString("imePredmeta", imenaPredmeta(kvizovi[position]))
+                    bundle.putString("imePredmeta", imePredmeta)
                     bundle.putString("uradjen", uradjen.toString()) //odredjuje se na osnovu boje loptice kviza
 
                     val provjeraFragment = mSupportFragment?.findFragmentByTag(tag)
@@ -132,36 +180,6 @@ class KvizListAdapter (
         }
     }
 
-    private fun getDatumRada(kviz: Kviz): Date? {
-        var vrati: Date? = null
-        scope.launch { vrati = takeKvizViewModel.getPokusajKviza(kviz.id)[0].datumRada }
-        return vrati
-    }
-
-    private fun getBodovi(kviz: Kviz): Float? {
-        var vrati: Float? = null
-        scope.launch { vrati = takeKvizViewModel.getPokusajKviza(kviz.id)[0].osvojeniBodovi }
-        return vrati
-    }
-
-    private fun imenaPredmeta(kviz: Kviz): String{
-        var grupe : List<Grupa> = listOf()
-        scope.launch { grupe = predmetIGrupaViewModel.getGroupsZaKviz(kviz.id) }
-
-        var sviPredmeti: MutableList<String> = mutableListOf()
-        for(g in grupe){
-            scope.launch { sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaId(g.PredmetId).naziv) }
-        }
-
-        val distinct = sviPredmeti.toSet().toList()
-        var vrati: String = ""
-
-        for(d in distinct){
-            vrati += d
-        }
-
-        return vrati
-    }
 
     fun updateKvizove(kvizovi: List<Kviz>){
         //sortirati po datumima
