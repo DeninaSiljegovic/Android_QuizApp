@@ -17,11 +17,11 @@ class KvizViewModel {
     }
 
     suspend fun getMyKvizes(): List<Kviz>{
-        return KvizRepository.getUpisani()
+        return KvizRepository.getUpisani()!!
     }
 
     suspend fun getMyFuture(): List<Kviz> {
-        val sviKvizovi: List<Kviz> =  KvizRepository.getUpisani()
+        val sviKvizovi: List<Kviz> = KvizRepository.getUpisani()!!
         return sviKvizovi.filter { it.datumPocetka > GregorianCalendar.getInstance().time }
     }
 
@@ -31,7 +31,7 @@ class KvizViewModel {
         val zapocetiKvizovi = TakeKvizRepository.getPocetiKvizovi()
         val myKvizovi = getMyKvizes().toMutableList()
 
-        for(z in zapocetiKvizovi){
+        for(z in zapocetiKvizovi!!){
             for(m in myKvizovi){
                 if(z.KvizId == m.id) myKvizovi.remove(m)
             }
@@ -48,7 +48,7 @@ class KvizViewModel {
         val vrati: MutableList<Kviz> = mutableListOf()
 
         //dobijem sve kvizove koji su uradjeni prije danas ili danas
-        zapocetiKvizovi.filter { it.datumRada <= GregorianCalendar.getInstance().time }
+        zapocetiKvizovi!!.filter { it.datumRada <= GregorianCalendar.getInstance().time }
 
         for(z in zapocetiKvizovi){
             for(m in myKvizovi){

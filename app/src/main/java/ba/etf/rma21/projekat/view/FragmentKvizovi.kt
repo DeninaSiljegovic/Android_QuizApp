@@ -123,7 +123,6 @@ class FragmentKvizovi : Fragment() {
         val uradjen = arguments?.getString("uradjen")
 
         if(uradjen.toString() == "1"){
-            Log.d("Uradjen kviz", uradjen.toString())
             scope.launch { listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes()) }
             filterKvizova.setSelection(0)
         }

@@ -12,7 +12,7 @@ class OdgovorRepository {
 
         suspend fun getOdgovoriKviz(idKviza:Int):List<Odgovor>{
             return withContext(Dispatchers.IO){
-                val pokusaj = TakeKvizRepository.getPocetiKvizovi().find{it.KvizId == idKviza}
+                val pokusaj = TakeKvizRepository.getPocetiKvizovi()!!.find{it.KvizId == idKviza}
                 val response = ApiConfig.retrofit.getOdgovoriKviz(getHash(), pokusaj!!.id)
 
                 when(val responseBody = response.body()){
@@ -25,23 +25,24 @@ class OdgovorRepository {
 
         //u funkciju se salje kviz_id iz fragmenta pokusaj - da bi nasli odgovarajuci KvizTaken mora KvizId == poslanom id Kviz-a
         suspend fun postaviOdgovorKviz(idKvizTaken:Int,idPitanje:Int,odgovor:Int):Int{
-            return withContext(Dispatchers.IO){
-                val pokusaj = TakeKvizRepository.getPocetiKvizovi().find{it.id == idKvizTaken}
-                var bod = pokusaj?.osvojeniBodovi
-                if(bod == null) bod = 0F
+            return (withContext(Dispatchers.IO){
+                val pokusaj = TakeKvizRepository.getPocetiKvizovi()!!.find{it.id == idKvizTaken}
+                var bod = 0F
 
                 //pr da li je tacno odgovoreno pa dodati bodove
                 val pit = PitanjeKvizRepository.getPitanja(pokusaj!!.KvizId).find{ it.id == idPitanje}
-                if(pit?.tacan == odgovor) bod += 1
+                if(pit?.tacan == odgovor){
+                    pokusaj.osvojeniBodovi += 50F
+                    bod = 1F }
 
 
                 val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), pokusaj!!.id, OdgovorBody(odgovor, idPitanje, bod))
 
                 when(response.body()){
-                    is Odgovor -> return@withContext 5 //todo OVO VRACA UKUPNE BODOVE NA KVIZU
+                    is Odgovor -> return@withContext pokusaj.osvojeniBodovi.toInt() //todo OVO VRACA UKUPNE BODOVE NA KVIZU
                     else -> return@withContext  -1
                 }
-            }!!
+            })
         }
 
     }

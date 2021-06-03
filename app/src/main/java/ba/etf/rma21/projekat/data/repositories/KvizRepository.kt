@@ -48,42 +48,5 @@ class KvizRepository {
         }
 
 
-        //ovo sve ispod obrisat later
-//        fun getMyKvizes(): List<Kviz>{
-//            return sviMojiKvizovi()
-//        }
-//
-//        fun upisiKviz(g: String = ""): List<Kviz> {
-//            return upisiKvizz(g)
-//        }
-//
-//        fun getDone(): List<Kviz> {
-//            return zavrseniKvizovi()
-//        }
-//
-//        fun getFuture(): List<Kviz> {
-//           return buduciKvizovi()
-//        }
-//
-//        fun getNotTaken(): List<Kviz> {
-//            return neuradjeniKvizovi()
-//        }
-//
-//        fun getMyDone(): List<Kviz> {
-//            return mojiZavrseni()
-//        }
-//
-//        fun getMyFuture(): List<Kviz> {
-//            return mojiBuduci()
-//        }
-//
-//        fun getMyNotTaken(): List<Kviz> {
-//            return mojiNeuradjeni()
-//        }
-//
-//        fun dodajUradjenKviz(k: String, p: String){
-//            dodajUradjen(k, p)
-//        }
-
     }
 }

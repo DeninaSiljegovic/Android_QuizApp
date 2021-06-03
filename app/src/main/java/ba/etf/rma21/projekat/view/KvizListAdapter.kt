@@ -70,7 +70,7 @@ class KvizListAdapter (
                 vrati2 =  takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
             }
             result.await()
-            if (vrati2.size > 0) bodoviKviz = vrati2  [0].osvojeniBodovi
+            if (vrati2.size > 0) bodoviKviz = vrati2[0].osvojeniBodovi
             else bodoviKviz = null
         }
 
@@ -105,7 +105,6 @@ class KvizListAdapter (
 
         //slucaj 1 - DATUM KRAJA JE PROSAO
         if(kvizovi[position].datumKraj != null && kvizovi[position].datumKraj.before(GregorianCalendar.getInstance().time)){
-
             //1.1 - bodovi i datum rada su null == CRVENA
             if(bodoviKviz == null  && datumRada == null){
                 if(kvizovi[position].datumKraj != null) holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)
@@ -113,28 +112,10 @@ class KvizListAdapter (
                 holder.statusImage.setImageResource(R.drawable.crvena)
                 holder.textBodovi.visibility = View.INVISIBLE
             }
-
-            //1.2 - imaju bodovi i datum rada == PLAVA
-//            else{
-//                holder.textDatum.text = toSimpleString(datumRada)
-//                holder.statusImage.setImageResource(R.drawable.plava)
-//                holder.textBodovi.visibility = View.VISIBLE
-//                holder.textBodovi.text = bodoviKviz.toString()
-//                uradjen = 1
-//            }
         }
 
         //slucaj 2 - KVIZ JE JOS AKTIVAN
         else{
-            //2.1 KVIZ JE AKTIVAN I URADJEN == PLAVA
-//            if(bodoviKviz != null &&  datumRada != null){
-//                holder.textDatum.text = toSimpleString( datumRada )
-//                holder.statusImage.setImageResource(R.drawable.plava)
-//                holder.textBodovi.visibility = View.VISIBLE
-//                holder.textBodovi.text = bodoviKviz.toString()
-//                uradjen = 1
-//            }
-
             //2.2 aktivan je al nije uradjen == ZELENA
             if(bodoviKviz == null && kvizovi[position].datumPocetka.before(GregorianCalendar.getInstance().time)){
                 if(kvizovi[position].datumKraj != null) holder.textDatum.text = toSimpleString(kvizovi[position].datumKraj)

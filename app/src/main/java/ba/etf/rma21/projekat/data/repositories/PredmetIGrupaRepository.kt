@@ -58,9 +58,6 @@ class PredmetIGrupaRepository {
                 val response = ApiConfig.retrofit.upisiUGrupu(idGrupa, getHash())
                 val responseBody = response.body()
 
-                //CHECK IF THIS IS OK
-                Log.d("ODGOVOR UPISA U GRUPU ", responseBody.toString())
-
                 if (responseBody.toString().contains("je dodan u grupu")) return@withContext true
                 return@withContext false
             }

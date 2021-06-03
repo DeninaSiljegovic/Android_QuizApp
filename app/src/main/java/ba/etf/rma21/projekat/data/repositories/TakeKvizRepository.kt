@@ -9,28 +9,36 @@ class TakeKvizRepository {
 
     companion object{
 
-        suspend fun zapocniKviz(idKviza:Int): KvizTaken {
-            return withContext(Dispatchers.IO){
+        suspend fun zapocniKviz(idKviza:Int): KvizTaken? {
+            return (withContext(Dispatchers.IO){
                 val response = ApiConfig.retrofit.zapocniKviz(getHash(), idKviza)
 
                 when(val responseBody = response.body()){
-                    is KvizTaken -> return@withContext responseBody
+                    is KvizTaken -> {
+                        if (responseBody.KvizId == idKviza) {
+                            return@withContext responseBody
+                        } else return@withContext null
+                    }
                     else -> return@withContext null
                 }
 
-               
-            }!!
+
+            })
         }
 
-        suspend fun getPocetiKvizovi():List<KvizTaken>{
+        suspend fun getPocetiKvizovi():List<KvizTaken>?{
             return withContext(Dispatchers.IO){
                 val response = ApiConfig.retrofit.getPocetniKvizovi(getHash())
 
                 when(val responseBody = response.body()){
-                    is List<KvizTaken> -> return@withContext responseBody
+                    is List<KvizTaken> -> {
+                        if(responseBody.isNotEmpty()) {
+                            return@withContext responseBody }
+                        return@withContext null
+                    }
                     else -> return@withContext null
                 }
-            }!!
+            }
         }
 
     }

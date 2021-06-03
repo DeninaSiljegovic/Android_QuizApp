@@ -6,13 +6,13 @@ import ba.etf.rma21.projekat.data.repositories.TakeKvizRepository
 
 class TakeKvizViewModel {
 
-    suspend fun zapocniKviz(idKviza:Int): KvizTaken {
+    suspend fun zapocniKviz(idKviza:Int): KvizTaken? {
         return TakeKvizRepository.zapocniKviz(idKviza)
     }
 
     //null ako student nije pokusao rjesavat niti jedan kviz
     suspend fun getPocetiKvizovi():List<KvizTaken>{
-        return TakeKvizRepository.getPocetiKvizovi()
+        return TakeKvizRepository.getPocetiKvizovi()!!
     }
 
     //lista ce sadrzati uvijek 1 element jer ce samo jedan KvizTaken imati KvizId koji se poklapa sa id Kviza koji smo send

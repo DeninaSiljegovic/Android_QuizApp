@@ -129,7 +129,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                 val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
 
                 if(provjeraFragment == null) {
-                    Log.d("PRVI PUT", "ok")
 
                     val newFragment = FragmentPoruka.newInstance()
                     newFragment.arguments = bundle
@@ -139,7 +138,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                     transaction.commit()
                 }
                 else{
-                    Log.d("PONOVO OTVARA", "ok")
                     provjeraFragment.arguments = bundle
                     val transaction = activity.supportFragmentManager.beginTransaction()
                     transaction.replace(R.id.framePitanje, provjeraFragment, tag)
@@ -214,7 +212,6 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
         //ako je uradjen ili ne dobija se preko bundle iz kvizListAdapter
         if(kvizUradjen == "0"){
-            Log.d("PokusajFragment", imeKviza)
             MainActivity.primiPodatke(bundleOf(
                     Pair("idKviza", idKviz)
             ))
