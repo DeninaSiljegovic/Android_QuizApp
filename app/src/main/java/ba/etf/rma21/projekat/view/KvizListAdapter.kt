@@ -59,7 +59,7 @@ class KvizListAdapter (
                 vrati1 = takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
             }
             result.await()
-            if (vrati1.size > 0) datumRada = vrati1[0].datumRada
+            if (vrati1.isNotEmpty()) datumRada = vrati1[0].datumRada
             else datumRada = null
         }
 
@@ -70,7 +70,7 @@ class KvizListAdapter (
                 vrati2 =  takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
             }
             result.await()
-            if (vrati2.size > 0) bodoviKviz = vrati2[0].osvojeniBodovi
+            if (vrati2.isNotEmpty()) bodoviKviz = vrati2[0].osvojeniBodovi
             else bodoviKviz = null
         }
 
@@ -78,7 +78,7 @@ class KvizListAdapter (
         var pitanja: List<Pitanje> = listOf()
         scope.launch {
             result = async {
-                val pokusajKviza = takeKvizViewModel.getPocetiKvizovi().find { it.KvizId == kvizovi[position].id }
+                val pokusajKviza = takeKvizViewModel.getPocetiKvizovi()?.find { it.KvizId == kvizovi[position].id }
 
                 if (pokusajKviza != null) {
                     println("Ima pokusaj kviza")

@@ -77,7 +77,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
         //provjeriti da li je kviz vec poceo se radit prije
         scope.launch {
-            kvizVecOtvoren = takeKvizViewModel.getPocetiKvizovi().find{ it.KvizId == idKviz }
+            kvizVecOtvoren = takeKvizViewModel.getPocetiKvizovi()?.find{ it.KvizId == idKviz }
             if(kvizVecOtvoren != null){
                 tekZapocet = false
                 listaOdgovoraKorisnika = odgovorViewModel.getOdgovoriKviz(idKviz)
@@ -183,7 +183,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             var temp = SpannableString(pom.toString())
 
             scope.launch{
-                odgovorViewModel.postaviOdgovorKviz(kvizVecOtvoren!!.id, pitanja[pom-1].id, odg)
+                if(kvizVecOtvoren != null)
+                    odgovorViewModel.postaviOdgovorKviz(kvizVecOtvoren!!.id, pitanja[pom-1].id, odg)
             }
 
             if (rez == 1) {
