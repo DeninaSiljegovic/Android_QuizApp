@@ -126,7 +126,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
                     val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
 
-                    if (provjeraFragment == null) {
+                    //if (provjeraFragment == null) {
 
                         val newFragment = FragmentPoruka.newInstance()
                         newFragment.arguments = bundle
@@ -134,12 +134,12 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                         transaction.replace(R.id.framePitanje, newFragment, tag)
                         transaction.addToBackStack(null)
                         transaction.commit()
-                    } else {
-                        provjeraFragment.arguments = bundle
-                        val transaction = activity.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.framePitanje, provjeraFragment, tag)
-                        transaction.commit()
-                    }
+//                    } else {
+//                        provjeraFragment.arguments = bundle
+//                        val transaction = activity.supportFragmentManager.beginTransaction()
+//                        transaction.replace(R.id.framePitanje, provjeraFragment, tag)
+//                        transaction.commit()
+//                    }
 
                 } else {
                     val tag: String = pitanja[item.order].naziv + imeKviza
@@ -150,7 +150,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
                     val provjeraFragment = activity.supportFragmentManager.findFragmentByTag(tag)
 
-                    if (provjeraFragment == null) {
+                    //if (provjeraFragment == null) {
                         val newFragment = FragmentPitanje.newInstance(pitanja[item.order], odgovorZaPitanje(pitanja[item.order])) //nes mijenjat
                         newFragment.arguments = bundle
                         val transaction = activity.supportFragmentManager.beginTransaction()
@@ -158,12 +158,12 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                         transaction.replace(R.id.framePitanje, newFragment, tag)
                         transaction.addToBackStack(null)
                         transaction.commit()
-                    } else {
-                        provjeraFragment.arguments = bundle
-                        val transaction = activity.supportFragmentManager.beginTransaction()
-                        transaction.replace(R.id.framePitanje, provjeraFragment, tag)
-                        transaction.commit()
-                    }
+//                    } else {
+//                        provjeraFragment.arguments = bundle
+//                        val transaction = activity.supportFragmentManager.beginTransaction()
+//                        transaction.replace(R.id.framePitanje, provjeraFragment, tag)
+//                        transaction.commit()
+//                    }
                 }
 
                 return@OnNavigationItemSelectedListener true
