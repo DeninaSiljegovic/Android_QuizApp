@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(){
                                 }
                             }
                         }
-
 //                        for(p in pitanja){
 //                            val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
 //                            if (odg != null) {
@@ -72,9 +71,8 @@ class MainActivity : AppCompatActivity(){
 //
 //                        percent = tacnoOdg / (pitanja.size)
 //
-//                        println("Osvojeni bodovi su " + percent)
-//
 //                        if (pokusajKviza != null) {
+//                            println("Osvojeni bodovi su " + percent)
 //                            pokusajKviza.osvojeniBodovi = percent
 //                        }
                     }

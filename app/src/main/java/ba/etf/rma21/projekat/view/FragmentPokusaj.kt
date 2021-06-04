@@ -38,6 +38,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
     private  var  imeKviza: String = ""
     private  var  imePredmeta: String = ""
     private var kvizUradjen: String = ""
+    private var tacnostA: String = ""
     private var tekZapocet: Boolean = false
     private var listaOdgovoraKorisnika: List<Odgovor> = listOf()
     private var kvizVecOtvoren: KvizTaken? = null
@@ -49,6 +50,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
         imeKviza = arguments?.getString("imeKviza").toString()
         imePredmeta = arguments?.getString("imePredmeta").toString()
         kvizUradjen = arguments?.getString("uradjen").toString()
+        tacnostA = arguments?.getString("tacnost").toString()
 
         val activity = activity as MainActivity
         bottomNavigation = activity.getBottomNavigation()
@@ -119,8 +121,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                 if (item.itemId == 250) {
                     val tag = "ZAVRSEN" + imeKviza + imePredmeta
 
-                    val tacnost = (kvizVecOtvoren?.osvojeniBodovi)?.times(100)
-                    val send = "Zavrsili ste kviz $imeKviza \n sa tacnoscu $tacnost"
+                    val tacnost = (tacnostA.toFloat()).times(100)
+                    val send = "Zavrsili ste kviz $imeKviza \n sa tacnoscu $tacnost%"
                     val bundle = Bundle()
                     bundle.putString("poruka", send)
 
