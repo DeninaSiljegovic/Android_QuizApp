@@ -88,14 +88,13 @@ class KvizListAdapter (
                 }
             }
             result.await()
-
-
             println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
 
             if (odgovori.isNotEmpty() && pitanja.isNotEmpty() && odgovori.size == pitanja.size) {
                 println("ZAVRSEN KVIZ")
                 println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
-                holder.textDatum.text = toSimpleString(datumRada)
+                if(datumRada != null) holder.textDatum.text = toSimpleString(datumRada)
+                else holder.textDatum.text = "inf"
                 holder.statusImage.setImageResource(R.drawable.plava)
                 holder.textBodovi.visibility = View.VISIBLE
                 holder.textBodovi.text = bodoviKviz.toString()

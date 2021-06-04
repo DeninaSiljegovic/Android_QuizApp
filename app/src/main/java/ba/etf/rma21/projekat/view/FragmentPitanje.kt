@@ -41,20 +41,23 @@ class FragmentPitanje ( private var pitanje: Pitanje,
 
         if(uradjenKviz == "1")  listaOdgovora.isEnabled = false
 
-        if(odg >= 0) {
+        if(odg >= 0 && odg != 1000) {
             listaOdgovora.post {
                 listaOdgovora.isEnabled = false
                 val textView = listaOdgovora.getChildAt(odg) as TextView
                 //obojiti odgovarajuce odgovore
                 if (odg == pitanje.tacan)
                     textView.setTextColor(ContextCompat.getColor(view.context, R.color.tacno))
-                else if(odg == 1000) textView.setTextColor(ContextCompat.getColor(view.context,  R.color.white)) //AKO NIJE ODGOVORENO NA PITANJE A KVIZ JE DONE
+                //else if(odg == 1000) textView.setTextColor(ContextCompat.getColor(view.context,  R.color.white)) //AKO NIJE ODGOVORENO NA PITANJE A KVIZ JE DONE
                 else {
                     textView.setTextColor(ContextCompat.getColor(view.context, R.color.pogresno))
                     val textView1 = listaOdgovora.getChildAt(pitanje.tacan) as TextView
                     textView1.setTextColor(ContextCompat.getColor(view.context, R.color.tacno))
                 }
             }
+        }
+        else if(odg == 1000){
+            listaOdgovora.isEnabled = false
         }
 
 

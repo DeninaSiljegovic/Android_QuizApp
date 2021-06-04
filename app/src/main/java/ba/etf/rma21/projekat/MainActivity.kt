@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(){
             R.id.predajKviz -> {
                 val idKviza = vratiIdKviza()
                 var result: Deferred<Unit>
+                var tacnoOdg: Float = 0F
+                var percent: Float = 0F
 
                 scope.launch{
                     result = async {
@@ -59,6 +61,19 @@ class MainActivity : AppCompatActivity(){
                                     odgovorViewModel.postaviOdgovorKviz(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
                                 }
                             }
+                        }
+
+                        for(p in pitanja){
+                            val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
+                            if (odg != null) {
+                                if(odg.odgovoreno == p.tacan) tacnoOdg += 1
+                            }
+                        }
+
+                        percent = tacnoOdg / pitanja.size
+
+                        if (pokusajKviza != null) {
+                            pokusajKviza.osvojeniBodovi = percent
                         }
                     }
                     result.await()

@@ -83,7 +83,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                 listaOdgovoraKorisnika = odgovorViewModel.getOdgovoriKviz(idKviz)
                 println("Listadddddd " + listaOdgovoraKorisnika.size)
 
-                if(!listaOdgovoraKorisnika.isEmpty()){
+                if(listaOdgovoraKorisnika.isNotEmpty()){
 
                     for(odgovor in listaOdgovoraKorisnika){
                         val pitanje = pitanja.find{pitanje -> pitanje.id == odgovor.PitanjeId }
