@@ -15,9 +15,7 @@ class TakeKvizRepository {
 
                 when(val responseBody = response.body()){
                     is KvizTaken -> {
-                        if (responseBody.KvizId == idKviza) {
                             return@withContext responseBody
-                        } else return@withContext null
                     }
                     else -> return@withContext null
                 }

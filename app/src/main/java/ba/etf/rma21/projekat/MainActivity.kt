@@ -57,24 +57,26 @@ class MainActivity : AppCompatActivity(){
                                 val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
 
                                 if (odg == null) {
-                                    println("postavljamo fejk odgovor za pitanj " + p.tekstPitanja)
+                                    println("postavljamo fejk odgovor za pitanj " + p.tekstPitanja + " sifra kviza je " + pokusajKviza!!.id)
                                     odgovorViewModel.postaviOdgovorKviz(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
                                 }
                             }
                         }
 
-                        for(p in pitanja){
-                            val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
-                            if (odg != null) {
-                                if(odg.odgovoreno == p.tacan) tacnoOdg += 1
-                            }
-                        }
-
-                        percent = tacnoOdg / pitanja.size
-
-                        if (pokusajKviza != null) {
-                            pokusajKviza.osvojeniBodovi = percent
-                        }
+//                        for(p in pitanja){
+//                            val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
+//                            if (odg != null) {
+//                                if(odg.odgovoreno == p.tacan) tacnoOdg += 1
+//                            }
+//                        }
+//
+//                        percent = tacnoOdg / (pitanja.size)
+//
+//                        println("Osvojeni bodovi su " + percent)
+//
+//                        if (pokusajKviza != null) {
+//                            pokusajKviza.osvojeniBodovi = percent
+//                        }
                     }
                     result.await()
                 }//scope zatvoren

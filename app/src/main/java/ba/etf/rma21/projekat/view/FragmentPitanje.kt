@@ -42,6 +42,9 @@ class FragmentPitanje ( private var pitanje: Pitanje,
         if(uradjenKviz == "1")  listaOdgovora.isEnabled = false
 
         if(odg >= 0 && odg != 1000) {
+
+            println("Bojimo odgovor na pitanju " + pitanje.tekstPitanja + "(Fragment Pitanje)")
+
             listaOdgovora.post {
                 listaOdgovora.isEnabled = false
                 val textView = listaOdgovora.getChildAt(odg) as TextView
@@ -57,7 +60,8 @@ class FragmentPitanje ( private var pitanje: Pitanje,
             }
         }
         else if(odg == 1000){
-            listaOdgovora.isEnabled = false
+            println("uslo u tudje")
+            listaOdgovora.post{ listaOdgovora.isEnabled = false }
         }
 
 
