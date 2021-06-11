@@ -18,7 +18,7 @@ class AccountRepository {
         }
 
         fun getHash(): String {
-            return acHash
+            return acHash;
         }
     }
 
