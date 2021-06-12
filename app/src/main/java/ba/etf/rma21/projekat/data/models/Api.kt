@@ -1,10 +1,9 @@
 package ba.etf.rma21.projekat.data.models
 
+import androidx.room.Update
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
+import java.time.LocalDateTime
 
 interface Api {
 
@@ -61,6 +60,10 @@ interface Api {
     @GET("/student/{id}/grupa")
     suspend fun getUpisaneGrupe(@Path("id") hashStudenta : String) : Response<List<Grupa>>
 
+
+    //spirala 4 additions
+    @GET("/account/{id}")
+    suspend fun updateNow(@Path("id") hashStudenta: String, @Query("lastUpdate") lastUpdate: LocalDateTime) : Response<Change>
 
 
 

@@ -7,5 +7,4 @@ class OdgovorBody(
         @SerializedName("pitanje") val pitanje: Int,
         @SerializedName("bodovi") val bodovi: Float
 
-
 )
