@@ -110,6 +110,23 @@ class PredmetIGrupaRepository {
                 return@withContext response.body()
             }!!
         }
+
+        suspend fun getGroup(id: Int): Grupa? {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val db = AppDatabase.getInstance(context)
+                    val grupa = db.grupaDao().getGroup(id)
+                    return@withContext grupa
+                } catch (error: java.lang.Exception) {
+                    return@withContext null
+                }
+            }
+        }
+
+        suspend fun getPredmetSaIdIzBaze(id: Int){
+
+        }
+
 //
 //        suspend fun getGroupsZaKvizIzBaze(kvizID: Int): List<Grupa>{
 //            return withContext(Dispatchers.IO){

@@ -82,8 +82,8 @@ class PredmetIGrupaViewModel {
         PredmetIGrupaRepository.setContext(_context)
     }
 
-    suspend fun getGroupsZaKvizIzBaze(id: Int){
-
+    suspend fun getGroup(id:Int): Grupa?{
+        return PredmetIGrupaRepository.getGroup(id)
     }
 
 //    fun upisi(p: String, g: Int){

@@ -161,17 +161,25 @@ import java.util.*
                  }
              }
 
-             var grupe: List<Grupa> = listOf()
+             var grupe: MutableList<Grupa> = mutableListOf()
              var vrati: String = ""
              scope.launch {
                  result = async {
 
                      if(spinnerTekst != "Svi kvizovi"){
+                         grupaKvizViewModel.setContext(context)
+                         val idList = grupaKvizViewModel.getGrupeZaKvizBaza(kvizovi[position].id).map { grupaKviz ->grupaKviz.grupaId  }
                          predmetIGrupaViewModel.setContext(context)
-                         grupe = grup.getGroupsZaKvizIzBaze(kvizovi[position].id)
+                         for(id in idList){
+                             val group = predmetIGrupaViewModel.getGroup(id)
+
+                             if(group == null)
+                                 grupe.add(predmetIGrupaViewModel.getGroupsZaKviz(kvizovi[position].id)!!.find {grupa1 -> grupa1.id == id && !grupe.contains(grupa1) }!!)
+                             else grupe.add(group)
+                         }
                      }
                      else{
-                         grupe = predmetIGrupaViewModel.getGroupsZaKviz(kvizovi[position].id)
+                         grupe = predmetIGrupaViewModel.getGroupsZaKviz(kvizovi[position].id) as MutableList<Grupa>
                      }
                      var sviPredmeti: MutableList<String> = mutableListOf()
 
