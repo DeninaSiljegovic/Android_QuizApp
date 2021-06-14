@@ -18,5 +18,8 @@ class PitanjeKvizViewModel {
         PitanjeKvizRepository.setContext(_context)
     }
 
+    suspend fun getPitanjaIzBaze(idKviza: Int): List<Pitanje>{
+        return PitanjeKvizRepository.getPitanjaIzBaze(idKviza)
+    }
 
 }

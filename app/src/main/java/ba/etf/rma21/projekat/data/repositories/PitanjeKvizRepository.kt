@@ -1,9 +1,11 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
+import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.data.models.Pitanje
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class PitanjeKvizRepository {
 
@@ -25,6 +27,20 @@ class PitanjeKvizRepository {
 
                 return@withContext response.body()
             }!!
+        }
+
+        suspend fun getPitanjaIzBaze(idKviza: Int): List<Pitanje>{
+            return withContext(Dispatchers.IO){
+                try {
+                    val database = AppDatabase.getInstance(context)
+                    val pitanja = database.pitanjeDao().getPitanjaIzBaze(idKviza)
+                    return@withContext pitanja
+
+                }
+                catch(error: Exception){
+                    return@withContext listOf<Pitanje>()
+                }
+            }
         }
 
     }

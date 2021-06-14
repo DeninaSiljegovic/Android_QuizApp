@@ -11,8 +11,8 @@ interface GrupaKvizDao {
     @Insert
     suspend fun insert(grupaKviz: GrupaKviz)
 
-    @Query("SELECT MAX(id) FROM grupakviz")
-    suspend fun najveciId(): Int?
+    @Query("SELECT MAX(id)+1 FROM grupakviz")
+    suspend fun generateId(): Int?
 
     @Query("SELECT * FROM grupakviz WHERE kvizId==:kvizId")
     suspend fun getGrupeZaKvizBaza(kvizId: Int): List<GrupaKviz>
@@ -21,5 +21,5 @@ interface GrupaKvizDao {
     suspend fun deleteAll()
 
     @Query("SELECT id,grupaId,kvizId FROM grupakviz WHERE grupaId==:grupaId AND kvizId==:kvizId")
-    suspend fun checkDuplicate(grupaId: Int, kvizId: Int): GrupaKviz?
+    suspend fun duplikat(grupaId: Int, kvizId: Int): GrupaKviz?
 }

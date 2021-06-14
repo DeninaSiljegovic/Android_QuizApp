@@ -23,4 +23,8 @@ interface PredmetDao {
 
     @Insert
     suspend fun insert(p: Predmet)
+
+    @Query("SELECT * FROM predmet WHERE id==:id")
+    suspend fun getPredmetByIdIzBaze(id: Int): Predmet
+
 }

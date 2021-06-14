@@ -33,13 +33,13 @@ class KvizViewModel {
     }
 
     suspend fun getMyKvizes(): List<Kviz>{
-        return KvizRepository.getMyKvizes(context)
+        return KvizRepository.getMyKvizes()
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getMyFuture(): List<Kviz> {
-        val sviKvizovi: List<Kviz> = KvizRepository.getMyKvizes(context)
+        val sviKvizovi: List<Kviz> = KvizRepository.getMyKvizes()
         return sviKvizovi.filter { Date.from(LocalDate.parse(it.datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()) > GregorianCalendar.getInstance().time }
     }
 

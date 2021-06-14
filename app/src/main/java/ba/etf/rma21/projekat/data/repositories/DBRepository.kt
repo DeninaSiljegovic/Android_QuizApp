@@ -26,20 +26,34 @@ class DBRepository {
                 try {
                     val database = AppDatabase.getInstance(context)//ovdje nece context
 
+                    var accountovi = database.accountDao().getAll()
+                    if(accountovi.isEmpty()){
+                        val account = AccountRepository.getUser()
+                        try {
+                            database.accountDao().insertAccount(account!!)
+                        }
+                        catch(error: java.lang.Exception){
+                            println(error.printStackTrace())
+                        }
+
+                    }
                     //last datum kad je sve updated
                     val date = database.accountDao().getLastUpdate(AccountRepository.getHash())
-                    val dateTime: LocalDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
                     //if (date == null) return@withContext true
 
-                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), dateTime.withNano(0).toString())
+                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), date.toString())
                     val responseBdy = response.body()
-                    when (responseBdy) {
+                    when(responseBdy){
                         is Change -> {
-                            return@withContext responseBdy.changed.contains("true")
+                            if(responseBdy.changed || date == null){
+                                database.accountDao().setLastUpdate(AccountRepository.getHash(), LocalDateTime.now().withNano(0).format(DateTimeFormatter.ISO_DATE_TIME))
+                            }
+                            return@withContext responseBdy.changed
                         }
                         else -> return@withContext false
                     }
                 } catch (e: Exception) {
+                    println(e.printStackTrace())
                     return@withContext false // does this make sense??
                 }
             }

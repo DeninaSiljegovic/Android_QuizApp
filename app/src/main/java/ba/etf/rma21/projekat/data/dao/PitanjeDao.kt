@@ -18,4 +18,7 @@ interface PitanjeDao {
 
     @Query("SELECT MAX(id)+1 FROM pitanje")
     suspend fun generateId(): Int
+
+    @Query("SELECT * FROM pitanje WHERE KvizId==:idKviza")
+    suspend fun getPitanjaIzBaze(idKviza: Int): List<Pitanje>
 }

@@ -74,18 +74,6 @@ import java.util.*
                  else bodoviKviz = null
              }
 
-
-//             var vrati2: List<KvizTaken> = listOf()
-//             scope.launch {
-//                 result = async {
-//                     vrati2 = takeKvizViewModel.getPokusajKviza(kvizovi[position].id)
-//                 }
-//                 result.await()
-//                 if (vrati2.isNotEmpty()) bodoviKviz = vrati2[0].osvojeniBodovi
-//                 else bodoviKviz = null
-//                 println("Procitano je da kviz ima " + bodoviKviz + " bodova")
-//             }
-
              var odgovori: List<Odgovor> = listOf()
              var pitanja: List<Pitanje> = listOf()
              var percent: Float = 0F
@@ -187,12 +175,16 @@ import java.util.*
 
                          if(spinnerTekst != "Svi kvizovi") {
                              predmetIGrupaViewModel.setContext(context)
-                             sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaId(g.PredmetId).naziv)
+                             val predmet = predmetIGrupaViewModel.getPredmetSaIdIzBaze(g.PredmetId)
+                             if(predmet == null)
+                                 sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaId(g.PredmetId).naziv)
+                             else sviPredmeti.add(predmet.naziv)
                          }
                          else {
-                             sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaIdIzBaze(g.PredmetId).naziv)
+                             sviPredmeti.add(predmetIGrupaViewModel.getPredmetSaId(g.PredmetId).naziv)
                          }
                      }
+                     println("wHADDUP: " +sviPredmeti.size)
                      val distinct = sviPredmeti.toSet().toList()
 
                      for (d in distinct) {
@@ -261,6 +253,10 @@ import java.util.*
      fun toSimpleString(date: Date?) : String {
          val format = SimpleDateFormat("dd.MM.yyy")
          return format.format(date)
+     }
+
+     fun updateSpinner(spinnerTekst: String) {
+         this.spinnerTekst = spinnerTekst
      }
 
      inner class KvizViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

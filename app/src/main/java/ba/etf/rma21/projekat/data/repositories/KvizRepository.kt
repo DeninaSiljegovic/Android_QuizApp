@@ -32,7 +32,7 @@ class KvizRepository {
         }
 
         //vraca sve KORISNIKOVE KVIZOVE
-        suspend fun getMyKvizes(context: Context) : List<Kviz> {
+        suspend fun getMyKvizes() : List<Kviz> {
             return withContext(Dispatchers.IO) {
                 var db = AppDatabase.getInstance(context)
                 var kvizovi = db!!.kvizDao().getAll()
@@ -62,7 +62,7 @@ class KvizRepository {
         //      koristeno u spirali 3 da se dobiju korisnikovi kvizovi na osnovu njegovih grupa
         suspend fun getUpisane(): List<Kviz>{
             return withContext(Dispatchers.IO){//
-                val listaGrupa = getUpisaneGrupe()
+                val listaGrupa = PredmetIGrupaRepository.getUpisaneGrupe()
                 val vratiKvizove: MutableList<Kviz> = mutableListOf()//
                 for(g in listaGrupa){
                     val response = ApiConfig.retrofit.getUpisani(g.id)

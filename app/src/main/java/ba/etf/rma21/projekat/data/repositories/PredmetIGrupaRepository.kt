@@ -123,8 +123,17 @@ class PredmetIGrupaRepository {
             }
         }
 
-        suspend fun getPredmetSaIdIzBaze(id: Int){
-
+        suspend fun getPredmetSaIdIzBaze(predmetId: Int): Predmet?{
+            return withContext(Dispatchers.IO) {
+                try {
+                    val db = AppDatabase.getInstance(context)
+                    val predmet = db.predmetDao().getPredmetByIdIzBaze(predmetId)
+                    return@withContext predmet
+                }
+                catch(error: java.lang.Exception){
+                    return@withContext null
+                }
+            }
         }
 
 //

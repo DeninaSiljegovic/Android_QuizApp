@@ -86,6 +86,10 @@ class PredmetIGrupaViewModel {
         return PredmetIGrupaRepository.getGroup(id)
     }
 
+    suspend fun getPredmetSaIdIzBaze(id: Int): Predmet?{
+        return PredmetIGrupaRepository.getPredmetSaIdIzBaze(id)
+    }
+
 //    fun upisi(p: String, g: Int){
 //        PredmetRepository.upisiNaPredmet(p, g)
 //    }  NA OSNOVU GRUPA GLEDATI GDJE JE KORISNIK UPISAN I KOJI PREDMETI SU DOSTUPNI ETC

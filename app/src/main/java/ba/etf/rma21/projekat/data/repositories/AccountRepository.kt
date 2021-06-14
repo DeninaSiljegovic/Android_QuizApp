@@ -3,6 +3,7 @@ package ba.etf.rma21.projekat.data.repositories
 import android.content.Context
 import ba.etf.rma21.projekat.data.models.Account
 import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.models.GrupaKviz
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -45,6 +46,17 @@ class AccountRepository {
             return acHash;
         }
 
+        suspend fun getUser(): Account?{
+            return withContext(Dispatchers.IO){
+                val response = ApiConfig.retrofit.dajAccount(AccountRepository.getHash())
+
+                when(response.body()){
+                    is Account -> return@withContext response.body()
+                    else -> return@withContext null
+                }
+            }
+        }
+
         suspend fun updatePodatke(){
             return withContext(Dispatchers.IO) {
                 try {
@@ -52,16 +64,11 @@ class AccountRepository {
                     deleteFromDatabase()
                     val noviKvizovi = KvizRepository.getUpisane()
                     val noveGrupe = PredmetIGrupaRepository.getUpisaneGrupe()
-                    val noviPredmeti = PredmetIGrupaRepository.getPredmeti().filter { predmet -> noveGrupe!!.map { novaGrupa -> novaGrupa.id }.contains(predmet.id)}
-                    val noviPokusaji = TakeKvizRepository.getPocetiKvizovi()
-
-                    if(noviPokusaji !=null)
-                        db.kvizTakenDao().insertAll(noviPokusaji)
+                    val noviPredmeti = PredmetIGrupaRepository.getPredmeti().filter { predmet -> noveGrupe!!.map { novaGrupa -> novaGrupa.PredmetId }.contains(predmet.id)}
 
                     for(noviKviz in noviKvizovi){
                         if(db.kvizDao().duplikat(noviKviz.id) == null)
                             db.kvizDao().insert(noviKviz)
-
                         val pitanja = PitanjeKvizRepository.getPitanja(noviKviz.id)
 
                         for(p in pitanja){
@@ -79,15 +86,21 @@ class AccountRepository {
                         val grupe = PredmetIGrupaRepository.getGrupeZaKviz(noviKviz.id)
 
                         for(g in grupe){
-                            if(db.grupaDao().duplikat(g.id) == null)
-                                db.grupaDao().insert(g)
+
+                            if(db.grupaKvizDao().duplikat(g.id, noviKviz.id) == null)
+                                db.grupaKvizDao().insert(GrupaKviz((if(db.grupaKvizDao().generateId() == null) 0 else db.grupaKvizDao().generateId()!!),g.id, noviKviz.id))
                         }
 
-                        for(pr in noviPredmeti){
-                            if(db.predmetDao().duplikat(pr.id) == null)
-                                db.predmetDao().insert(pr)
-                        }
+                    }
 
+                    for(pr in noviPredmeti){
+                        if(db.predmetDao().duplikat(pr.id) == null)
+                            db.predmetDao().insert(pr)
+                    }
+
+                    for(novaGrupa in noveGrupe){
+                        if(db.grupaDao().duplikat(novaGrupa.id) == null)
+                            db.grupaDao().insert(novaGrupa)
                     }
 
                 } catch (error: Exception) {

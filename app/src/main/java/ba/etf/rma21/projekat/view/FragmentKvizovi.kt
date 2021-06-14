@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.viewmodel.AccountViewModel
+import ba.etf.rma21.projekat.viewmodel.DBViewModel
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +36,9 @@ class FragmentKvizovi : Fragment() {
     private lateinit var filterKvizova: Spinner
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()
+    private var DBViewmodel = DBViewModel()
+    private var accountViewModel = AccountViewModel()
+
     val scope = CoroutineScope(Job() + Dispatchers.Main)
     private val model: SharedViewModel by activityViewModels()
 
@@ -104,12 +109,21 @@ class FragmentKvizovi : Fragment() {
                 val item_position = position.toString()
                 val positonInt = Integer.valueOf(item_position)
                 scope.launch {
+                    kvizListViewModel.setContext(activity!!.applicationContext)
+                    DBViewmodel.setContext(requireActivity().applicationContext)
+                    accountViewModel.setContext(requireActivity().applicationContext)
+
+
+                    if(DBViewmodel.updateNow()) {
+                        accountViewModel.updatePodatke()
+                    }
                     if (positonInt == 0) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                     else if (positonInt == 1) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
                     else if (positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyDone())
                     else if (positonInt == 3) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyFuture())
                     else if (positonInt == 4) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyNotTaken())
                 }
+                listaKvizovaAdapter.updateSpinner(filterKvizova.selectedItem.toString())
             }
 
 
