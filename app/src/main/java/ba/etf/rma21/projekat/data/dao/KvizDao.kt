@@ -22,4 +22,7 @@ interface KvizDao {
 
     @Query("SELECT id FROM kviz WHERE id==:id")
     suspend fun duplikat(id: Int): Int?
+
+    @Query("UPDATE kviz SET predan=:predan WHERE id==:id")
+    suspend fun updatePredan(predan: Boolean, id: Int)
 }

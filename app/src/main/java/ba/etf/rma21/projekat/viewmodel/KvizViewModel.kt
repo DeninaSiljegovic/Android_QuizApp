@@ -15,7 +15,6 @@ import java.util.*
 class KvizViewModel {
 
     val scope = CoroutineScope(Job() + Dispatchers.Main)
-    private lateinit var context: Context
 
     fun setContext(_context: Context) {
         KvizRepository.setContext(_context)

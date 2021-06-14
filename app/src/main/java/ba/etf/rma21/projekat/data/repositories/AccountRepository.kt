@@ -4,6 +4,7 @@ import android.content.Context
 import ba.etf.rma21.projekat.data.models.Account
 import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.data.models.GrupaKviz
+import ba.etf.rma21.projekat.data.models.Odgovor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -65,6 +66,20 @@ class AccountRepository {
                     val noviKvizovi = KvizRepository.getUpisane()
                     val noveGrupe = PredmetIGrupaRepository.getUpisaneGrupe()
                     val noviPredmeti = PredmetIGrupaRepository.getPredmeti().filter { predmet -> noveGrupe!!.map { novaGrupa -> novaGrupa.PredmetId }.contains(predmet.id)}
+                    val noviOdgovori: MutableList<Odgovor> = mutableListOf()
+                    val noviPokusaji = TakeKvizRepository.getPocetiKvizovi()
+
+                    for(k in noviKvizovi){
+                        if(noviPokusaji != null && noviPokusaji.find { pokusaj -> pokusaj.KvizId == k.id } != null)
+                            noviOdgovori.addAll(OdgovorRepository.getOdgovoriKviz(k.id))
+                    }
+
+
+                    for(o in noviOdgovori){
+                        if(db.grupaDao().duplikat(o.id) == null)
+                            db.odgovorDao().insert(o)
+                    }
+
 
                     for(noviKviz in noviKvizovi){
                         if(db.kvizDao().duplikat(noviKviz.id) == null)
@@ -118,8 +133,9 @@ class AccountRepository {
                     db.pitanjeDao().deleteAll()
                     db.kvizDao().deleteAll()
                     db.kvizTakenDao().deleteAll()
+                    db.odgovorDao().deleteAll()
                 } catch (error: Exception) {
-                    println(error.printStackTrace())
+                    println("hLLO: "  + error.printStackTrace())
                 }
             }
         }

@@ -48,34 +48,23 @@ class MainActivity : AppCompatActivity(){
 
                 scope.launch{
                     result = async {
-                        val odgovori = odgovorViewModel.getOdgovoriKviz(idKviza)
-                        val pitanja = pitanjeKvizViewModel.getPitanja(idKviza)
+                        val odgovori = odgovorViewModel.getOdgovoreZaKvizIzBaze(idKviza)
+                        val pitanja = pitanjeKvizViewModel.getPitanjaIzBaze(idKviza)
 
                         val pokusajKviza = takeKvizViewModel.getPocetiKvizovi()!!.find { it.KvizId == idKviza }
 
                         if (odgovori.size != pitanja.size) {
                             for (p in pitanja) {
-                                val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
+                                val odg = odgovori.find { it.PitanjeId == p.id }
 
                                 if (odg == null) {
                                     println("postavljamo fejk odgovor za pitanj " + p.tekstPitanja + " sifra kviza je " + pokusajKviza!!.id)
-                                    odgovorViewModel.postaviOdgovorKviz(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
+                                    odgovorViewModel.postaviOdgovor(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
                                 }
                             }
                         }
-//                        for(p in pitanja){
-//                            val odg = odgovorViewModel.getOdgovoriKviz(idKviza).find { it.PitanjeId == p.id }
-//                            if (odg != null) {
-//                                if(odg.odgovoreno == p.tacan) tacnoOdg += 1
-//                            }
-//                        }
-//
-//                        percent = tacnoOdg / (pitanja.size)
-//
-//                        if (pokusajKviza != null) {
-//                            println("Osvojeni bodovi su " + percent)
-//                            pokusajKviza.osvojeniBodovi = percent
-//                        }
+
+                        odgovorViewModel.predajOdgovore(idKviza)
                     }
                     result.await()
                 }//scope zatvoren
@@ -119,6 +108,10 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
 
+//        scope.launch{
+//            AccountRepository.setContext(applicationContext)
+//            AccountRepository.deleteFromDatabase() //BRISANJE BAZE
+//        }
 
         bottomNavigation.menu.findItem(R.id.predajKviz).isVisible = false
         bottomNavigation.menu.findItem(R.id.zaustaviKviz).isVisible = false

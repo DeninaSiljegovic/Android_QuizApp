@@ -18,6 +18,7 @@ import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.KvizTaken
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.Pitanje
+import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,6 +33,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
     private var takeKvizViewModel = TakeKvizViewModel()
     private var odgovorViewModel = OdgovorViewModel()
+    private var kvizViewmodel = KvizViewModel()
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -74,12 +76,19 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
         }
         if(kvizUradjen == "1") meni.add(0, 250, i1 - 1, "Rezultat")
 
+        kvizViewmodel.setContext(requireActivity().applicationContext)
         //provjeriti da li je kviz vec poceo se radit prije
         scope.launch {
+            val kviz = kvizViewmodel.getByIdKviz(idKviz)
+
             kvizVecOtvoren = takeKvizViewModel.getPocetiKvizovi()?.find{ it.KvizId == idKviz }
             if(kvizVecOtvoren != null){
                 tekZapocet = false
-                listaOdgovoraKorisnika = odgovorViewModel.getOdgovoriKviz(idKviz)
+
+                odgovorViewModel.setContext(requireActivity().applicationContext)
+
+
+                listaOdgovoraKorisnika = odgovorViewModel.getOdgovoreZaKvizIzBaze(idKviz)
 
                 if(listaOdgovoraKorisnika.isNotEmpty()){
 
@@ -96,7 +105,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
                             if(pitanje.tacan == odgovor.odgovoreno){ //ako je odgovor tacan
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.tacno)), 0, indeks.toString().length, 0)
                             }
-                            else if(odgovor.odgovoreno== 1000){ //kad nije odgovoreno pitanje a predano - odg.odgovoreno == 10000
+                            else if(odgovor.odgovoreno == 1000){ //kad nije odgovoreno pitanje a predano - odg.odgovoreno == 10000
                                 temp.setSpan(ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.white)), 0, indeks.toString().length, 0)
                             }
                             else if(pitanje.tacan != odgovor.odgovoreno){
@@ -164,7 +173,8 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
 
             scope.launch{
                 if(kvizVecOtvoren != null) {
-                    odgovorViewModel.postaviOdgovorKviz(kvizVecOtvoren!!.id, pitanja[pom - 1].id, odg)
+                    odgovorViewModel.setContext(requireActivity().applicationContext)
+                    odgovorViewModel.postaviOdgovor(kvizVecOtvoren!!.id, pitanja[pom - 1].id, odg)
                     println("UPISAN ODGOVOR ZA PITANJE " + pitanja[pom - 1].tekstPitanja + " odg je " + odg + " sifra kviza je " + kvizVecOtvoren?.id)
                 }
             }

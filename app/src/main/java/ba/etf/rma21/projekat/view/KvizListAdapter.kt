@@ -86,7 +86,7 @@ import java.util.*
                          println("Ima pokusaj kviza")
 
                          if(spinnerTekst != "Svi kvizovi"){
-                             odgovori = odgovorViewModel.getOdgovoriKviz(kvizovi[position].id)
+                             odgovori = odgovorViewModel.getOdgovoreZaKvizIzBaze(kvizovi[position].id)
                              pitanja = pitanjeKvizViewModel.getPitanjaIzBaze(kvizovi[position].id)
                          }
                          else {
