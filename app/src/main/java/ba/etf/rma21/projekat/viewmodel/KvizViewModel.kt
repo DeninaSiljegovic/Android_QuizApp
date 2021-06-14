@@ -1,19 +1,28 @@
 package ba.etf.rma21.projekat.viewmodel
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.repositories.*
 import kotlinx.coroutines.*
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class KvizViewModel {
 
     val scope = CoroutineScope(Job() + Dispatchers.Main)
     private lateinit var context: Context
+
     fun setContext(_context: Context) {
-        context = _context
+        KvizRepository.setContext(_context)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
     suspend fun getAll(): List<Kviz>{
         return KvizRepository.getAll()
@@ -27,13 +36,16 @@ class KvizViewModel {
         return KvizRepository.getMyKvizes(context)
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getMyFuture(): List<Kviz> {
         val sviKvizovi: List<Kviz> = KvizRepository.getMyKvizes(context)
-        return sviKvizovi.filter { it.datumPocetka > GregorianCalendar.getInstance().time }
+        return sviKvizovi.filter { Date.from(LocalDate.parse(it.datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()) > GregorianCalendar.getInstance().time }
     }
 
     /* iz liste svih korisnikovih kvizova izbaciti one koji su zapoceti
      + filtrirati tako da je kviz vec prosao = dakle ne moze ga ni pokusati uraditi */
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getMyNotTaken(): List<Kviz> {
         val zapocetiKvizovi = TakeKvizRepository.getPocetiKvizovi()
         val myKvizovi = getMyKvizes().toMutableList()
@@ -44,7 +56,7 @@ class KvizViewModel {
                     if(z.KvizId == m.id) myKvizovi.remove(m)
                 }
             }
-            myKvizovi.filter { it.datumKraj < GregorianCalendar.getInstance().time }
+            myKvizovi.filter { Date.from(LocalDate.parse(it.datumKraj, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()) < GregorianCalendar.getInstance().time }
         }
         else{
             return emptyList()
@@ -53,6 +65,7 @@ class KvizViewModel {
     }
 
     /*kvizovi koje je korisnik uradio*/
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getMyDone(): List<Kviz> {
         val zapocetiKvizovi = TakeKvizRepository.getPocetiKvizovi()
         val myKvizovi = getMyKvizes()
@@ -60,7 +73,7 @@ class KvizViewModel {
 
         //dobijem sve kvizove koji su uradjeni prije danas ili danas
         if (zapocetiKvizovi != null) {
-            zapocetiKvizovi.filter { it.datumRada <= GregorianCalendar.getInstance().time }
+            zapocetiKvizovi.filter { LocalDate.parse(it.datumRada, dateFormatter) <= LocalDate.now()}
             for(z in zapocetiKvizovi){
                 for(m in myKvizovi){
                     if(z.KvizId == m.id) vrati.add(m)
@@ -71,5 +84,8 @@ class KvizViewModel {
         return vrati
     }
 
+    suspend fun getUpisane(): List<Kviz>{
+        return KvizRepository.getUpisane()
+    }
 
 }

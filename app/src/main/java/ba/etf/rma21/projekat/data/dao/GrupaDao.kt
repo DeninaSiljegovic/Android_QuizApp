@@ -26,4 +26,5 @@ interface GrupaDao {
 
     @Query("SELECT id FROM grupa WHERE id==:id")
     suspend fun duplikat(id: Int): Int?
+
 }

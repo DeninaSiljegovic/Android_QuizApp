@@ -8,11 +8,11 @@ import java.util.*
 
 @Entity
 data class Kviz(
-    @PrimaryKey @SerializedName("id") val id: Int,
-    @ColumnInfo(name = "naziv") @SerializedName("naziv") val naziv: String,
-    @ColumnInfo(name = "datumPocetak") @SerializedName("datumPocetak") val datumPocetka: Date,
-    @ColumnInfo(name = "datumKraj") @SerializedName("datumKraj") val datumKraj: Date,
-    @ColumnInfo(name = "trajanje") @SerializedName("trajanje") val trajanje: Int
+        @PrimaryKey @SerializedName("id") val id: Int,
+        @ColumnInfo(name = "naziv") @SerializedName("naziv") val naziv: String,
+        @ColumnInfo(name = "datumPocetak") @SerializedName("datumPocetak") val datumPocetka: String,
+        @ColumnInfo(name = "datumKraj") @SerializedName("datumKraj") val datumKraj: String?,
+        @ColumnInfo(name = "trajanje") @SerializedName("trajanje") val trajanje: Int
 ) {
 
 }

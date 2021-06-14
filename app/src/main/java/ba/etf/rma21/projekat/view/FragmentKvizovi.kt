@@ -2,6 +2,7 @@ package ba.etf.rma21.projekat.view
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -12,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -52,19 +54,19 @@ class FragmentKvizovi : Fragment() {
         // Creating adapter for spinner
         //val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         val dataAdapter:ArrayAdapter<String> = object: ArrayAdapter<String>(
-            view.context,
-            android.R.layout.simple_spinner_dropdown_item,
-            categories
+                view.context,
+                android.R.layout.simple_spinner_dropdown_item,
+                categories
         ){
             override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
             ): View {
                 val view: TextView = super.getDropDownView(
-                    position,
-                    convertView,
-                    parent
+                        position,
+                        convertView,
+                        parent
                 ) as TextView
                 // set item text size
                 view.setTextSize(TypedValue.COMPLEX_UNIT_SP,15F)
@@ -91,10 +93,11 @@ class FragmentKvizovi : Fragment() {
                 GridLayoutManager.VERTICAL,
                 false
         )
-        listaKvizovaAdapter = KvizListAdapter(listOf(), activity?.supportFragmentManager)
+        listaKvizovaAdapter = KvizListAdapter(listOf(), activity?.supportFragmentManager, filterKvizova.selectedItem.toString(), requireActivity().applicationContext)
         listaKvizova.adapter = listaKvizovaAdapter
-
+        kvizListViewModel.setContext(requireActivity().applicationContext)
         filterKvizova.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                 //first,  we have to retrieve the item position as a string
                 // then, we can change string value into integer
@@ -130,9 +133,9 @@ class FragmentKvizovi : Fragment() {
         return view
     }
 
-        companion object {
-            fun newInstance(): FragmentKvizovi = FragmentKvizovi()
-        }
+    companion object {
+        fun newInstance(): FragmentKvizovi = FragmentKvizovi()
+    }
 
 
 }

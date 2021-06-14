@@ -27,12 +27,11 @@ class DBRepository {
                     val database = AppDatabase.getInstance(context)//ovdje nece context
 
                     //last datum kad je sve updated
-                    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
                     val date = database.accountDao().getLastUpdate(AccountRepository.getHash())
-                    val dateTime: LocalDateTime = LocalDateTime.parse(date, formatter)
+                    val dateTime: LocalDateTime = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
                     //if (date == null) return@withContext true
 
-                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), dateTime.withNano(0))
+                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), dateTime.withNano(0).toString())
                     val responseBdy = response.body()
                     when (responseBdy) {
                         is Change -> {
@@ -44,13 +43,6 @@ class DBRepository {
                     return@withContext false // does this make sense??
                 }
             }
-        }
-
-        suspend fun updateData(){
-            KvizRepository.upisiKorisnikoveKvizoveUBazu()
-            PredmetIGrupaRepository.upisiKorisnikoveGrupeUBazu()
-            PredmetIGrupaRepository.upisiKorisnikovePredmeteUBazu()
-
         }
 
     }

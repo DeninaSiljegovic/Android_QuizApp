@@ -11,13 +11,12 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ba.etf.rma21.projekat.R
+import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
+import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel
 import ba.etf.rma21.projekat.viewmodel.SharedViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.stream.Collectors
 
 class FragmentPredmeti : Fragment() {
@@ -29,6 +28,8 @@ class FragmentPredmeti : Fragment() {
     private var predmetIGrupaViewModel = PredmetIGrupaViewModel()
     private lateinit var listaKvizovaAdapter: KvizListAdapter
     private var kvizListViewModel = KvizViewModel()
+    private var pitanjeKvizViewModel = PitanjeKvizViewModel()
+
     private val model: SharedViewModel by activityViewModels()
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -57,19 +58,19 @@ class FragmentPredmeti : Fragment() {
 
         //DA SE OZNACI KOJI SE ELEMENT BIRA
         val dataAdapter: ArrayAdapter<String> = object: ArrayAdapter<String>(
-            view.context,
-            android.R.layout.simple_spinner_dropdown_item,
-            categories
+                view.context,
+                android.R.layout.simple_spinner_dropdown_item,
+                categories
         ){
             override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
             ): View {
                 val view: TextView = super.getDropDownView(
-                    position,
-                    convertView,
-                    parent
+                        position,
+                        convertView,
+                        parent
                 ) as TextView
                 // set item text size
                 view.setTextSize(TypedValue.COMPLEX_UNIT_SP,15F)
@@ -210,26 +211,59 @@ class FragmentPredmeti : Fragment() {
             model.setIzmjena(1)
 
             scope.launch {
-                val grupe = predmetIGrupaViewModel.getAllGrupe()
-                val pronadjenaGrupa = grupe.find{grupa1->grupa1.naziv == odabirGrupa.selectedItem.toString()}
-                predmetIGrupaViewModel.upisiUGrupu(pronadjenaGrupa!!.id)
+                val result = async {
+                    val grupe = predmetIGrupaViewModel.getAllGrupe()
+                    val pronadjenaGrupa =
+                            grupe.find { grupa1 -> grupa1.naziv == odabirGrupa.selectedItem.toString() }
+                    predmetIGrupaViewModel.upisiUGrupu(pronadjenaGrupa!!.id)
+
+                    val upisani = kvizListViewModel.getUpisane()
+                    val predmet = predmetIGrupaViewModel.getPredmetSaId(pronadjenaGrupa.PredmetId)
+
+                    val dataBase = AppDatabase.getInstance(requireContext())
+
+                    if (dataBase.grupaDao().duplikat(pronadjenaGrupa.id) == null)
+                        dataBase.grupaDao().insert(pronadjenaGrupa)
+
+                    for (kviz in upisani) {
+                        val pitanja = pitanjeKvizViewModel.getPitanja(kviz.id)
+                        pitanja.forEach { p -> p.KvizId = kviz.id }
+
+                        if (dataBase.kvizDao().duplikat(kviz.id) == null) {
+                            dataBase.kvizDao().insert(kviz)
+
+                            for (p in pitanja) {
+                                if (dataBase.pitanjeDao().duplikat(p.id) == null)
+                                    dataBase.pitanjeDao().insert(p)
+                                else {
+                                    p.id = dataBase.pitanjeDao().generateId()
+                                    dataBase.pitanjeDao().insert(p)
+                                }
+                            }
+                        }
+                    }
+
+                    if (dataBase.predmetDao().duplikat(predmet.id) == null)
+                        dataBase.predmetDao().insert(predmet)
+                }
+                result.await()
+                //predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
+
+                model.setlastSelectedGodina("")
+                model.setlastSelectedPredmet("")
+                model.setlastSelectedGrupa("")
+
+                val newFragment = FragmentPoruka.newInstance()
+                newFragment.arguments = bundle
+
+                val transaction = activity?.supportFragmentManager?.beginTransaction()
+                transaction?.replace(R.id.container, newFragment)
+                transaction?.addToBackStack(null)
+                transaction?.commit()
             }
-
-            //predmetListViewModel.upisi(odabirPredmet.selectedItem.toString(), odabirGodina.selectedItemPosition.toString().toInt()+1)
-
-            model.setlastSelectedGodina("")
-            model.setlastSelectedPredmet("")
-            model.setlastSelectedGrupa("")
-
-            val newFragment = FragmentPoruka.newInstance()
-            newFragment.arguments = bundle
-
-            val transaction = activity?.supportFragmentManager?.beginTransaction()
-            transaction?.replace(R.id.container, newFragment)
-            transaction?.addToBackStack(null)
-            transaction?.commit()
         }
     }
+
 
     companion object {
         fun newInstance(): FragmentPredmeti = FragmentPredmeti()

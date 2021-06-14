@@ -9,10 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class KvizRepository {
-//Every class can implement a companion object, which is an object that is common to all
+    //Every class can implement a companion object, which is an object that is common to all
 // instances of that class. It’d come to be similar to static fields in Java.
     companion object {
         private lateinit var context: Context
+        fun setContext(_context: Context) {
+            context = _context
+        }
 
         //funkcija za upis u bazu - jednog kviza
         suspend fun writeKviz(kviz:Kviz) : String?{
@@ -56,18 +59,17 @@ class KvizRepository {
             }!!
         }
 
-//      koristeno u spirali 3 da se dobiju korisnikovi kvizovi na osnovu njegovih grupa
-        suspend fun upisiKorisnikoveKvizoveUBazu(){
+        //      koristeno u spirali 3 da se dobiju korisnikovi kvizovi na osnovu njegovih grupa
+        suspend fun getUpisane(): List<Kviz>{
             return withContext(Dispatchers.IO){//
                 val listaGrupa = getUpisaneGrupe()
                 val vratiKvizove: MutableList<Kviz> = mutableListOf()//
                 for(g in listaGrupa){
                     val response = ApiConfig.retrofit.getUpisani(g.id)
                     vratiKvizove.addAll(response.body()!!)
-                }//
+                }
 
-                for(k in vratiKvizove)
-                    writeKviz(k)
+                return@withContext vratiKvizove
             }
         }
 

@@ -16,6 +16,9 @@ class PredmetIGrupaRepository {
 
     companion object {
         private lateinit var context: Context
+        fun setContext(_context: Context) {
+            context = _context
+        }
 
         //funkcija za upis u bazu - jedne grupe
         suspend fun writeGrupa(grupa: Grupa) : String?{
@@ -107,6 +110,19 @@ class PredmetIGrupaRepository {
                 return@withContext response.body()
             }!!
         }
+//
+//        suspend fun getGroupsZaKvizIzBaze(kvizID: Int): List<Grupa>{
+//            return withContext(Dispatchers.IO){
+//                try {
+//                    val database = AppDatabase.getInstance(context)
+//                    val grupe = database.grupaDao().getGroupsZaKvizIzBaze(kvizID)
+//                    return@withContext grupe
+//                }
+//                catch(error: java.lang.Exception){
+//                    return@withContext listOf<Grupa>()
+//                }
+//            }
+//        }
 
 
 

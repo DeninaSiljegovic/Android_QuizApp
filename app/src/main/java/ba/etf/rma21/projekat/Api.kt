@@ -62,9 +62,10 @@ interface Api {
 
 
     //spirala 4 additions
-    @GET("/account/{id}")
-    suspend fun updateNow(@Path("id") hashStudenta: String, @Query("lastUpdate") lastUpdate: LocalDateTime) : Response<Change>
+    @GET("/account/{id}/lastUpdate")
+    suspend fun updateNow(@Path("id") hashStudenta: String, @Query("date") lastUpdate: String) : Response<Change>
 
-
+    @GET("/student/{id}")
+    suspend fun dajAccount(@Path("id") hashStudenta: String): Response<Account>
 
 }

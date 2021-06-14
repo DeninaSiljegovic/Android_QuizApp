@@ -1,5 +1,6 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
 import ba.etf.rma21.projekat.data.models.Grupa
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.repositories.PredmetIGrupaRepository
@@ -75,6 +76,14 @@ class PredmetIGrupaViewModel {
         }
 
         return predmeti
+    }
+
+    fun setContext(_context: Context) {
+        PredmetIGrupaRepository.setContext(_context)
+    }
+
+    suspend fun getGroupsZaKvizIzBaze(id: Int){
+
     }
 
 //    fun upisi(p: String, g: Int){
