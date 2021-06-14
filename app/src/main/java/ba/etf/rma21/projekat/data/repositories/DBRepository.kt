@@ -46,6 +46,13 @@ class DBRepository {
             }
         }
 
+        suspend fun updateData(){
+            KvizRepository.upisiKorisnikoveKvizoveUBazu()
+            PredmetIGrupaRepository.upisiKorisnikoveGrupeUBazu()
+            PredmetIGrupaRepository.upisiKorisnikovePredmeteUBazu()
+
+        }
+
     }
 
 

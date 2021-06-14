@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import ba.etf.rma21.projekat.data.dao.*
 
 @Database(entities = arrayOf(Grupa::class,Predmet::class,Kviz::class, Pitanje::class, Odgovor::class, Account::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {

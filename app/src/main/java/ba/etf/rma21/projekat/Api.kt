@@ -1,6 +1,6 @@
-package ba.etf.rma21.projekat.data.models
+package ba.etf.rma21.projekat
 
-import androidx.room.Update
+import ba.etf.rma21.projekat.data.models.*
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDateTime

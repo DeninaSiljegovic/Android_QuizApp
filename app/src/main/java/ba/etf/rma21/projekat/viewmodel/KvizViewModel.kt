@@ -1,13 +1,20 @@
 package ba.etf.rma21.projekat.viewmodel
 
+import android.content.Context
+import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.repositories.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import java.util.*
 
 class KvizViewModel {
+
+    val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private lateinit var context: Context
+    fun setContext(_context: Context) {
+        context = _context
+    }
+
     suspend fun getAll(): List<Kviz>{
         return KvizRepository.getAll()
     }
@@ -17,11 +24,11 @@ class KvizViewModel {
     }
 
     suspend fun getMyKvizes(): List<Kviz>{
-        return KvizRepository.getUpisani()!!
+        return KvizRepository.getMyKvizes(context)
     }
 
     suspend fun getMyFuture(): List<Kviz> {
-        val sviKvizovi: List<Kviz> = KvizRepository.getUpisani()!!
+        val sviKvizovi: List<Kviz> = KvizRepository.getMyKvizes(context)
         return sviKvizovi.filter { it.datumPocetka > GregorianCalendar.getInstance().time }
     }
 
@@ -61,7 +68,6 @@ class KvizViewModel {
             }
 
         }
-
         return vrati
     }
 
