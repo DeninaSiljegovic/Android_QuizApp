@@ -105,7 +105,7 @@ import java.util.*
                  result.await()
                  println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
 
-                 if (odgovori.isNotEmpty() && pitanja.isNotEmpty() && odgovori.size == pitanja.size) {
+                 if (odgovori.isNotEmpty() && pitanja.isNotEmpty() && (odgovori.size == pitanja.size || odgovori.size > pitanja.size)) {
                      println("ZAVRSEN KVIZ")
                      println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
                      if (datumRada != null) holder.textDatum.text = toSimpleString(datumRada)
@@ -115,6 +115,17 @@ import java.util.*
                      holder.textBodovi.text = percent.toString()
                      uradjen = 1
                  }
+             }
+
+             if (kvizovi[position].predan) {
+                 println("ZAVRSEN KVIZ")
+                 println("odgovora: " + odgovori.size + " pitanja: " + pitanja.size)
+                 if (datumRada != null) holder.textDatum.text = toSimpleString(datumRada)
+                 else holder.textDatum.text = "inf"
+                 holder.statusImage.setImageResource(R.drawable.plava)
+                 holder.textBodovi.visibility = View.VISIBLE
+                 holder.textBodovi.text = percent.toString()
+                 uradjen = 1
              }
 
              //slucaj 1 - DATUM KRAJA JE PROSAO
@@ -131,7 +142,7 @@ import java.util.*
              //slucaj 2 - KVIZ JE JOS AKTIVAN
              else {
                  //2.2 aktivan je al nije uradjen == ZELENA
-                 if (bodoviKviz == null && Date.from(LocalDate.parse(kvizovi[position].datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()).before(GregorianCalendar.getInstance().time)) {
+                 if (bodoviKviz == null && kvizovi[position].datumPocetka != null &&  Date.from(LocalDate.parse(kvizovi[position].datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()).before(GregorianCalendar.getInstance().time)) {
                      println("Datum: " + kvizovi[position].datumKraj)
                      if (kvizovi[position].datumKraj != null) holder.textDatum.text = kvizovi[position].datumKraj
                      else holder.textDatum.text = kvizovi[position].datumPocetka.replace("2021", "2023")
@@ -140,7 +151,7 @@ import java.util.*
                  }
 
                  //2.3 datum pocetka i datum kraja jos nisu dosli na red - TEK SE AKTIVIRA == ZUTA
-                 else if (Date.from(LocalDate.parse(kvizovi[position].datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()).after(GregorianCalendar.getInstance().time)) {
+                 else if (kvizovi[position].datumPocetka != null && Date.from(LocalDate.parse(kvizovi[position].datumPocetka, DateTimeFormatter.ISO_DATE).atStartOfDay(ZoneId.systemDefault()).toInstant()).after(GregorianCalendar.getInstance().time)) {
                      holder.textDatum.text = kvizovi[position].datumPocetka
                      holder.statusImage.setImageResource(R.drawable.zuta)
                      holder.textBodovi.visibility = View.INVISIBLE

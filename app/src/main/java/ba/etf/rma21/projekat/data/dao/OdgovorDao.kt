@@ -23,7 +23,5 @@ interface OdgovorDao {
     @Query("SELECT id FROM odgovor WHERE PitanjeId==:PitanjeId AND idKviz==:idKviz")
     suspend fun duplikat(PitanjeId: Int, idKviz: Int): Int?
 
-//    @Query("SELECT * FROM odgovor WHERE PitanjeId==:PitanjeId")
-//    suspend fun checkDuplicate(PitanjeId: Int, idKviz: Int):Odgovor?
 
 }

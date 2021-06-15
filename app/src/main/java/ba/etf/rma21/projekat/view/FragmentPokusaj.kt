@@ -119,7 +119,7 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             }
             else{
                 kvizVecOtvoren = takeKvizViewModel.zapocniKviz(idKviz)
-                println("Otvaramo kviz sa sifrom " + kvizVecOtvoren?.id)
+                println("Otvaramo kviz sa sifrom " + idKviz)
                 tekZapocet = true
             }
         }
@@ -174,7 +174,11 @@ class FragmentPokusaj ( private var pitanja: List<Pitanje>,
             scope.launch{
                 if(kvizVecOtvoren != null) {
                     odgovorViewModel.setContext(requireActivity().applicationContext)
-                    odgovorViewModel.postaviOdgovor(kvizVecOtvoren!!.id, pitanja[pom - 1].id, odg)
+                    try {
+                        odgovorViewModel.postaviOdgovor(kvizVecOtvoren!!.id, pitanja[pom - 1].id, odg)
+                    } catch (err: Exception){
+                    println("Fragemnt pokusaj " + err.printStackTrace())
+                }
                     println("UPISAN ODGOVOR ZA PITANJE " + pitanja[pom - 1].tekstPitanja + " odg je " + odg + " sifra kviza je " + kvizVecOtvoren?.id)
                 }
             }

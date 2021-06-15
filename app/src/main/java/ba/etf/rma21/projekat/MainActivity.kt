@@ -46,10 +46,13 @@ class MainActivity : AppCompatActivity(){
 
                 scope.launch{
                     result = async {
+                        odgovorViewModel.setContext(applicationContext)
                         val odgovori = odgovorViewModel.getOdgovoreZaKvizIzBaze(idKviza)
                         val pitanja = pitanjeKvizViewModel.getPitanjaIzBaze(idKviza)
 
-                        val pokusajKviza = takeKvizViewModel.getPocetiKvizovi()!!.find { it.KvizId == idKviza }
+                        val pokusajKviza = takeKvizViewModel.getPocetiKvizovi()?.find { it.KvizId == idKviza }
+                        println("Pokusaj kviza za kviz " + idKviza + " je " + (pokusajKviza?.KvizId
+                                ?: -1))
 
                         if (odgovori.size != pitanja.size) {
                             for (p in pitanja) {
@@ -57,7 +60,11 @@ class MainActivity : AppCompatActivity(){
 
                                 if (odg == null) {
                                     println("postavljamo fejk odgovor za pitanj " + p.tekstPitanja + " sifra kviza je " + pokusajKviza!!.id)
-                                    odgovorViewModel.postaviOdgovor(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
+                                    try {
+                                        odgovorViewModel.postaviOdgovor(pokusajKviza!!.id, p.id, 1000) //fake odgovor postavljen
+                                    } catch (err: Exception){
+                                        println("Main activiry " + err.printStackTrace())
+                                    }
                                 }
                             }
                         }

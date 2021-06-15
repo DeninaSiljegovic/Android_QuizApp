@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 class Odgovor (
-    @PrimaryKey @SerializedName("id") val id: Int,
-    @ColumnInfo(name = "odgovoreno") @SerializedName("odgovoreno") val odgovoreno: Int,
-    @ColumnInfo(name = "PitanjeId") @SerializedName("PitanjeId") val PitanjeId: Int,
-    @ColumnInfo(name = "idKviz") val idKviz: Int
+        @PrimaryKey @SerializedName("id") var id: Int,
+        @ColumnInfo(name = "odgovoreno") @SerializedName("odgovoreno") val odgovoreno: Int,
+        @ColumnInfo(name = "PitanjeId") @SerializedName("PitanjeId") val PitanjeId: Int,
+        @ColumnInfo(name = "idKviz") val idKviz: Int
 ){}

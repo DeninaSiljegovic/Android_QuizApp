@@ -119,6 +119,7 @@ class DBTests {
             `is`(equalTo("testHash"))
         )
     }
+
     @Test
     fun t02_resetACHash() = runBlocking {
         AccountRepository.postaviHash(pocentiHash)
@@ -127,6 +128,7 @@ class DBTests {
             `is`(equalTo(pocentiHash))
         )
     }
+
     @Test
     fun t03_checkUpdateWorks() = runBlocking {
         val prije = DBRepository.updateNow()

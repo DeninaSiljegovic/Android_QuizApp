@@ -71,14 +71,20 @@ class AccountRepository {
                     val noviPokusaji = TakeKvizRepository.getPocetiKvizovi()
 
                     for(k in noviKvizovi){
-                        if(noviPokusaji != null && noviPokusaji.find { pokusaj -> pokusaj.KvizId == k.id } != null)
+                        if(noviPokusaji != null && noviPokusaji.find { pokusaj -> pokusaj.KvizId == k.id } != null) {
+
                             noviOdgovori.addAll(OdgovorRepository.getOdgovoriKviz(k.id))
-                    }
 
+                            for(o in noviOdgovori){
+                                if(db.odgovorDao().duplikat(o.PitanjeId, k.id) == null) {
+                                    println("Insertamo u bazu odgovor za pitanjeId " + o.PitanjeId + " i kviz " + k.id + "o.id = " + o.id)
+                                    o.id = db.odgovorDao().maxId()?.plus(1) ?: 0
 
-                    for(o in noviOdgovori){
-                        if(db.grupaDao().duplikat(o.id) == null)
-                            db.odgovorDao().insert(o)
+                                    println("After je " + o.id)
+                                    db.odgovorDao().insert(o)
+                                }
+                            }
+                        }
                     }
 
 
@@ -120,7 +126,7 @@ class AccountRepository {
                     }
 
                 } catch (error: Exception) {
-                    println(error.printStackTrace())
+                    println("Accoun repo ucitaj podatke " + error.printStackTrace())
                 }
             }
         }
@@ -136,7 +142,7 @@ class AccountRepository {
                     db.kvizTakenDao().deleteAll()
                     db.odgovorDao().deleteAll()
                 } catch (error: Exception) {
-                    println("hLLO: "  + error.printStackTrace())
+                    println("Account repo hLLO: "  + error.printStackTrace())
                 }
             }
         }

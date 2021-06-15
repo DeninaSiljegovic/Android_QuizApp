@@ -117,6 +117,7 @@ class FragmentKvizovi : Fragment() {
                     if(DBViewmodel.updateNow()) {
                         accountViewModel.updatePodatke()
                     }
+
                     if (positonInt == 0) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyKvizes())
                     else if (positonInt == 1) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getAll())
                     else if (positonInt == 2) listaKvizovaAdapter.updateKvizove(kvizListViewModel.getMyDone())

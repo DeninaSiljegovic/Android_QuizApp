@@ -4,6 +4,7 @@ import android.content.Context
 import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.OdgovorBody
+import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.repositories.AccountRepository.Companion.getHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,12 +36,14 @@ class OdgovorRepository {
         //SPIRALA 4 - ODGOVOR SE SADA POSTAVLJA U BAZU
         suspend fun postaviOdgovorKviz(idKvizTaken:Int, idPitanje:Int, odgovor:Int):Int{
             return (withContext(Dispatchers.IO) {
-                try {
+                //try {
 
                     val pokusaj = TakeKvizRepository.getPocetiKvizovi()!!.find { it.id == idKvizTaken }
                     var bod = 0F
                     var bodovi = 0F
 
+
+                    PitanjeKvizRepository.setContext(context)
                     //pr da li je tacno odgovoreno pa dodati bodove
                     var pitanja = PitanjeKvizRepository.getPitanjaIzBaze(pokusaj!!.KvizId)
                     var pit = pitanja.find { it.id == idPitanje }
@@ -59,20 +62,18 @@ class OdgovorRepository {
                             bodovi += 50F
                             bod = 1F
                         }
-                        database.odgovorDao().insert(
-                            Odgovor(
-                                (if (database.odgovorDao().maxId() == null) 0
-                                else database.odgovorDao().maxId())!! + 1, odgovor, idPitanje, pokusaj.KvizId
-                            )
-                        )
+
+                        println("Pitanje " + pit + " Ima odgovor " + odgovor)
+
+                        database.odgovorDao().insert(Odgovor((if (database.odgovorDao().maxId() == null) 0 else database.odgovorDao().maxId())!! + 1, odgovor, idPitanje, pokusaj.KvizId))
                     }
 
                     return@withContext 50
-                }
-                catch (err: Exception){
-                    println(err.printStackTrace())
-                    return@withContext -1
-                }
+                //}
+//                catch (err: Exception){
+//                    println(err.printStackTrace())
+//                    return@withContext -1
+//                }
             })
         }
 
@@ -84,10 +85,18 @@ class OdgovorRepository {
                 try {
                     val db = AppDatabase.getInstance(context)
                     val odgovori = getOdgovoreZaKvizIzBaze(idKviza)
+                    val pitanja = PitanjeKvizRepository.getPitanjaIzBaze(idKviza)
                     val pokusajKviza = TakeKvizRepository.getPocetiKvizovi()!!.find { it.KvizId == idKviza }
+
+
                     var brojac = 0
                     for(odg in odgovori){
-                        val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), pokusajKviza!!.id, OdgovorBody(odg.odgovoreno, odg.PitanjeId, pokusajKviza.osvojeniBodovi.toFloat())
+
+                        val pit = pitanja.find{ p -> p.id == odg.PitanjeId}
+                        var bod = 0
+                        if(pit != null && pit.tacan == odg.odgovoreno) bod = 50
+
+                        val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), pokusajKviza!!.id, OdgovorBody(odg.odgovoreno, odg.PitanjeId, bod.toFloat())
                         )
                         val responseBody = response.body()
                         when (responseBody) {
@@ -100,7 +109,7 @@ class OdgovorRepository {
                     }
                 }
                 catch(error: Exception){
-                    println(error.printStackTrace())
+                    println("O-ma POLOZIO RA " + error.printStackTrace())
                 }
             }
 

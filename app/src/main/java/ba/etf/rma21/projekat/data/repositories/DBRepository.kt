@@ -7,6 +7,7 @@ import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Change
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -24,40 +25,39 @@ class DBRepository {
         suspend fun updateNow(): Boolean {
             return withContext(Dispatchers.IO) {
                 try {
-                    val database = AppDatabase.getInstance(context)//ovdje nece context
+                    val db = AppDatabase.getInstance(context)
 
-                    var accountovi = database.accountDao().getAll()
-                    if(accountovi.isEmpty()){
+                    var list = db.accountDao().getAll()
+                    if(list.isEmpty()){
                         val account = AccountRepository.getUser()
                         try {
-                            database.accountDao().insertAccount(account!!)
+                            db.accountDao().insertAccount(account!!)
                         }
-                        catch(error: java.lang.Exception){
-                            println(error.printStackTrace())
+                        catch(error: Exception){
+                            println(error)
                         }
 
                     }
-                    //last datum kad je sve updated
-                    val date = database.accountDao().getLastUpdate(AccountRepository.getHash())
-                    //if (date == null) return@withContext true
-
-                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), date.toString())
-                    val responseBdy = response.body()
-                    when(responseBdy){
+                    val datum = db.accountDao().getLastUpdate(AccountRepository.getHash())
+                    val response = ApiConfig.retrofit.updateNow(AccountRepository.getHash(), datum.toString()) //mozda bude problema
+                    val responseBody = response.body()
+                    when(responseBody){
                         is Change -> {
-                            if(responseBdy.changed || date == null){
-                                database.accountDao().setLastUpdate(AccountRepository.getHash(), LocalDateTime.now().withNano(0).format(DateTimeFormatter.ISO_DATE_TIME))
+                            if(responseBody.changed || datum == null){
+                                db.accountDao().setLastUpdate(AccountRepository.getHash(), LocalDateTime.now().withNano(0).format(DateTimeFormatter.ISO_DATE_TIME))
                             }
-                            return@withContext responseBdy.changed
+                            return@withContext responseBody.changed
                         }
                         else -> return@withContext false
                     }
-                } catch (e: Exception) {
-                    println(e.printStackTrace())
-                    return@withContext false // does this make sense??
+                }
+                catch(error: Exception){
+                    return@withContext false
                 }
             }
+
         }
+
 
     }
 
