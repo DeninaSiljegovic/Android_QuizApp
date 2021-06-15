@@ -1,12 +1,10 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Odgovor
 import ba.etf.rma21.projekat.data.models.OdgovorBody
-import ba.etf.rma21.projekat.data.models.Pitanje
 import ba.etf.rma21.projekat.data.repositories.AccountRepository.Companion.getHash
-import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
@@ -35,35 +33,46 @@ class OdgovorRepository {
 
         //u funkciju se salje kviz_id iz fragmenta pokusaj - da bi nasli odgovarajuci KvizTaken mora KvizId == poslanom id Kviz-a
         //SPIRALA 4 - ODGOVOR SE SADA POSTAVLJA U BAZU
-        suspend fun postaviOdgovor(idKvizTaken:Int, idPitanje:Int, odgovor:Int):Int{
+        suspend fun postaviOdgovorKviz(idKvizTaken:Int, idPitanje:Int, odgovor:Int):Int{
             return (withContext(Dispatchers.IO) {
-                val pokusaj = TakeKvizRepository.getPocetiKvizovi()!!.find { it.id == idKvizTaken } //TODO PROVJERI DA LI MOZE UVIJEK SA SERVISA
-                var bod = 0F
+                try {
 
-                //pr da li je tacno odgovoreno pa dodati bodove
-                val pit = PitanjeKvizRepository.getPitanjaIzBaze(pokusaj!!.KvizId).find { it.id == idPitanje }
+                    val pokusaj = TakeKvizRepository.getPocetiKvizovi()!!.find { it.id == idKvizTaken }
+                    var bod = 0F
+                    var bodovi = 0F
 
-                val database = AppDatabase.getInstance(context)
+                    //pr da li je tacno odgovoreno pa dodati bodove
+                    var pitanja = PitanjeKvizRepository.getPitanjaIzBaze(pokusaj!!.KvizId)
+                    var pit = pitanja.find { it.id == idPitanje }
 
-                if (pit?.tacan == odgovor) {
-                    pokusaj.osvojeniBodovi += 50F
-                    bod = 1F
+
+                    if(pit == null){
+                        pit = PitanjeKvizRepository.getPitanja(pokusaj!!.KvizId).find { pitanje1 -> pitanje1.id == idPitanje  }
+                    }
+
+                    val database = AppDatabase.getInstance(context)
+
+                    println("Pls work " + pit)
+
+                    if(database.odgovorDao().duplikat(idPitanje, pokusaj.KvizId) == null) {
+                        if (pit?.tacan == odgovor) {
+                            bodovi += 50F
+                            bod = 1F
+                        }
+                        database.odgovorDao().insert(
+                            Odgovor(
+                                (if (database.odgovorDao().maxId() == null) 0
+                                else database.odgovorDao().maxId())!! + 1, odgovor, idPitanje, pokusaj.KvizId
+                            )
+                        )
+                    }
+
+                    return@withContext 50
                 }
-
-                database.odgovorDao().insert(Odgovor(
-                        (if (database.odgovorDao().maxId() == null) 0
-                            else database.odgovorDao().maxId())!! + 1, odgovor, idPitanje
-                    )
-                )
-
-//                val response = ApiConfig.retrofit.postaviOdgovorKviz(getHash(), idKvizTaken, OdgovorBody(odgovor, idPitanje, bod))
-//
-//                when(response.body()){
-//                    is Odgovor -> return@withContext pokusaj.osvojeniBodovi.toInt() //todo OVO VRACA UKUPNE BODOVE NA KVIZU
-//                    else -> return@withContext  -1
-//                }
-//            })
-                return@withContext pokusaj.osvojeniBodovi.toInt()
+                catch (err: Exception){
+                    println(err.printStackTrace())
+                    return@withContext -1
+                }
             })
         }
 
@@ -107,6 +116,7 @@ class OdgovorRepository {
 
                 }
                 catch(error: Exception){
+                    println(error.printStackTrace())
                     return@withContext listOf<Odgovor>()
                 }
             }

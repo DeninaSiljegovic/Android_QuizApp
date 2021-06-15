@@ -12,11 +12,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import ba.etf.rma21.projekat.MainActivity
 import ba.etf.rma21.projekat.R
 import ba.etf.rma21.projekat.data.models.*
 import ba.etf.rma21.projekat.viewmodel.*
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate

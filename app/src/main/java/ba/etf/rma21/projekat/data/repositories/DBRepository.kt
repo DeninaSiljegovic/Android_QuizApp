@@ -3,7 +3,7 @@ package ba.etf.rma21.projekat.data.repositories
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Change
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -2,7 +2,7 @@ package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
 import ba.etf.rma21.projekat.data.models.Account
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.GrupaKviz
 import ba.etf.rma21.projekat.data.models.Odgovor
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +38,7 @@ class AccountRepository {
                     return@withContext false
                 }
                 catch(error: Exception){
+                    println(error.printStackTrace())
                     return@withContext false
                 }
             }

@@ -9,5 +9,6 @@ import com.google.gson.annotations.SerializedName
 class Odgovor (
     @PrimaryKey @SerializedName("id") val id: Int,
     @ColumnInfo(name = "odgovoreno") @SerializedName("odgovoreno") val odgovoreno: Int,
-    @ColumnInfo(name = "PitanjeId") @SerializedName("PitanjeId") val PitanjeId: Int
+    @ColumnInfo(name = "PitanjeId") @SerializedName("PitanjeId") val PitanjeId: Int,
+    @ColumnInfo(name = "idKviz") val idKviz: Int
 ){}

@@ -2,15 +2,12 @@ package ba.etf.rma21.projekat.data.repositories
 
 
 import android.content.Context
-import android.util.Log
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Grupa
-import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.models.Predmet
 import ba.etf.rma21.projekat.data.repositories.AccountRepository.Companion.getHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.http.Path
 
 class PredmetIGrupaRepository {
 
@@ -29,6 +26,7 @@ class PredmetIGrupaRepository {
                     return@withContext "success"
                 }
                 catch(error:Exception){
+                    println(error.printStackTrace())
                     return@withContext null
                 }
             }
@@ -43,6 +41,8 @@ class PredmetIGrupaRepository {
                     return@withContext "success"
                 }
                 catch(error:Exception){
+                    println(error.printStackTrace())
+
                     return@withContext null
                 }
             }
@@ -118,6 +118,8 @@ class PredmetIGrupaRepository {
                     val grupa = db.grupaDao().getGroup(id)
                     return@withContext grupa
                 } catch (error: java.lang.Exception) {
+                    println(error.printStackTrace())
+
                     return@withContext null
                 }
             }
@@ -131,6 +133,8 @@ class PredmetIGrupaRepository {
                     return@withContext predmet
                 }
                 catch(error: java.lang.Exception){
+                    println(error.printStackTrace())
+
                     return@withContext null
                 }
             }

@@ -11,7 +11,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import ba.etf.rma21.projekat.R
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.viewmodel.KvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
 import ba.etf.rma21.projekat.viewmodel.PredmetIGrupaViewModel

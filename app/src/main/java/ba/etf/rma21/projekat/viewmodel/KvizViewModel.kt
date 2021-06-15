@@ -3,7 +3,6 @@ package ba.etf.rma21.projekat.viewmodel
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import ba.etf.rma21.projekat.data.models.AppDatabase
 import ba.etf.rma21.projekat.data.models.Kviz
 import ba.etf.rma21.projekat.data.repositories.*
 import kotlinx.coroutines.*

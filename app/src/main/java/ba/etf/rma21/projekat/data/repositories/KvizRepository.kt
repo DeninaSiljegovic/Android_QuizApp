@@ -1,10 +1,8 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Kviz
-import ba.etf.rma21.projekat.data.models.KvizTaken
-import ba.etf.rma21.projekat.data.repositories.PredmetIGrupaRepository.Companion.getUpisaneGrupe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -26,6 +24,7 @@ class KvizRepository {
                     return@withContext "success"
                 }
                 catch(error:Exception){
+                    println(error.printStackTrace())
                     return@withContext null
                 }
             }

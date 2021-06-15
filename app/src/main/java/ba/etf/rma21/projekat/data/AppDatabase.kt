@@ -1,4 +1,4 @@
-package ba.etf.rma21.projekat.data.models
+package ba.etf.rma21.projekat.data
 
 import android.content.Context
 import androidx.room.Database
@@ -7,8 +7,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ba.etf.rma21.projekat.Converters
 import ba.etf.rma21.projekat.data.dao.*
+import ba.etf.rma21.projekat.data.models.*
 
-@Database(entities = arrayOf(Grupa::class,Predmet::class,Kviz::class, Pitanje::class, Odgovor::class, Account::class, KvizTaken::class, GrupaKviz::class), version = 1)
+@Database(entities = arrayOf(
+    Grupa::class,
+    Predmet::class,
+    Kviz::class, Pitanje::class, Odgovor::class, Account::class, KvizTaken::class, GrupaKviz::class), version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun grupaDao(): GrupaDao
@@ -23,14 +27,17 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         private var INSTANCE: AppDatabase? = null
 
-        fun setInstance(appdb:AppDatabase):Unit{
-            INSTANCE=appdb
+        fun setInstance(appdb: AppDatabase):Unit{
+            INSTANCE =appdb
         }
 
         fun getInstance(context: Context): AppDatabase {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class) {
-                    INSTANCE = buildRoomDB(context)
+                    INSTANCE =
+                        buildRoomDB(
+                            context
+                        )
                 }
             }
             return INSTANCE!!

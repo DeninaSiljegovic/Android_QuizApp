@@ -1,7 +1,7 @@
 package ba.etf.rma21.projekat.data.repositories
 
 import android.content.Context
-import ba.etf.rma21.projekat.data.models.AppDatabase
+import ba.etf.rma21.projekat.data.AppDatabase
 import ba.etf.rma21.projekat.data.models.Pitanje
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -38,6 +38,7 @@ class PitanjeKvizRepository {
 
                 }
                 catch(error: Exception){
+                    println(error.printStackTrace())
                     return@withContext listOf<Pitanje>()
                 }
             }

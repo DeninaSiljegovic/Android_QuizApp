@@ -8,10 +8,7 @@ import ba.etf.rma21.projekat.data.repositories.AccountRepository
 import ba.etf.rma21.projekat.view.FragmentKvizovi
 import ba.etf.rma21.projekat.view.FragmentPoruka
 import ba.etf.rma21.projekat.view.FragmentPredmeti
-import ba.etf.rma21.projekat.viewmodel.KvizViewModel
-import ba.etf.rma21.projekat.viewmodel.OdgovorViewModel
-import ba.etf.rma21.projekat.viewmodel.PitanjeKvizViewModel
-import ba.etf.rma21.projekat.viewmodel.TakeKvizViewModel
+import ba.etf.rma21.projekat.viewmodel.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 
@@ -23,6 +20,7 @@ class MainActivity : AppCompatActivity(){
     private var pitanjeKvizViewModel = PitanjeKvizViewModel()
     private var kvizViewModel = KvizViewModel()
     private var takeKvizViewModel = TakeKvizViewModel()
+    private var accountViewModel = AccountViewModel()
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -107,6 +105,14 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         bottomNavigation = findViewById(R.id.bottomNav)
+        val intent = intent
+        val payload = intent?.getStringExtra("payload")
+
+        if(payload != null) {
+            scope.launch {
+                accountViewModel.postaviHash(payload)
+            }
+        }
 
 //        scope.launch{
 //            AccountRepository.setContext(applicationContext)
