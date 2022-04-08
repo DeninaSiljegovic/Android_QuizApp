@@ -1,15 +1,14 @@
 # RMA - Projekat 2021
-Ovo je početni android projekat za projekat na predmetu Razvoj mobilnih aplikacija
+Ovo je android projekat na predmetu Razvoj mobilnih aplikacija, druga godina ETF
 
-Pri preuzimanju ovog repozitorija editujte ovaj Readme tako da sadrži vaš podatke.
+Tema aplikacije je mobilna aplikacija za fakultetske kvizove. 
+Korisnik se moze upisati na predmet i izabrati odgovarajucu grupu te nakon toga mu postaju dostupni kvizovi te grupe.
+Moguc je pregled svih kvizova kao i filtriranje na osnovu odgovarajuceg kriterija.
+Kvizovi su oznaceni na osnovu 4 stanja koja mogu imati:
+plava - kviz koji je urađen, 
+zelena - kviz koji je aktivan, ali nije urađen, 
+žuta - kviz koji tek treba biti aktivan, 
+crvena - kviz koji je prošao, a nije urađen.
 
-Ne mijenjajte naziv aplikacije niti početnih paketa.
-
-
-| Ime i prezime  | Index  | Grupa     |
-|----------------|--------|-----------|
-| Denina Šiljegović | 18625  | PON 14:00 |
-
-&nbsp;
-
-Vaš projekat postavite na privatni repozitorij na Bitbucket-u sa nazivom RMA21PNNNNN, gdje je _NNNNN_ broj indexa. Projekat podijelite sa asistentima.
+Pokretanjem kviza se otvaraju pitanja koja imaju multiple choice odgovore - ukoliko je izabran tacan odgovor on ce biti obojen u zeleno a u suptonom ce biti crven pri cemu se zelenom bojom naznaci i koji odgovor bi bio tacan.
+Student moze da kviz zavrsi i na kraju dobija poruku sa kojom tacnosti je kviz uradjen ili da ga pauzira pri cemu se sacuva progres koji je postigao do tog trenutka.
