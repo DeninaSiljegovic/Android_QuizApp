@@ -9,6 +9,8 @@ The user can finish the quiz, and at the end, he/she gets the message with their
 
 
 
+------------------------------------------------------------------------------------------------------------------------------
+
 
 
 Ovo je android projekat na predmetu Razvoj mobilnih aplikacija, druga godina ETF
